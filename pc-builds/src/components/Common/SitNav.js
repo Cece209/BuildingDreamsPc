@@ -3,7 +3,10 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 
-function SiteNav() {
+function SiteNav(props) {
+    const handleLogout = () => {
+        props.logOut();
+    }
     return (
         <div>
             <header>
@@ -32,8 +35,7 @@ function SiteNav() {
                         <Nav.Link href="/about" className="black-text" style={{ marginRight: '80px' }}>About</Nav.Link>  
                         <Nav.Link href="/save builds" className="black-text" style={{ marginRight: '100px' }}>Saved Builds</Nav.Link>
                         <Nav.Link href="/feedback" className="black-text"style={{ marginRight: '60px' }}>Feedback</Nav.Link>
-                        <Nav.Link href="/login" className="black-text"style={{ marginRight: '80px' }}>Login</Nav.Link>
-                        <Nav.Link href="/register" className="black-text"style={{ marginRight: '90px' }}>Register</Nav.Link>
+                        <Nav.Link onClick={handleLogout} className="black-text"style={{ marginRight: '40px' }}>Logout</Nav.Link>
     
                         </Nav>
                     </Container>
