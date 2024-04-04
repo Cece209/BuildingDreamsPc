@@ -1,0 +1,17 @@
+.purple-navbar {
+  background-color: purple;
+}
+
+.light-purple-navbar {
+  background-color: #DAB0FF; /* Light purple */
+}
+
+.black-text {
+  color: black !important; /* Ensures it overrides other styles */
+}
+
+.full-width-nav {
+  display: flex;
+  justify-content: space-around; /* Distributes space evenly around items */
+  width: 100%;
+}
