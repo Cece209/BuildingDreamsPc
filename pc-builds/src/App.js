@@ -3,6 +3,12 @@ import './App.css';
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+//auth
+import { Amplify } from 'aws-amplify';
+import { Authenticator } from '@aws-amplify/ui-react';
+import awsExports from './aws-exports';
+
+import '@aws-amplify/ui-react';
 
 import SiteNav from './components/Common/SitNav';
 import SiteFooter from './components/Common/SiteFooter';
@@ -14,10 +20,12 @@ import ConfigurePage from './components/Pages/configure/ConfigurePage';
 import MessagesPage from './components/Pages/messages/MessagesPage';
 import CartItemsPage from './components/Pages/cartItems/CartItemsPage';
 
-
+Amplify.configure(awsExports);
 
 function App() {
   return (
+    <Authenticator loginMechanism={('email')}>
+      {({ signOut, user }) => (
     <div>
       <SiteNav />
       <Routes>
@@ -33,7 +41,8 @@ function App() {
       </Routes>
       <SiteFooter/>
     </div>
-    
+    )}
+    </Authenticator>
   );
 }
 
