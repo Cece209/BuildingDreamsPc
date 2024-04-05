@@ -14,10 +14,13 @@ import SiteNav from './components/Common/SitNav';
 import SiteFooter from './components/Common/SiteFooter';
 import HomePage from './components/Pages/home/HomePage';
 
+import AboutPage from './components/Pages/about/Aboutpage';
 import FourmsPage from './components/Pages/forums/ForumsPage';
 import ConfigurePage from './components/Pages/configure/ConfigurePage';
 import MessagesPage from './components/Pages/messages/MessagesPage';
 import CartItemsPage from './components/Pages/cartItems/CartItemsPage';
+import SavedBuildsPage from './components/Pages/savedbuilds/SavedBuildspage';
+import FeedbackPage from './components/Pages/feedback/FeedbackPage';
 
 
 Amplify.configure(awsExports);
@@ -52,6 +55,9 @@ function App() {
         <Route path='/configure' element={<ConfigurePage /> } />
         <Route path='/messages' element={<MessagesPage /> } />
         <Route path='/cartitems' element={<CartItemsPage /> } />
+        <Route path='/about' element={<AboutPage /> } />
+        <Route path='/savedbuilds' element={<SavedBuildsPage /> } />
+        <Route path='/feedback' element={<FeedbackPage /> } />
 
       </Routes>
       <SiteFooter/>

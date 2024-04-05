@@ -41,7 +41,7 @@ function SiteNav(props) {
                     <Container>
                         <Nav className="ms-md-auto">
                             <Nav.Link href="/about" className="white-text" style={{ marginRight: '280px' }}>About</Nav.Link>  
-                            <Nav.Link href="/save builds" className="white-text" style={{ marginRight: '280px' }}>Saved Builds</Nav.Link>
+                            <Nav.Link href="/savedbuilds" className="white-text" style={{ marginRight: '280px' }}>Saved Builds</Nav.Link>
                             <Nav.Link href="/feedback" className="white-text"style={{ marginRight: '280px' }}>Feedback</Nav.Link>
                             <Nav.Link onClick={handleLogout} className="white-text"style={{ marginRight: '280px' }}>Logout</Nav.Link>
                         </Nav>
