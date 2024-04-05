@@ -7,7 +7,15 @@ function AboutPage(){
     return(
         <Container>
             <Row className="px-4 my-5">
-            <Col><h1 style={{ color: 'white' }}>About</h1></Col>
+                <Col xs={12} md={6}>
+                    <h1 style={{ color: 'white' }}>About Us</h1>
+                    <p style={{ color: 'white' }}>
+                        Insert your about content here.
+                    </p>
+                </Col>
+                <Col xs={12} md={6} className="text-center">
+                    <img src="/img/Aboutimage.png" alt="About" style={{ maxWidth: '100%' }} />
+                </Col>
             </Row>
             <style>
                 {`

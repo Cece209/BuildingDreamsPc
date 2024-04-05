@@ -35,7 +35,7 @@ function App() {
         <View textAlign="center" padding={tokens.space.large}>
           <Image
             alt="Amplify logo"
-            src="/img/favicon.ico"
+            src="img/Logo.png"
           />
         </View>
       );
