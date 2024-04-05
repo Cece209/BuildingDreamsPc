@@ -13,7 +13,6 @@ function SiteNav(props) {
             <header>
                 <Navbar bg="grey" expand="lg" variant="dark" style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
                     <Container>
-                        {/* Use Image component for logo */}
                         <Navbar.Brand>
                             <Image
                                 src="/img/Logo.png"

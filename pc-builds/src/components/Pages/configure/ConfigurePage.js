@@ -7,8 +7,16 @@ function ConfigurePage(){
     return(
         <Container>
              <Row className="px-4 my-5">
-                <Col><h1>Configure Builds</h1></Col>
-            </Row>
+             <Col><h1 style={{ color: 'white' }}>Configure Builds</h1></Col>
+                </Row>
+            <style>
+                {`
+                    body {
+                        background-color: #333333;
+                        min-height: 100vh;
+                    }
+                `}
+            </style>
         </Container>
     )
 }
