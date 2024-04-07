@@ -37,7 +37,7 @@ function HomePage() {
                 Welcome to "Building Dreams!" Start building your PC now!
             </p>
             <Link to="/configure">
-                <Button variant="outline-primary">Start Building &gt;&gt;</Button>
+                <Button variant="outline-dark">Start Building &gt;&gt;</Button>
             </Link>
         </div>
     </Container>

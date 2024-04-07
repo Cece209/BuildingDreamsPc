@@ -7,7 +7,7 @@ function CartItemsPage(){
     return(
         <Container>
              <Row className="px-4 my-5">
-             <Col><h1 style={{ color: 'white' }}>Shopping Cart</h1></Col>
+             <Col><h1 style={{ color: 'white', textShadow: '0 0 3px black' }}>Shopping Cart</h1></Col>
                 </Row>
             <style>
                 {`

@@ -7,7 +7,7 @@ function FeedbackPage(){
     return(
         <Container>
             <Row className="px-4 my-5">
-            <Col><h1 style={{ color: 'white' }}>Feedback</h1></Col>
+            <Col><h1 style={{ color: 'white', textShadow: '0 0 3px black' }}>Feedback</h1></Col>
             </Row>
             <style>
                 {`
