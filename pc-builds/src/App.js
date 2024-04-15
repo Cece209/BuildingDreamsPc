@@ -8,6 +8,7 @@ import { Amplify } from 'aws-amplify';
 import { Authenticator, View, Image, useTheme, Text } from '@aws-amplify/ui-react';
 import awsExports from './aws-exports';
 
+import "@aws-amplify/ui-react/styles.css"
 
 import SiteNav from './components/Common/SitNav';
 import SiteFooter from './components/Common/SiteFooter';

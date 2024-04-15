@@ -5,8 +5,6 @@ import { Container, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 
-
-
 function HomePage() {
     return (
         <Container fluid style={{ 
