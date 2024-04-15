@@ -11,7 +11,7 @@ function SiteNav(props) {
     return (
         <div>
             <header>
-                <Navbar bg="grey" expand="lg" variant="dark" style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
+                <Navbar bg="black" expand="lg" variant="dark" style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
                     <Container>
                         <Navbar.Brand>
                             <Image
