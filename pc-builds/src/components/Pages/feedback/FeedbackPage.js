@@ -1,28 +1,26 @@
 import React, { useState } from 'react';
-import { Container } from "react-bootstrap";
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Button from 'react-bootstrap/Button';
+import { Container, Row, Col, Button, Form } from "react-bootstrap";
+import { FaStar } from "react-icons/fa";
 
-import { Rating } from '@aws-amplify/ui-react';
+function FeedbackPage() {
+    const [rating, setRating] = useState(null);
+    const [hover, setHover] = useState(null);
+    const [feedback, setFeedback] = useState("");  // State to hold the feedback text
 
-
-
-  
-
-function FeedbackPage(){
-    const [rating, setRating] = useState(0); // Initializes state to hold rating value
-    
+    const hoverLabels = {
+        1: "Bad",
+        2: "OK",
+        3: "Good",
+        4: "Great",
+        5: "Amazing"
+    };
 
     const handleSubmitFeedback = () => {
-        // Here you might call an API to save the rating
-        console.log('Feedback submitted with rating:', rating);
-        // Optionally reset the rating or show a message
-        setRating(0);
+        console.log('Feedback submitted with rating:', rating, 'and notes:', feedback);
         alert('Thank you for your feedback!');
+        setRating(0);  
+        setFeedback("");  
     };
-    
-
 
     return (
         <Container>
@@ -32,20 +30,47 @@ function FeedbackPage(){
             <Row className="px-4">
                 <Col>
                     <h2 style={{ color: 'white', textShadow: '0 0 3px black' }}>How would you rate your experience?</h2>
-                    <Rating
-                        value={rating} // Current rating value
-                        maxValue={5}  // Maximum number of stars
-                        onChange={(value) => setRating(value)} // Updates state when a star is clicked
-                    />                   
-                    <div style={{ color: 'white', marginTop: '20px' }}>
-                        You rated: {rating} / 5                      
+                    <div>
+                        {[...Array(5)].map((star, index) => {
+                            const ratingValue = index + 1;
+                            return (
+                                <label key={index}>
+                                    <input
+                                        type="radio"
+                                        name="rating"
+                                        value={ratingValue}
+                                        onClick={() => setRating(ratingValue)}
+                                        style={{ display: "none" }}
+                                    />
+                                    <FaStar
+                                        className='star'
+                                        size={50}
+                                        color={ratingValue <= (hover || rating) ? "#ffc107" : "#e4e5e9"}
+                                        onMouseEnter={() => setHover(ratingValue)}
+                                        onMouseLeave={() => setHover(null)}
+                                    />
+                                </label>
+                            );
+                        })}
                     </div>
+                    <div style={{ color: 'white', marginTop: '20px' }}>
+                        {hover ? hoverLabels[hover] : "None"} {/* Display dynamic hover labels */}
+                    </div>
+                    <Form.Group controlId="exampleForm.ControlTextarea1" style={{ marginTop: '20px' }}>
+                        <Form.Label style={{ color: 'white' }}>Additional Notes:</Form.Label>
+                        <Form.Control
+                            as="textarea"
+                            rows={3}
+                            value={feedback}
+                            onChange={(e) => setFeedback(e.target.value)}
+                            placeholder="Enter any additional feedback here..."
+                        />
+                    </Form.Group>
                 </Col>
             </Row>
             <Row className="px-4 my-5">
-                <Col><Button onClick={handleSubmitFeedback} variant="primary">Submit Feedback</Button>
-                </Col>
-                </Row>
+                <Col><Button onClick={handleSubmitFeedback} variant="primary">Submit Feedback</Button></Col>
+            </Row>
             <style>
                 {`
                     body {
