@@ -49,7 +49,7 @@ function ForumsPage(){
         };
 
         getForum();
-    }, []);
+    }, [client]);
 
     useEffect(() => {
         const validUrls = forumImagePaths.filter(path => path.url && typeof path.url === 'string' && !path.url.includes('favicon.io'));

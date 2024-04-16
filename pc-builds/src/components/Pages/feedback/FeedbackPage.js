@@ -55,7 +55,7 @@ function FeedbackPage() {
                     </div>
                     <div style={{ color: 'white', marginTop: '20px' }}>
                         {hover ? hoverLabels[hover] : "None"} {/* Display dynamic hover labels */}
-                    </div>
+                    </div>             
                     <Form.Group controlId="exampleForm.ControlTextarea1" style={{ marginTop: '20px' }}>
                         <Form.Label style={{ color: 'white' }}>Additional Notes:</Form.Label>
                         <Form.Control

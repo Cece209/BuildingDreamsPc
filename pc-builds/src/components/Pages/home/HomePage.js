@@ -1,6 +1,7 @@
 import React from 'react';
-import { Container, Button } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Container, Row, Carousel, Button } from "react-bootstrap";
+
+//import { Link } from 'react-router-dom';
 
 function HomePage() {
     return (
@@ -40,16 +41,40 @@ function HomePage() {
                     color: 'white',
                     textShadow: '0 0 2px black'
                 }}>
-                    <h1 className="font-weight-light" style={{ fontSize: '2.5rem' }}>Let's Build Dreams Together! </h1>
-                    <p style={{ fontSize: '1.2rem' }}>
-                        Welcome to "Building Dreams!" Start building your PC now!
-                    </p>
-                    <Link to={{pathname: '/configure' }}>
-                        <Button variant="outline-primary">Start Building &gt;&gt;</Button>
-                    </Link>
-                </div>
+                <Row className="px-4 my-5">
+                    <Carousel>
+                        <Carousel.Item>
+                            <Container className="d-flex justify-content-center align-items-center" style={{ height: "300px" }}>
+                                <div>
+                                    <h3>Configure Your PC</h3>
+                                    <p>Customize your personal computer with our configurator.</p>
+                                    <Button variant="primary" href="/configure">Configure</Button>
+                                </div>
+                            </Container>
+                        </Carousel.Item>
+                        <Carousel.Item>
+                            <Container className="d-flex justify-content-center align-items-center" style={{ height: "300px" }}>
+                                <div>
+                                    <h3>About Us</h3>
+                                    <p>Learn more about this website.</p>
+                                    <Button variant="primary" href="/about">About</Button>
+                                </div>
+                            </Container>
+                        </Carousel.Item>
+                        <Carousel.Item>
+                            <Container className="d-flex justify-content-center align-items-center" style={{ height: "300px" }}>
+                                <div>
+                                    <h3>Feedback</h3>
+                                    <p>We value your feedback to improve our services.</p>
+                                    <Button variant="primary" href="/feedback">Feedback</Button>
+                                </div>
+                            </Container>
+                        </Carousel.Item>
+                    </Carousel>
+                </Row>
+                    </div>
+                </Container>
             </Container>
-        </Container>
     );
 }
 
