@@ -41,6 +41,12 @@ function HomePage() {
                     color: 'white',
                     textShadow: '0 0 2px black'
                 }}>
+                    <Row>
+                    <h1 className="font-weight-light" style={{ fontSize: '2.5rem' }}>Let's Build Dreams Together! </h1>
+                    <p style={{ fontSize: '1.2rem' }}>
+                        Welcome to "Building Dreams!" Start building your PC now!
+                    </p>
+                    </Row>
                 <Row className="px-4 my-5">
                     <Carousel>
                         <Carousel.Item>
@@ -56,7 +62,7 @@ function HomePage() {
                             <Container className="d-flex justify-content-center align-items-center" style={{ height: "300px" }}>
                                 <div>
                                     <h3>About Us</h3>
-                                    <p>Learn more about this website.</p>
+                                    <p>Learn more about this website!</p>
                                     <Button variant="primary" href="/about">About</Button>
                                 </div>
                             </Container>
