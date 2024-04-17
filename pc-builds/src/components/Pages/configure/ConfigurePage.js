@@ -1,38 +1,69 @@
-import { React, useState } from 'react';
+import { React, useState, useEffect } from 'react';
+
 import { Container, Button, Modal, Row, Col, Card } from "react-bootstrap";
 import '../../../App.css';
 //import { SearchField } from '@aws-amplify/ui-react';
 import { ScrollView } from '@aws-amplify/ui-react';
 
+import { generateClient } from 'aws-amplify/api';
+import { listProducts } from '../../../graphql/queries';
 
 function ConfigurePage(){
 
-    // const [products, setProducts] = useState([]);
+    const [products, setProducts] = useState([]);
     // const [productData, setProductData] = useState({partType:"", name:"", price:""});
-   
+    
     const [showGPU, setShowGPU] = useState(false);
-    const handleGPUModal = () => setShowGPU(!showGPU);
-
     const [showRAM, setShowRAM] = useState(false);
-    const handleRAMModal = () => setShowRAM(!showRAM);
-
     const [showCase, setShowCase] = useState(false);
-    const handleCaseModal = () => setShowCase(!showCase);
-
     const [showPSU, setShowPSU] = useState(false);
-    const handlePSUModal = () => setShowPSU(!showPSU);
-
     const [showCPU, setShowCPU] = useState(false);
-    const handleCPUModal = () => setShowCPU(!showCPU);
-
     const [showMOBO, setShowMOBO] = useState(false);
-    const handleMOBOModal = () => setShowMOBO(!showMOBO);
-
     const [showCooling, setShowCooling] = useState(false);
-    const handleCoolingModal = () => setShowCooling(!showCooling);
-
     const [showMemory, setShowMemory] = useState(false);
-    const handleMemoryModal = () => setShowMemory(!showMemory);
+    
+    const client = generateClient();
+
+    // Filter GPU products only
+    const gpuProducts = products.filter(product => product.partType === 'GPU');
+
+    // Filter RAM products only
+    const ramProducts = products.filter(product => product.partType === 'RAM');
+
+    // Filter Case products only
+    const caseProducts = products.filter(product => product.partType === 'Case');
+
+    // Filter PSU products only
+    const psuProducts = products.filter(product => product.partType === 'PSU');
+
+    // Filter CPU products only
+    const cpuProducts = products.filter(product => product.partType === 'CPU');
+
+    // Filter Motherboard products only
+    const moboProducts = products.filter(product => product.partType === 'Motherboard');
+
+    // Filter Cooling products only
+    const coolingProducts = products.filter(product => product.partType === 'Cooling');
+
+    // Filter Memory Drive products only
+    const memoryProducts = products.filter(product => product.partType === 'Memory');
+
+
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                const productData = await client.graphql({
+                    query: listProducts
+                });
+                setProducts(productData.data.listProducts.items);
+            } catch (err) {
+                console.log('error fetching products', err);
+            }
+        };
+
+        fetchProducts();
+    }, []);
+
 
     return(
        
@@ -62,22 +93,23 @@ function ConfigurePage(){
                     <div className="partDiv">
                         {/* RAM */}
                         <Col><h6 style={{color: 'black', textShadow: '0 0 3px black'}}>RAM (up to four)</h6></Col>
-                                <Button variant="dark" onClick={handleRAMModal}>Configure RAM</Button>
+                        <Button variant="dark" onClick={() => setShowRAM(true)}>Configure RAM</Button>
                     <div className="RAMArea">Text go here</div>
                     </div>
                     <div className="partDiv">
                         {/* Case */}
                         <Col><h6 style={{color: 'black', textShadow: '0 0 3px black'}}>Case</h6></Col>
-                                <Button variant="dark" onClick={handleCaseModal}>Configure Case</Button>
+                        <Button variant="dark" onClick={() => setShowCase(true)}>Configure Case</Button>
                     <div className="CaseArea">Text go here</div>
                     </div>
                     <div className="partDiv">
                         {/* PSU */}
                         <Col><h6 style={{color: 'black', textShadow: '0 0 3px black'}}>PSU</h6></Col>
-                                <Button variant="dark" onClick={handlePSUModal}>Configure PSU</Button>
+                        <Button variant="dark" onClick={() => setShowPSU(true)}>Configure PSU</Button>
                     <div className="PSUArea">Text go here</div>
                     </div>
                 </div>
+                {/* Middle picture column */}
                 </ScrollView>
                 <div className="ConfMiddle-column">
                     <img src="/img/PCSilh-removebg-preview.png"/>
@@ -87,25 +119,25 @@ function ConfigurePage(){
                     <div className="partDiv">
                         {/* CPU */}
                         <Col><h6 style={{color: 'black', textShadow: '0 0 3px black'}}>CPU</h6></Col>
-                                <Button variant="dark" onClick={handleCPUModal}>Configure CPU</Button>
+                        <Button variant="dark" onClick={() => setShowCPU(true)}>Configure CPU</Button>
                     <div className="CPUArea">Text go here</div>
                     </div>
                     <div className="partDiv">
                         {/* Motherboard */}
                             <Col><h6 style={{color: 'black', textShadow: '0 0 3px black'}}>Motherboard</h6></Col>
-                                <Button variant="dark" onClick={handleMOBOModal}>Configure Motherboard</Button>
+                            <Button variant="dark" onClick={() => setShowMOBO(true)}>Configure Motherboard</Button>
                     <div className="MOBOArea">Text go here</div>
                     </div>
                     <div className="partDiv">
                         {/* Cooling */}
                    <Col><h6 style={{color: 'black', textShadow: '0 0 3px black'}}>Cooling System</h6></Col>
-                                <Button variant="dark" onClick={handleCoolingModal}>Configure Cooling System</Button>
+                   <Button variant="dark" onClick={() => setShowCooling(true)}>Configure Cooling System</Button>
                     <div className="CoolArea">Text go here</div>
                     </div>
                     <div className="partDiv">
                         {/* Memory Drives */}
                         <Col><h6 style={{color: 'black', textShadow: '0 0 3px black'}}>Memory Drives (up to 6)</h6></Col>
-                                <Button variant="dark" onClick={handleMemoryModal}>Configure Memory Drives</Button>
+                        <Button variant="dark" onClick={() => setShowMemory(true)}>Configure Memory Drives</Button>
                     <div className="MemArea">Text go here</div>
                     </div>
                 </div>
@@ -120,85 +152,147 @@ function ConfigurePage(){
             </div>
             </Container>
                 {/* GPU Modal */}
-                <Modal show={showGPU} onHide={handleGPUModal} fullscreen={true} centered>
+                <Modal show={showGPU} onHide={() => setShowGPU(false)} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
                 <Modal.Header closeButton>
-                <Modal.Title>GPU Configuration</Modal.Title>
+                    <Modal.Title>Available GPUs</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                Here you can configure your GPU settings.
+                    {gpuProducts.map(product => (
+                        <Card key={product.id} style={{ margin: '10px' }}>
+                            <Card.Img variant="top" src={product.productPicturePath} />
+                            <Card.Body>
+                                <Card.Title>{product.name}</Card.Title>
+                                <Card.Text>Price: ${product.price}</Card.Text>
+                                <Button variant="primary">Add to Build</Button>
+                            </Card.Body>
+                        </Card>
+                    ))}
                 </Modal.Body>
             </Modal>
             {/* RAM Modal */}
-            <Modal show={showRAM} onHide={handleRAMModal} fullscreen={true} centered>
+            <Modal show={showRAM} onHide={() => setShowRAM(false)} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
                 <Modal.Header closeButton>
-                    <Modal.Title>RAM Configuration</Modal.Title>
+                    <Modal.Title>Available RAM</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    Here you can configure your RAM settings. Choose the amount and type of RAM.
+                    {ramProducts.map(product => (
+                        <Card key={product.id} style={{ margin: '10px' }}>
+                            <Card.Img variant="top" src={product.productPicturePath} />
+                            <Card.Body>
+                                <Card.Title>{product.name}</Card.Title>
+                                <Card.Text>Price: ${product.price}</Card.Text>
+                                <Button variant="primary">Add to Build</Button>
+                            </Card.Body>
+                        </Card>
+                    ))}
                 </Modal.Body>
             </Modal>
             {/* Case Modal */}
-            <Modal show={showCase} onHide={handleCaseModal} fullscreen={true} centered>
+            <Modal show={showCase} onHide={() => setShowCase(false)} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
                 <Modal.Header closeButton>
-                    <Modal.Title>Case Configuration</Modal.Title>
+                    <Modal.Title>Available Cases</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    Configure your computer case. Choose from various sizes and designs.
+                    {caseProducts.map(product => (
+                        <Card key={product.id} style={{ margin: '10px' }}>
+                            <Card.Img variant="top" src={product.productPicturePath} />
+                            <Card.Body>
+                                <Card.Title>{product.name}</Card.Title>
+                                <Card.Text>Price: ${product.price}</Card.Text>
+                                <Button variant="primary">Add to Build</Button>
+                            </Card.Body>
+                        </Card>
+                    ))}
                 </Modal.Body>
             </Modal>
             {/* PSU Modal */}
-            <Modal show={showPSU} onHide={handlePSUModal} fullscreen={true} centered>
+            <Modal show={showPSU} onHide={() => setShowPSU(false)} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
                 <Modal.Header closeButton>
-                    <Modal.Title>PSU Configuration</Modal.Title>
+                    <Modal.Title>Available PSUs</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    Configure your Power Supply Unit. Select wattage, efficiency, and form factor.
+                    {psuProducts.map(product => (
+                        <Card key={product.id} style={{ margin: '10px' }}>
+                            <Card.Img variant="top" src={product.productPicturePath} />
+                            <Card.Body>
+                                <Card.Title>{product.name}</Card.Title>
+                                <Card.Text>Price: ${product.price}</Card.Text>
+                                <Button variant="primary">Add to Build</Button>
+                            </Card.Body>
+                        </Card>
+                    ))}
                 </Modal.Body>
             </Modal>
             {/* CPU Modal */}
-            <Modal show={showCPU} onHide={handleCPUModal} fullscreen={true} centered>
+            <Modal show={showCPU} onHide={() => setShowCPU(false)} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
                 <Modal.Header closeButton>
-                    <Modal.Title>CPU Configuration</Modal.Title>
+                    <Modal.Title>Available CPUs</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    Configure your CPU. Choose from various manufacturers, core counts, and clock speeds.
+                    {cpuProducts.map(product => (
+                        <Card key={product.id} style={{ margin: '10px' }}>
+                            <Card.Img variant="top" src={product.productPicturePath} />
+                            <Card.Body>
+                                <Card.Title>{product.name}</Card.Title>
+                                <Card.Text>Price: ${product.price}</Card.Text>
+                                <Button variant="primary">Add to Build</Button>
+                            </Card.Body>
+                        </Card>
+                    ))}
                 </Modal.Body>
             </Modal>
             {/* Motherboard Modal */}
-            <Modal show={showMOBO} onHide={handleMOBOModal} fullscreen={true} centered>
+            <Modal show={showMOBO} onHide={() => setShowMOBO(false)} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
                 <Modal.Header closeButton>
-                    <Modal.Title>Motherboard Configuration</Modal.Title>
+                    <Modal.Title>Available Motherboards</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    Configure your motherboard. Select from various sizes, chipsets, and socket types.
+                    {moboProducts.map(product => (
+                        <Card key={product.id} style={{ margin: '10px' }}>
+                            <Card.Img variant="top" src={product.productPicturePath} />
+                            <Card.Body>
+                                <Card.Title>{product.name}</Card.Title>
+                                <Card.Text>Price: ${product.price}</Card.Text>
+                                <Button variant="primary">Add to Build</Button>
+                            </Card.Body>
+                        </Card>
+                    ))}
                 </Modal.Body>
             </Modal>
             {/* Cooling Modal */}
-            <Modal show={showCooling} onHide={handleCoolingModal} fullscreen={true} centered>
+            <Modal show={showCooling} onHide={() => setShowCooling(false)} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
                 <Modal.Header closeButton>
-                    <Modal.Title>Cooling System Configuration</Modal.Title>
+                    <Modal.Title>Available Cooling Systems</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    Configure your cooling system. Choose from air coolers, liquid coolers, and fan setups.
+                    {coolingProducts.map(product => (
+                        <Card key={product.id} style={{ margin: '10px' }}>
+                            <Card.Img variant="top" src={product.productPicturePath} />
+                            <Card.Body>
+                                <Card.Title>{product.name}</Card.Title>
+                                <Card.Text>Price: ${product.price}</Card.Text>
+                                <Button variant="primary">Add to Build</Button>
+                            </Card.Body>
+                        </Card>
+                    ))}
                 </Modal.Body>
             </Modal>
             {/* Memory Drives Modal */}
-            <Modal show={showMemory} onHide={handleMemoryModal} fullscreen={true} centered>
+            <Modal show={showMemory} onHide={() => setShowMemory(false)} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
                 <Modal.Header closeButton>
-                    <Modal.Title>Memory Drives Configuration</Modal.Title>
+                    <Modal.Title>Available Memory Drives</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    Configure your memory drives. Choose from various types of HDDs and SSDs, capacities, and form factors.
-                    <Card style={{ width: '11rem' }}>
-                    <Card.Img variant="top" src="holder.js/100px180" />
-                    <Card.Body>
-                        <Card.Title>Name</Card.Title>
-                        <Card.Text>
-                        100.99
-                        </Card.Text>
-                        <Button variant="primary">add</Button>
-                    </Card.Body>
-                    </Card>
+                    {memoryProducts.map(product => (
+                        <Card key={product.id} style={{ margin: '10px' }}>
+                            <Card.Img variant="top" src={product.productPicturePath} />
+                            <Card.Body>
+                                <Card.Title>{product.name}</Card.Title>
+                                <Card.Text>Price: ${product.price}</Card.Text>
+                                <Button variant="primary">Add to Build</Button>
+                            </Card.Body>
+                        </Card>
+                    ))}
                 </Modal.Body>
             </Modal>
         </Container>
