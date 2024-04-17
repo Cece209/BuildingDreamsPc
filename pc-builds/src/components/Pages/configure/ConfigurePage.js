@@ -31,7 +31,7 @@ function ConfigurePage(){
                         label="SearchGPU"
                         placeholder="Search GPUs here..."
                         />
-                    <p className="GPUArea">Text go here</p>
+                    <div className="GPUArea">Text go here</div>
                     </div>
                     <div>
                     <Col><h6 style={{color: 'black', textShadow: '0 0 3px black'}}>RAM</h6></Col>
@@ -39,7 +39,7 @@ function ConfigurePage(){
                         label="SearchRAM"
                         placeholder="Search RAM here..."
                         />
-                    <p className="RAMArea">Text go here</p>
+                    <div className="RAMArea">Text go here</div>
                     </div>
                     <div>
                     <Col><h6 style={{color: 'black', textShadow: '0 0 3px black'}}>Case</h6></Col>
@@ -47,7 +47,7 @@ function ConfigurePage(){
                         label="SearchCase"
                         placeholder="Search Cases here..."
                         />
-                    <p className="CaseArea">Text go here</p>
+                    <div className="CaseArea">Text go here</div>
                     </div>
                     <div>
                     <Col><h6 style={{color: 'black', textShadow: '0 0 3px black'}}>PSU</h6></Col>
@@ -55,7 +55,7 @@ function ConfigurePage(){
                         label="SearchPSU"
                         placeholder="Search PSUs here..."
                         />
-                    <p className="CasePSU">Text go here</p>
+                    <div className="CasePSU">Text go here</div>
                     </div>
                 </div>
                 </ScrollView>
@@ -70,7 +70,7 @@ function ConfigurePage(){
                         label="SearchCPU"
                         placeholder="Search CPUs here..."
                         />
-                    <p className="CPUArea">Text go here</p>
+                    <div className="CPUArea">Text go here</div>
                     </div>
                     <div>
                     <Col><h6 style={{color: 'black', textShadow: '0 0 3px black'}}>Motherboard</h6></Col>
@@ -78,7 +78,7 @@ function ConfigurePage(){
                         label="SearchMOBO"
                         placeholder="Search MOBOS here..."
                         />
-                    <p className="MOBOArea">Text go here</p>
+                    <div className="MOBOArea">Text go here</div>
                     </div>
                     <div>
                     <Col><h6 style={{color: 'black', textShadow: '0 0 3px black'}}>Cooling System</h6></Col>
@@ -86,7 +86,7 @@ function ConfigurePage(){
                         label="SearchCooling"
                         placeholder="Search Cooling here..."
                         />
-                    <p className="CoolArea">Text go here</p>
+                    <div className="CoolArea">Text go here</div>
                     </div>
                     <div>
                     <Col><h6 style={{color: 'black', textShadow: '0 0 3px black'}}>Main Memory</h6></Col>
@@ -94,7 +94,7 @@ function ConfigurePage(){
                         label="SearchMEM"
                         placeholder="Search Hard Drives/SSDs here..."
                         />
-                    <p className="MemArea">Text go here</p>
+                    <div className="MemArea">Text go here</div>
                     </div>
                 </div>
                 </ScrollView>

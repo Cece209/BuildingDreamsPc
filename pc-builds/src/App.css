@@ -29,6 +29,7 @@ input[type=radio]{
 
 .ConfContainer {
   display: flex;
+  justify-content: center;
 }
 
 .ConfLeft-column,
@@ -39,7 +40,7 @@ input[type=radio]{
 
 .ConfLeft-column {
   flex: 0 0 30%; /* This ensures the left column takes up 30% of the container */
-  background-color: #ffffff;
+  background-color: #d2d2d2;
 }
 
 .ConfMiddle-column {
@@ -49,21 +50,10 @@ input[type=radio]{
 
 .ConfRight-column {
   flex: 0 0 30%; /* This ensures the right column takes up 30% of the container */
-  background-color: #ffffff;
+  background-color: #d2d2d2;
 }
 
-.GPUArea{
-  height: 50px;
-}
-
-.RAMArea{
-  height: 100px;
-}
-
-.MemArea{
-  height: 150px;
-}
-
-.CPUArea, .MOBOArea, .CaseArea, .CoolArea{
-  height: 25px;
+.GPUArea, .RAMArea, .MemArea, .CPUArea, .MOBOArea, .CaseArea, .CoolArea{
+  padding: 10px;
+  min-height: 75px;
 }
