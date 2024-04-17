@@ -25,37 +25,37 @@ function ConfigurePage(){
             <div className="ConfContainer">
                 <ScrollView height="500px" borderRadius="10px">
                 <div className="ConfLeft-column">
-                    <div>
-                    <Col><h6 style={{color: 'black', textShadow: '0 0 3px black'}}>GPU</h6></Col>
+                    <div className="partDiv">
+                    <Col><h6 style={{color: 'black', textShadow: '0 0 3px black'}}>GPU (up to two)</h6></Col>
                     <SearchField
                         label="SearchGPU"
-                        placeholder="Search GPUs here..."
+                        placeholder="Search GPUs..."
                         />
                     <div className="GPUArea">Text go here</div>
                     </div>
-                    <div>
-                    <Col><h6 style={{color: 'black', textShadow: '0 0 3px black'}}>RAM</h6></Col>
+                    <div className="partDiv">
+                    <Col><h6 style={{color: 'black', textShadow: '0 0 3px black'}}>RAM (up to four)</h6></Col>
                     <SearchField
-                        label="SearchRAM"
+                        label="Search RAM..."
                         placeholder="Search RAM here..."
                         />
                     <div className="RAMArea">Text go here</div>
                     </div>
-                    <div>
+                    <div className="partDiv">
                     <Col><h6 style={{color: 'black', textShadow: '0 0 3px black'}}>Case</h6></Col>
                     <SearchField
                         label="SearchCase"
-                        placeholder="Search Cases here..."
+                        placeholder="Search Cases..."
                         />
                     <div className="CaseArea">Text go here</div>
                     </div>
-                    <div>
+                    <div className="partDiv">
                     <Col><h6 style={{color: 'black', textShadow: '0 0 3px black'}}>PSU</h6></Col>
                     <SearchField
                         label="SearchPSU"
-                        placeholder="Search PSUs here..."
+                        placeholder="Search PSUs..."
                         />
-                    <div className="CasePSU">Text go here</div>
+                    <div className="PSUArea">Text go here</div>
                     </div>
                 </div>
                 </ScrollView>
@@ -64,35 +64,35 @@ function ConfigurePage(){
                 </div>
                 <ScrollView height="500px" borderRadius="10px">
                 <div className="ConfRight-column">
-                    <div>
+                    <div className="partDiv">
                     <Col><h6 style={{color: 'black', textShadow: '0 0 3px black'}}>CPU</h6></Col>
                     <SearchField
                         label="SearchCPU"
-                        placeholder="Search CPUs here..."
+                        placeholder="Search CPUs..."
                         />
                     <div className="CPUArea">Text go here</div>
                     </div>
-                    <div>
+                    <div className="partDiv">
                     <Col><h6 style={{color: 'black', textShadow: '0 0 3px black'}}>Motherboard</h6></Col>
                     <SearchField
                         label="SearchMOBO"
-                        placeholder="Search MOBOS here..."
+                        placeholder="Search MOBOS..."
                         />
                     <div className="MOBOArea">Text go here</div>
                     </div>
-                    <div>
+                    <div className="partDiv">
                     <Col><h6 style={{color: 'black', textShadow: '0 0 3px black'}}>Cooling System</h6></Col>
                     <SearchField
                         label="SearchCooling"
-                        placeholder="Search Cooling here..."
+                        placeholder="Search Cooling..."
                         />
                     <div className="CoolArea">Text go here</div>
                     </div>
-                    <div>
-                    <Col><h6 style={{color: 'black', textShadow: '0 0 3px black'}}>Main Memory</h6></Col>
+                    <div className="partDiv">
+                    <Col><h6 style={{color: 'black', textShadow: '0 0 3px black'}}>Memory Drives (up to 6)</h6></Col>
                     <SearchField
                         label="SearchMEM"
-                        placeholder="Search Hard Drives/SSDs here..."
+                        placeholder="Search Drives..."
                         />
                     <div className="MemArea">Text go here</div>
                     </div>

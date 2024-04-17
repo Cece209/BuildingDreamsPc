@@ -53,7 +53,12 @@ input[type=radio]{
   background-color: #d2d2d2;
 }
 
-.GPUArea, .RAMArea, .MemArea, .CPUArea, .MOBOArea, .CaseArea, .CoolArea{
+.PSUArea, .GPUArea, .RAMArea, .MemArea, .CPUArea, .MOBOArea, .CaseArea, .CoolArea{
   padding: 10px;
   min-height: 75px;
+  border-bottom: 1px solid #000;
+}
+
+.partDiv{
+  padding-bottom: 10px;
 }
