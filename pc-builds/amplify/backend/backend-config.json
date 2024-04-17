@@ -50,7 +50,6 @@
       "service": "Cognito"
     }
   },
-  "function": {},
   "storage": {
     "PCBucket": {
       "dependsOn": [],

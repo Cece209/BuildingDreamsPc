@@ -189,9 +189,13 @@ export default function ProductCreateForm(props) {
         label="Price"
         isRequired={true}
         isReadOnly={false}
+        type="number"
+        step="any"
         value={price}
         onChange={(e) => {
-          let { value } = e.target;
+          let value = isNaN(parseFloat(e.target.value))
+            ? e.target.value
+            : parseFloat(e.target.value);
           if (onChange) {
             const modelFields = {
               partType,

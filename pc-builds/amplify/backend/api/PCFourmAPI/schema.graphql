@@ -2,7 +2,7 @@ type Product @model @auth(rules: [{allow: public}]) {
   id: ID!
   partType: String!
   name: String!
-  price: String!
+  price: Float!
   productPicturePath: AWSURL
 }
 

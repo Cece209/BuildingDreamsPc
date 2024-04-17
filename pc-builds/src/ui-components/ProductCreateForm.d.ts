@@ -24,13 +24,13 @@ export declare type ValidationFunction<T> = (value: T, validationResponse: Valid
 export declare type ProductCreateFormInputValues = {
     partType?: string;
     name?: string;
-    price?: string;
+    price?: number;
     productPicturePath?: string;
 };
 export declare type ProductCreateFormValidationValues = {
     partType?: ValidationFunction<string>;
     name?: ValidationFunction<string>;
-    price?: ValidationFunction<string>;
+    price?: ValidationFunction<number>;
     productPicturePath?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
