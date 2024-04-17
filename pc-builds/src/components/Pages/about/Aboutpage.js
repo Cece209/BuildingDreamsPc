@@ -41,7 +41,7 @@ function AboutPage() {
                         color: 'white',
                         textShadow: '0 0 2px black'
                     }}>
-                        <h1 className="font-weight-light" style={{ fontSize: '2.5rem' }}>We Build Together!</h1>
+                        <h1 className="font-weight-light" style={{ fontSize: '3.0rem' }}>We Build Together!</h1>
                         <p style={{ fontSize: '1.2rem' }}>
                             Learn more about "Building Dreams" and us.
                         </p>
