@@ -43,7 +43,7 @@ function AboutPage() {
                     }}>
                         <h1 className="font-weight-light" style={{ fontSize: '2.5rem' }}>We build Together!</h1>
                         <p style={{ fontSize: '1.2rem' }}>
-                            Learn more about our website and us.
+                            Learn more about "Building Dreams" and us.
                         </p>
                     </div>
                 </Container>
