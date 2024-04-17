@@ -82,7 +82,7 @@ function ConfigurePage(){
             <Row>
             <Container>
             <div className="ConfContainer">
-                <ScrollView height="500px" borderRadius="10px">
+                <ScrollView width="30%" height="500px" borderRadius="10px">
                 <div className="ConfLeft-column">
                     {/* GPU */}
                     <div className="partDiv"> 
@@ -114,7 +114,7 @@ function ConfigurePage(){
                 <div className="ConfMiddle-column">
                     <img src="/img/PCSilh-removebg-preview.png"/>
                 </div>
-                <ScrollView height="500px" borderRadius="10px">
+                <ScrollView width="30%" height="500px" borderRadius="10px">
                 <div className="ConfRight-column">
                     <div className="partDiv">
                         {/* CPU */}
