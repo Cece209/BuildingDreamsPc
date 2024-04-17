@@ -6,4 +6,6 @@
 
 export { default as ForumCreateForm } from "./ForumCreateForm";
 export { default as ForumUpdateForm } from "./ForumUpdateForm";
+export { default as ProductCreateForm } from "./ProductCreateForm";
+export { default as ProductUpdateForm } from "./ProductUpdateForm";
 export { default as studioTheme } from "./studioTheme";
