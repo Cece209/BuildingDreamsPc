@@ -24,3 +24,46 @@ input[type=radio]{
 .star{
   cursor: pointer
 }
+
+/* Styling for Configure Page */
+
+.ConfContainer {
+  display: flex;
+}
+
+.ConfLeft-column,
+.ConfMiddle-column,
+.ConfRight-column {
+  padding: 20px;
+}
+
+.ConfLeft-column {
+  flex: 0 0 30%; /* This ensures the left column takes up 30% of the container */
+  background-color: #ffffff;
+}
+
+.ConfMiddle-column {
+  flex: 0 0 40%; /* This ensures the middle column takes up 40% of the container */
+  background-color: #333333;
+}
+
+.ConfRight-column {
+  flex: 0 0 30%; /* This ensures the right column takes up 30% of the container */
+  background-color: #ffffff;
+}
+
+.GPUArea{
+  height: 50px;
+}
+
+.RAMArea{
+  height: 100px;
+}
+
+.MemArea{
+  height: 150px;
+}
+
+.CPUArea, .MOBOArea, .CaseArea, .CoolArea{
+  height: 25px;
+}

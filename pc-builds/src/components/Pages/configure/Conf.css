@@ -1,0 +1,24 @@
+.ConfContainer {
+    display: flex;
+  }
+  
+  .ConfLeft-column,
+  .ConfMiddle-column,
+  .ConfRight-column {
+    padding: 20px;
+  }
+  
+  .ConfLeft-column {
+    flex: 0 0 30%; /* This ensures the left column takes up 30% of the container */
+    background-color: #f0f0f0;
+  }
+  
+  .ConfMiddle-column {
+    flex: 0 0 40%; /* This ensures the middle column takes up 40% of the container */
+    background-color: #ffffff;
+  }
+  
+  .ConfRight-column {
+    flex: 0 0 30%; /* This ensures the right column takes up 30% of the container */
+    background-color: #f9f9f9;
+  }
