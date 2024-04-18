@@ -5,6 +5,9 @@ import '../../../App.css';
 //import { SearchField } from '@aws-amplify/ui-react';
 import { ScrollView } from '@aws-amplify/ui-react';
 
+import { useCart } from '../../../components/Pages/cartItems/CartContext.js';
+import { useNavigate } from 'react-router-dom';
+
 import { generateClient } from 'aws-amplify/api';
 import { listProducts } from '../../../graphql/queries';
 
@@ -82,6 +85,24 @@ function ConfigurePage(){
         setTotalPrice(prev => prev - selectedMemory.reduce((acc, curr) => acc + parseFloat(curr.price), 0));
     };
     
+    const { addToCart } = useCart();
+    const navigate = useNavigate();
+
+    const handleAddToCart = () => {
+        // Adding all selected items from different categories to the cart
+        selectedGPUs.forEach(item => addToCart(item));
+        selectedRAMs.forEach(item => addToCart(item));
+        selectedCases.forEach(item => addToCart(item));
+        selectedPSUs.forEach(item => addToCart(item));
+        selectedCPUs.forEach(item => addToCart(item));
+        selectedMOBOs.forEach(item => addToCart(item));
+        selectedCooling.forEach(item => addToCart(item));
+        selectedMemory.forEach(item => addToCart(item));
+    
+        navigate('/cartitems'); 
+        alert('Added to cart!'); // Simple feedback
+    };
+
 
     const [totalPrice, setTotalPrice] = useState(0);
 
@@ -334,7 +355,7 @@ function ConfigurePage(){
             {/* cart items section */}
             <Container>
             <div>
-            <Col><Button variant="primary">Add item(s) to cart</Button></Col>
+            <Col><Button variant="primary" onClick={handleAddToCart}>Add item(s) to cart</Button></Col>
             </div>
             </Container>
                 {/* GPU Modal */}

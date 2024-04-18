@@ -21,6 +21,7 @@ import MessagesPage from './components/Pages/messages/MessagesPage';
 import CartItemsPage from './components/Pages/cartItems/CartItemsPage';
 import SavedBuildsPage from './components/Pages/savedbuilds/SavedBuildspage';
 import FeedbackPage from './components/Pages/feedback/FeedbackPage';
+import { CartProvider } from './components/Pages/cartItems/CartContext.js';
 
 
 Amplify.configure(awsExports);
@@ -59,6 +60,7 @@ function App() {
       {({ signOut, user }) => (
     <div>
       <SiteNav logOut={signOut}/>
+      <CartProvider> {/* Wrap Routes in CartProvider */}
       <Routes>
         <Route path='*' element={<HomePage />} />
         <Route path='/' exact={true} element={<HomePage /> } />
@@ -71,6 +73,7 @@ function App() {
         <Route path='/feedback' element={<FeedbackPage /> } />
 
       </Routes>
+      </CartProvider>
       <SiteFooter/>
     </div>
     )}
