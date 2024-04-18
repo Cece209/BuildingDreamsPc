@@ -1,5 +1,5 @@
 import { React, useState, useEffect } from 'react';
-import { Container, Button, Row, Col, Card, Form } from "react-bootstrap";
+import { Container, Button, Row, Col, Card, Form, Alert } from "react-bootstrap";
 import { useCart } from '../../../components/Pages/cartItems/CartContext.js';
 import { generateClient } from 'aws-amplify/api';
 import { listProducts } from '../../../graphql/queries';
@@ -9,6 +9,14 @@ function CartItemsPage() {
 
     const [setProducts] = useState([]);
     const client = generateClient();
+
+    const [showAlert, setShowAlert] = useState(false);
+
+    const handleCheckout = () => {
+        clearCart();
+        setShowAlert(true);
+        setTimeout(() => setShowAlert(false), 3000); // Alert disappears after 3 seconds
+    };
 
      // Calculate total price
      const totalPrice = cartItems.reduce((acc, item) => acc + parseFloat(item.price), 0);
@@ -31,6 +39,11 @@ function CartItemsPage() {
 
     return (
         <Container>
+            {showAlert && (
+                <Alert variant="success">
+                    Purchase was successful! Thank you for your order.
+                </Alert>
+            )}
             <Row className="px-4 my-5">
                 <Col><h1 style={{ color: 'white', textShadow: '0 0 3px black' }}>Shopping Cart</h1></Col>
             </Row>
@@ -137,9 +150,7 @@ function CartItemsPage() {
                 </Row>
 
                 <h4 style={{ color: 'white' }}>Total Price: ${totalPrice.toFixed(2)}</h4>
-                <Button variant="primary" type="submit" onClick={clearCart}>
-                    Checkout
-                </Button>
+                <Button variant="primary" onClick={handleCheckout}>Checkout</Button>
             </Form>
             <style>
                 {`
