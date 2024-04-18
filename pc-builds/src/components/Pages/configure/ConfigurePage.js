@@ -242,7 +242,7 @@ function ConfigurePage(){
                     <div className="partDiv">
                     {/* Case */}
                         <Col><h6 style={{color: 'black', textShadow: '0 0 3px black'}}>Case</h6></Col>
-                        <Button variant="dark" onClick={() => setShowCase(true)} onMouseEnter={() => handleMouseEnter('/img/PCSilh-removebg-preview.png')} onMouseLeave={handleMouseLeave}>
+                        <Button variant="dark" onClick={() => setShowCase(true)} onMouseEnter={() => handleMouseEnter('/img/PC-Case.png')} onMouseLeave={handleMouseLeave}>
                             Configure
                         </Button>
                         <Button variant="danger" onClick={clearCases} style={{ marginLeft: '10px' }}>Clear</Button>
