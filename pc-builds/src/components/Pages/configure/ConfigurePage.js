@@ -235,9 +235,9 @@ function ConfigurePage(){
                 <ScrollView width="30%" height="500px" borderRadius="10px">
                 <div className="ConfLeft-column">
                     {/* GPU */}
-                    <div className="partDiv"> 
+                    <div className="partDiv" onMouseEnter={() => handleMouseEnter('/img/GPU.png')} onMouseLeave={handleMouseLeave}> 
                     <Col><h6 style={{color: 'black', textShadow: '0 0 3px black'}}>GPU (up to two)</h6></Col>
-                    <Button variant="dark" onClick={() => setShowGPU(true)} onMouseEnter={() => handleMouseEnter('/img/GPU.png')} onMouseLeave={handleMouseLeave}>
+                    <Button variant="dark" onClick={() => setShowGPU(true)} >
                         Configure
                     </Button>
                     <Button variant="danger" onClick={clearGPUs} style={{ marginLeft: '10px' }}>Clear</Button>
@@ -247,10 +247,10 @@ function ConfigurePage(){
                     ) : "No GPUs selected"}
                     </div>
                         </div>
-                    <div className="partDiv">
                     {/* RAM */}
+                    <div className="partDiv" onMouseEnter={() => handleMouseEnter('/img/RAM.png')} onMouseLeave={handleMouseLeave}>
                         <Col><h6 style={{color: 'black', textShadow: '0 0 3px black'}}>RAM (up to four)</h6></Col>
-                        <Button variant="dark" onClick={() => setShowRAM(true)} onMouseEnter={() => handleMouseEnter('/img/RAM.png')} onMouseLeave={handleMouseLeave}>
+                        <Button variant="dark" onClick={() => setShowRAM(true)} >
                             Configure
                         </Button>
                         <Button variant="danger" onClick={clearRAMs} style={{ marginLeft: '10px' }}>Clear</Button>
@@ -260,10 +260,10 @@ function ConfigurePage(){
                     ) : "No RAMs selected"}
                     </div>
                     </div>
-                    <div className="partDiv">
                     {/* Case */}
+                    <div className="partDiv" onMouseEnter={() => handleMouseEnter('/img/PC-Case.png')} onMouseLeave={handleMouseLeave}>
                         <Col><h6 style={{color: 'black', textShadow: '0 0 3px black'}}>Case</h6></Col>
-                        <Button variant="dark" onClick={() => setShowCase(true)} onMouseEnter={() => handleMouseEnter('/img/PC-Case.png')} onMouseLeave={handleMouseLeave}>
+                        <Button variant="dark" onClick={() => setShowCase(true)} >
                             Configure
                         </Button>
                         <Button variant="danger" onClick={clearCases} style={{ marginLeft: '10px' }}>Clear</Button>
@@ -273,10 +273,10 @@ function ConfigurePage(){
                     ) : "No Cases selected"}
                     </div>
                     </div>
-                    <div className="partDiv">
                     {/* PSU */}
+                    <div className="partDiv" onMouseEnter={() => handleMouseEnter('/img/PSU.png')} onMouseLeave={handleMouseLeave}>
                         <Col><h6 style={{color: 'black', textShadow: '0 0 3px black'}}>PSU</h6></Col>
-                        <Button variant="dark" onClick={() => setShowPSU(true)} onMouseEnter={() => handleMouseEnter('/img/PSU.png')} onMouseLeave={handleMouseLeave}>
+                        <Button variant="dark" onClick={() => setShowPSU(true)} >
                             Configure
                         </Button>
                         <Button variant="danger" onClick={clearPSUs} style={{ marginLeft: '10px' }}>Clear</Button>
@@ -295,10 +295,10 @@ function ConfigurePage(){
 
                 <ScrollView width="30%" height="500px" borderRadius="10px">
                 <div className="ConfRight-column">
-                    <div className="partDiv">
                     {/* CPU */}
+                    <div className="partDiv" onMouseEnter={() => handleMouseEnter('/img/CPU.png')} onMouseLeave={handleMouseLeave}>
                         <Col><h6 style={{color: 'black', textShadow: '0 0 3px black'}}>CPU</h6></Col>
-                        <Button variant="dark" onClick={() => setShowCPU(true)} onMouseEnter={() => handleMouseEnter('/img/CPU.png')} onMouseLeave={handleMouseLeave}>
+                        <Button variant="dark" onClick={() => setShowCPU(true)} >
                             Configure
                         </Button>
                         <Button variant="danger" onClick={clearCPUs} style={{ marginLeft: '10px' }}>Clear</Button>
@@ -308,10 +308,10 @@ function ConfigurePage(){
                         ) : "No CPUs selected"}
                         </div>
                     </div>
-                    <div className="partDiv">
                     {/* Motherboard */}
+                    <div className="partDiv" onMouseEnter={() => handleMouseEnter('/img/MotherBoard.png')} onMouseLeave={handleMouseLeave}>
                         <Col><h6 style={{color: 'black', textShadow: '0 0 3px black'}}>Motherboard</h6></Col>
-                        <Button variant="dark" onClick={() => setShowMOBO(true)} onMouseEnter={() => handleMouseEnter('/img/MotherBoard.png')} onMouseLeave={handleMouseLeave}>
+                        <Button variant="dark" onClick={() => setShowMOBO(true)} >
                             Configure
                         </Button>
                         <Button variant="danger" onClick={clearMOBOs} style={{ marginLeft: '10px' }}>Clear</Button>
@@ -321,10 +321,10 @@ function ConfigurePage(){
                         ) : "No Motherboards selected"}
                         </div>
                     </div>
-                    <div className="partDiv">
                     {/* Cooling */}
+                    <div className="partDiv" onMouseEnter={() => handleMouseEnter('/img/CoolingSystem-fotor-bg-remover-2024041802841.png')} onMouseLeave={handleMouseLeave}>
                     <Col><h6 style={{color: 'black', textShadow: '0 0 3px black'}}>Cooling System</h6></Col>
-                    <Button variant="dark" onClick={() => setShowCooling(true)} onMouseEnter={() => handleMouseEnter('/img/CoolingSystem-fotor-bg-remover-2024041802841.png')} onMouseLeave={handleMouseLeave}>
+                    <Button variant="dark" onClick={() => setShowCooling(true)} >
                         Configure
                     </Button>
                     <Button variant="danger" onClick={clearCooling} style={{ marginLeft: '10px' }}>Clear</Button>
@@ -334,10 +334,10 @@ function ConfigurePage(){
                         ) : "No Cooling Systems selected"}
                         </div>
                     </div>
-                    <div className="partDiv">
                     {/* Memory Drives */}
+                    <div className="partDiv" onMouseEnter={() => handleMouseEnter('/img/MemoryDrive.png')} onMouseLeave={handleMouseLeave}> 
                         <Col><h6 style={{color: 'black', textShadow: '0 0 3px black'}}>Memory Drives (up to 6)</h6></Col>
-                        <Button variant="dark" onClick={() => setShowMemory(true)} onMouseEnter={() => handleMouseEnter('/img/MemoryDrive.png')} onMouseLeave={handleMouseLeave}>
+                        <Button variant="dark" onClick={() => setShowMemory(true)} >
                             Configure
                         </Button>
                         <Button variant="danger" onClick={clearMemory} style={{ marginLeft: '10px' }}>Clear</Button>
