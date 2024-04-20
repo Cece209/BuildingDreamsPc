@@ -8,8 +8,11 @@ export const createMessages = /* GraphQL */ `
   ) {
     createMessages(input: $input, condition: $condition) {
       id
-      name
-      description
+      messageID
+      senderID
+      recipientID
+      content
+      timestamp
       createdAt
       updatedAt
       __typename
@@ -23,8 +26,11 @@ export const updateMessages = /* GraphQL */ `
   ) {
     updateMessages(input: $input, condition: $condition) {
       id
-      name
-      description
+      messageID
+      senderID
+      recipientID
+      content
+      timestamp
       createdAt
       updatedAt
       __typename
@@ -38,8 +44,11 @@ export const deleteMessages = /* GraphQL */ `
   ) {
     deleteMessages(input: $input, condition: $condition) {
       id
-      name
-      description
+      messageID
+      senderID
+      recipientID
+      content
+      timestamp
       createdAt
       updatedAt
       __typename

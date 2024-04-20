@@ -1,7 +1,10 @@
 type Messages @model @auth(rules: [{allow: public}]) {
   id: ID!
-  name: String
-  description: String
+  messageID: String
+  senderID: String
+  recipientID: String
+  content: String
+  timestamp: AWSDateTime
 }
 
 type Product @model @auth(rules: [{allow: public}]) {

@@ -22,18 +22,27 @@ export declare type ValidationResponse = {
 };
 export declare type ValidationFunction<T> = (value: T, validationResponse: ValidationResponse) => ValidationResponse | Promise<ValidationResponse>;
 export declare type MessagesUpdateFormInputValues = {
-    name?: string;
-    description?: string;
+    messageID?: string;
+    senderID?: string;
+    recipientID?: string;
+    content?: string;
+    timestamp?: string;
 };
 export declare type MessagesUpdateFormValidationValues = {
-    name?: ValidationFunction<string>;
-    description?: ValidationFunction<string>;
+    messageID?: ValidationFunction<string>;
+    senderID?: ValidationFunction<string>;
+    recipientID?: ValidationFunction<string>;
+    content?: ValidationFunction<string>;
+    timestamp?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type MessagesUpdateFormOverridesProps = {
     MessagesUpdateFormGrid?: PrimitiveOverrideProps<GridProps>;
-    name?: PrimitiveOverrideProps<TextFieldProps>;
-    description?: PrimitiveOverrideProps<TextFieldProps>;
+    messageID?: PrimitiveOverrideProps<TextFieldProps>;
+    senderID?: PrimitiveOverrideProps<TextFieldProps>;
+    recipientID?: PrimitiveOverrideProps<TextFieldProps>;
+    content?: PrimitiveOverrideProps<TextFieldProps>;
+    timestamp?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
 export declare type MessagesUpdateFormProps = React.PropsWithChildren<{
     overrides?: MessagesUpdateFormOverridesProps | undefined | null;

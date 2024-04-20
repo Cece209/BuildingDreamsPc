@@ -25,20 +25,29 @@ export default function MessagesUpdateForm(props) {
     ...rest
   } = props;
   const initialValues = {
-    name: "",
-    description: "",
+    messageID: "",
+    senderID: "",
+    recipientID: "",
+    content: "",
+    timestamp: "",
   };
-  const [name, setName] = React.useState(initialValues.name);
-  const [description, setDescription] = React.useState(
-    initialValues.description
+  const [messageID, setMessageID] = React.useState(initialValues.messageID);
+  const [senderID, setSenderID] = React.useState(initialValues.senderID);
+  const [recipientID, setRecipientID] = React.useState(
+    initialValues.recipientID
   );
+  const [content, setContent] = React.useState(initialValues.content);
+  const [timestamp, setTimestamp] = React.useState(initialValues.timestamp);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     const cleanValues = messagesRecord
       ? { ...initialValues, ...messagesRecord }
       : initialValues;
-    setName(cleanValues.name);
-    setDescription(cleanValues.description);
+    setMessageID(cleanValues.messageID);
+    setSenderID(cleanValues.senderID);
+    setRecipientID(cleanValues.recipientID);
+    setContent(cleanValues.content);
+    setTimestamp(cleanValues.timestamp);
     setErrors({});
   };
   const [messagesRecord, setMessagesRecord] = React.useState(messagesModelProp);
@@ -58,8 +67,11 @@ export default function MessagesUpdateForm(props) {
   }, [idProp, messagesModelProp]);
   React.useEffect(resetStateValues, [messagesRecord]);
   const validations = {
-    name: [],
-    description: [],
+    messageID: [],
+    senderID: [],
+    recipientID: [],
+    content: [],
+    timestamp: [],
   };
   const runValidationTasks = async (
     fieldName,
@@ -78,6 +90,23 @@ export default function MessagesUpdateForm(props) {
     setErrors((errors) => ({ ...errors, [fieldName]: validationResponse }));
     return validationResponse;
   };
+  const convertToLocal = (date) => {
+    const df = new Intl.DateTimeFormat("default", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      calendar: "iso8601",
+      numberingSystem: "latn",
+      hourCycle: "h23",
+    });
+    const parts = df.formatToParts(date).reduce((acc, part) => {
+      acc[part.type] = part.value;
+      return acc;
+    }, {});
+    return `${parts.year}-${parts.month}-${parts.day}T${parts.hour}:${parts.minute}`;
+  };
   return (
     <Grid
       as="form"
@@ -87,8 +116,11 @@ export default function MessagesUpdateForm(props) {
       onSubmit={async (event) => {
         event.preventDefault();
         let modelFields = {
-          name: name ?? null,
-          description: description ?? null,
+          messageID: messageID ?? null,
+          senderID: senderID ?? null,
+          recipientID: recipientID ?? null,
+          content: content ?? null,
+          timestamp: timestamp ?? null,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -141,54 +173,146 @@ export default function MessagesUpdateForm(props) {
       {...rest}
     >
       <TextField
-        label="Name"
+        label="Message id"
         isRequired={false}
         isReadOnly={false}
-        value={name}
+        value={messageID}
         onChange={(e) => {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
-              name: value,
-              description,
+              messageID: value,
+              senderID,
+              recipientID,
+              content,
+              timestamp,
             };
             const result = onChange(modelFields);
-            value = result?.name ?? value;
+            value = result?.messageID ?? value;
           }
-          if (errors.name?.hasError) {
-            runValidationTasks("name", value);
+          if (errors.messageID?.hasError) {
+            runValidationTasks("messageID", value);
           }
-          setName(value);
+          setMessageID(value);
         }}
-        onBlur={() => runValidationTasks("name", name)}
-        errorMessage={errors.name?.errorMessage}
-        hasError={errors.name?.hasError}
-        {...getOverrideProps(overrides, "name")}
+        onBlur={() => runValidationTasks("messageID", messageID)}
+        errorMessage={errors.messageID?.errorMessage}
+        hasError={errors.messageID?.hasError}
+        {...getOverrideProps(overrides, "messageID")}
       ></TextField>
       <TextField
-        label="Description"
+        label="Sender id"
         isRequired={false}
         isReadOnly={false}
-        value={description}
+        value={senderID}
         onChange={(e) => {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
-              name,
-              description: value,
+              messageID,
+              senderID: value,
+              recipientID,
+              content,
+              timestamp,
             };
             const result = onChange(modelFields);
-            value = result?.description ?? value;
+            value = result?.senderID ?? value;
           }
-          if (errors.description?.hasError) {
-            runValidationTasks("description", value);
+          if (errors.senderID?.hasError) {
+            runValidationTasks("senderID", value);
           }
-          setDescription(value);
+          setSenderID(value);
         }}
-        onBlur={() => runValidationTasks("description", description)}
-        errorMessage={errors.description?.errorMessage}
-        hasError={errors.description?.hasError}
-        {...getOverrideProps(overrides, "description")}
+        onBlur={() => runValidationTasks("senderID", senderID)}
+        errorMessage={errors.senderID?.errorMessage}
+        hasError={errors.senderID?.hasError}
+        {...getOverrideProps(overrides, "senderID")}
+      ></TextField>
+      <TextField
+        label="Recipient id"
+        isRequired={false}
+        isReadOnly={false}
+        value={recipientID}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              messageID,
+              senderID,
+              recipientID: value,
+              content,
+              timestamp,
+            };
+            const result = onChange(modelFields);
+            value = result?.recipientID ?? value;
+          }
+          if (errors.recipientID?.hasError) {
+            runValidationTasks("recipientID", value);
+          }
+          setRecipientID(value);
+        }}
+        onBlur={() => runValidationTasks("recipientID", recipientID)}
+        errorMessage={errors.recipientID?.errorMessage}
+        hasError={errors.recipientID?.hasError}
+        {...getOverrideProps(overrides, "recipientID")}
+      ></TextField>
+      <TextField
+        label="Content"
+        isRequired={false}
+        isReadOnly={false}
+        value={content}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              messageID,
+              senderID,
+              recipientID,
+              content: value,
+              timestamp,
+            };
+            const result = onChange(modelFields);
+            value = result?.content ?? value;
+          }
+          if (errors.content?.hasError) {
+            runValidationTasks("content", value);
+          }
+          setContent(value);
+        }}
+        onBlur={() => runValidationTasks("content", content)}
+        errorMessage={errors.content?.errorMessage}
+        hasError={errors.content?.hasError}
+        {...getOverrideProps(overrides, "content")}
+      ></TextField>
+      <TextField
+        label="Timestamp"
+        isRequired={false}
+        isReadOnly={false}
+        type="datetime-local"
+        value={timestamp && convertToLocal(new Date(timestamp))}
+        onChange={(e) => {
+          let value =
+            e.target.value === "" ? "" : new Date(e.target.value).toISOString();
+          if (onChange) {
+            const modelFields = {
+              messageID,
+              senderID,
+              recipientID,
+              content,
+              timestamp: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.timestamp ?? value;
+          }
+          if (errors.timestamp?.hasError) {
+            runValidationTasks("timestamp", value);
+          }
+          setTimestamp(value);
+        }}
+        onBlur={() => runValidationTasks("timestamp", timestamp)}
+        errorMessage={errors.timestamp?.errorMessage}
+        hasError={errors.timestamp?.hasError}
+        {...getOverrideProps(overrides, "timestamp")}
       ></TextField>
       <Flex
         justifyContent="space-between"

@@ -5,8 +5,11 @@ export const getMessages = /* GraphQL */ `
   query GetMessages($id: ID!) {
     getMessages(id: $id) {
       id
-      name
-      description
+      messageID
+      senderID
+      recipientID
+      content
+      timestamp
       createdAt
       updatedAt
       __typename
@@ -22,8 +25,11 @@ export const listMessages = /* GraphQL */ `
     listMessages(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        name
-        description
+        messageID
+        senderID
+        recipientID
+        content
+        timestamp
         createdAt
         updatedAt
         __typename

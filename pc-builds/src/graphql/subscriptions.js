@@ -5,8 +5,11 @@ export const onCreateMessages = /* GraphQL */ `
   subscription OnCreateMessages($filter: ModelSubscriptionMessagesFilterInput) {
     onCreateMessages(filter: $filter) {
       id
-      name
-      description
+      messageID
+      senderID
+      recipientID
+      content
+      timestamp
       createdAt
       updatedAt
       __typename
@@ -17,8 +20,11 @@ export const onUpdateMessages = /* GraphQL */ `
   subscription OnUpdateMessages($filter: ModelSubscriptionMessagesFilterInput) {
     onUpdateMessages(filter: $filter) {
       id
-      name
-      description
+      messageID
+      senderID
+      recipientID
+      content
+      timestamp
       createdAt
       updatedAt
       __typename
@@ -29,8 +35,11 @@ export const onDeleteMessages = /* GraphQL */ `
   subscription OnDeleteMessages($filter: ModelSubscriptionMessagesFilterInput) {
     onDeleteMessages(filter: $filter) {
       id
-      name
-      description
+      messageID
+      senderID
+      recipientID
+      content
+      timestamp
       createdAt
       updatedAt
       __typename
