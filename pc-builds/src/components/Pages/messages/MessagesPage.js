@@ -1,17 +1,32 @@
-
-//need to implement recieving messages
-
-import React, { useState } from 'react';
-import { Container, Form, Button } from "react-bootstrap";
+import React, { useState, useEffect } from 'react';
+import { Container, Form, Button, ListGroup } from "react-bootstrap";
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { generateClient } from 'aws-amplify/api';
 import { createMessages } from '../../../graphql/mutations';
+import { listMessages } from '../../../graphql/queries';
 import { v4 as uuid } from 'uuid';
+import { Auth } from 'aws-amplify';
 
 function MessagesPage() {
     const [messageData, setMessageData] = useState({ recipientID: "", content: "" });
+    const [messages, setMessages] = useState([]);
     const client = generateClient();
+
+    useEffect(() => {
+        fetchMessages();
+    }, []);
+
+    const fetchMessages = async () => {
+        try {
+            const response = await client.graphql({ query: listMessages });
+            setMessages(response.data.listMessages.items);
+        } catch (error) {
+            console.error('Error fetching messages:', error);
+        }
+    };
+
+    
 
     const addNewMessage = async () => {
         const { recipientID, content } = messageData;
@@ -31,6 +46,9 @@ function MessagesPage() {
 
             // Clear the form fields after adding the message
             setMessageData({ recipientID: "", content: "" });
+
+            // Refetch messages to update the UI
+            fetchMessages();
 
         } catch (error) {
             console.error('Error creating message:', error);
@@ -62,6 +80,17 @@ function MessagesPage() {
                         </Form.Group>
                         <Button variant="primary" type="button" onClick={addNewMessage}>Send Message &gt;&gt;</Button>
                     </Form>
+                </Col>
+                <Col sm={6}>
+                    <h2 style={{ color: 'white', textShadow: '0 0 3px black' }}>Received Messages</h2>
+                    <ListGroup>
+                        {messages.map(message => (
+                            <ListGroup.Item key={message.id}>
+                                <b>From: {message.senderID}</b><br />
+                                {message.content}
+                            </ListGroup.Item>
+                        ))}
+                    </ListGroup>
                 </Col>
             </Row>
 
