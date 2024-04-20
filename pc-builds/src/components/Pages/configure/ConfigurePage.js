@@ -261,7 +261,7 @@ function ConfigurePage(){
                     </div>
                     </div>
                     {/* Case */}
-                    <div className="partDiv" onMouseEnter={() => handleMouseEnter('/img/PC-Case.png')} onMouseLeave={handleMouseLeave}>
+                    <div className="partDiv" onMouseEnter={() => handleMouseEnter('/img/PCSilh-removebg-preview.png')} onMouseLeave={handleMouseLeave}>
                         <Col><h6 style={{color: 'black', textShadow: '0 0 3px black'}}>Case</h6></Col>
                         <Button variant="dark" onClick={() => setShowCase(true)} >
                             Configure
@@ -289,7 +289,7 @@ function ConfigurePage(){
                     </div>
                 {/* Middle picture column */}
                 </ScrollView>
-                <div className="ConfMiddle-column">
+                <div min-width="40%" max-width="40%" className="ConfMiddle-column">
                     <img src={currentImage} alt="Selected Part" />
                 </div>
 
@@ -355,7 +355,13 @@ function ConfigurePage(){
             {/* cart items section */}
             <Container>
             <div>
-            <Col><Button variant="primary" onClick={handleAddToCart}>Add item(s) to cart</Button></Col>
+            <Row>
+            <Col className="addButton"><Button variant="primary" onClick={handleAddToCart}>Add item(s) to cart</Button>
+            </Col>
+            <Col className="priceCalc">
+            <h5 style={{paddingTop: '10px', color: 'white', textShadow: '0 0 3px black'}}>Total Price: ${totalPrice.toFixed(2)}</h5>
+            </Col>
+            </Row>
             </div>
             </Container>
                 {/* GPU Modal */}
@@ -506,7 +512,7 @@ function ConfigurePage(){
         <Container>
         <Row className="justify-content-center">
             <Col md={12} className="text-center">
-                <h4 style={{color: 'white', textShadow: '0 0 3px black'}}>Total Price: ${totalPrice.toFixed(2)}</h4>
+                <h4>Part information goes here</h4>
             </Col>
         </Row>
     </Container>
