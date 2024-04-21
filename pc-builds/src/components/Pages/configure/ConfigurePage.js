@@ -169,12 +169,15 @@ function ConfigurePage(){
     };
 
     //handle mouse hover
-    const handleMouseEnter = (imageUrl) => {
+    const handleMouseEnter = (imageUrl, partType) => {
         setCurrentImage(imageUrl);
+        setCurrentPartInfo(partInfo[partType] || { title: "", description: "No information available" });
     };
     
     const handleMouseLeave = () => {
-        setCurrentImage('/img/PCSilh-removebg-preview.png'); // Set back to default or another appropriate image when not hovering
+        setCurrentImage('/img/PCSilh-removebg-preview.png');
+        setCurrentPartInfo({ title: "", description: "No information available" });
+        
     };
     
     //SEARCH FIELD STUFF
@@ -249,6 +252,47 @@ function ConfigurePage(){
         setFilteredMemory(products.filter(product => product.partType === 'Memory' && product.name.toLowerCase().includes(newSearchTerm)
         ));
     };
+
+    //Part info handling
+
+    const partInfo = {
+        GPU: {
+            title: "Graphics Processing Unit (GPU)",
+            description: "Responsible for rendering images, video, and animations. It's essential for gaming, video editing, and other graphics-intensive tasks."
+        },
+        RAM: {
+            title: "Random Access Memory (RAM)",
+            description: "Vital for multitasking and speed, RAM is the short-term memory that your computer uses to run active apps and tasks."
+        },
+        Case: {
+            title: "Computer Case",
+            description: "The case houses all of the computer's hardware components. It provides protection and contributes to the system's airflow and cooling."
+        },
+        PSU: {
+            title: "Power Supply Unit (PSU)",
+            description: "Supplies power to the computer. It converts the AC power from the outlet into the lower voltages of DC power needed to power all the components of the computer."
+        },
+        CPU: {
+            title: "Central Processing Unit (CPU)",
+            description: "Often considered the 'brain' of the computer, it handles all instructions it receives from hardware and software running on the computer."
+        },
+        MOBO: {
+            title: "Motherboard",
+            description: "The main printed circuit board (PCB) in a computer. It is the central communication backbone connectivity point, through which all components and external peripherals connect."
+        },
+        Cooling: {
+            title: "Cooling Systems",
+            description: "Essential to keep the computer's hardware at a manageable temperature. It ensures that components aren't overheated and operate within safe temperature limits."
+        },
+        Memory: {
+            title: "Memory Drives",
+            description: "Devices that store digital data in your computer. Includes SSDs (solid-state drives) and HDDs (hard disk drives) used for storing permanent data and system files."
+        }
+    };
+    
+    
+    const [currentPartInfo, setCurrentPartInfo] = useState({ title: "", description: "" });
+  
     
 
     useEffect(() => {
@@ -297,7 +341,7 @@ function ConfigurePage(){
                 <ScrollView width="30%" height="500px" borderRadius="10px">
                 <div className="ConfLeft-column">
                     {/* GPU */}
-                    <div className="partDiv" onMouseEnter={() => handleMouseEnter('/img/GPU.png')} onMouseLeave={handleMouseLeave}> 
+                    <div className="partDiv" onMouseEnter={() => handleMouseEnter('/img/GPU.png', 'GPU')} onMouseLeave={handleMouseLeave}> 
                     <Col><h6 style={{color: 'black', textShadow: '0 0 3px black'}}>GPU (up to two)</h6></Col>
                     <Button variant="dark" onClick={() => setShowGPU(true)} >
                         Configure
@@ -310,7 +354,7 @@ function ConfigurePage(){
                     </div>
                         </div>
                     {/* RAM */}
-                    <div className="partDiv" onMouseEnter={() => handleMouseEnter('/img/RAM.png')} onMouseLeave={handleMouseLeave}>
+                    <div className="partDiv" onMouseEnter={() => handleMouseEnter('/img/RAM.png', 'RAM')} onMouseLeave={handleMouseLeave}>
                         <Col><h6 style={{color: 'black', textShadow: '0 0 3px black'}}>RAM (up to four)</h6></Col>
                         <Button variant="dark" onClick={() => setShowRAM(true)} >
                             Configure
@@ -323,7 +367,7 @@ function ConfigurePage(){
                     </div>
                     </div>
                     {/* Case */}
-                    <div className="partDiv" onMouseEnter={() => handleMouseEnter('/img/PCSilh-removebg-preview.png')} onMouseLeave={handleMouseLeave}>
+                    <div className="partDiv" onMouseEnter={() => handleMouseEnter('/img/PC-Case.png', 'Case')} onMouseLeave={handleMouseLeave}>
                         <Col><h6 style={{color: 'black', textShadow: '0 0 3px black'}}>Case</h6></Col>
                         <Button variant="dark" onClick={() => setShowCase(true)} >
                             Configure
@@ -336,7 +380,7 @@ function ConfigurePage(){
                     </div>
                     </div>
                     {/* PSU */}
-                    <div className="partDiv" onMouseEnter={() => handleMouseEnter('/img/PSU.png')} onMouseLeave={handleMouseLeave}>
+                    <div className="partDiv" onMouseEnter={() => handleMouseEnter('/img/PSU.png', 'PSU')} onMouseLeave={handleMouseLeave}>
                         <Col><h6 style={{color: 'black', textShadow: '0 0 3px black'}}>PSU</h6></Col>
                         <Button variant="dark" onClick={() => setShowPSU(true)} >
                             Configure
@@ -358,7 +402,7 @@ function ConfigurePage(){
                 <ScrollView width="30%" height="500px" borderRadius="10px">
                 <div className="ConfRight-column">
                     {/* CPU */}
-                    <div className="partDiv" onMouseEnter={() => handleMouseEnter('/img/CPU.png')} onMouseLeave={handleMouseLeave}>
+                    <div className="partDiv" onMouseEnter={() => handleMouseEnter('/img/CPU.png', 'CPU')} onMouseLeave={handleMouseLeave}>
                         <Col><h6 style={{color: 'black', textShadow: '0 0 3px black'}}>CPU</h6></Col>
                         <Button variant="dark" onClick={() => setShowCPU(true)} >
                             Configure
@@ -371,7 +415,7 @@ function ConfigurePage(){
                         </div>
                     </div>
                     {/* Motherboard */}
-                    <div className="partDiv" onMouseEnter={() => handleMouseEnter('/img/MotherBoard.png')} onMouseLeave={handleMouseLeave}>
+                    <div className="partDiv" onMouseEnter={() => handleMouseEnter('/img/MotherBoard.png', 'MOBO')} onMouseLeave={handleMouseLeave}>
                         <Col><h6 style={{color: 'black', textShadow: '0 0 3px black'}}>Motherboard</h6></Col>
                         <Button variant="dark" onClick={() => setShowMOBO(true)} >
                             Configure
@@ -384,7 +428,7 @@ function ConfigurePage(){
                         </div>
                     </div>
                     {/* Cooling */}
-                    <div className="partDiv" onMouseEnter={() => handleMouseEnter('/img/CoolingSystem-fotor-bg-remover-2024041802841.png')} onMouseLeave={handleMouseLeave}>
+                    <div className="partDiv" onMouseEnter={() => handleMouseEnter('/img/CoolingSystem-fotor-bg-remover-2024041802841.png', 'Cooling')} onMouseLeave={handleMouseLeave}>
                     <Col><h6 style={{color: 'black', textShadow: '0 0 3px black'}}>Cooling System</h6></Col>
                     <Button variant="dark" onClick={() => setShowCooling(true)} >
                         Configure
@@ -397,7 +441,7 @@ function ConfigurePage(){
                         </div>
                     </div>
                     {/* Memory Drives */}
-                    <div className="partDiv" onMouseEnter={() => handleMouseEnter('/img/MemoryDrive.png')} onMouseLeave={handleMouseLeave}> 
+                    <div className="partDiv" onMouseEnter={() => handleMouseEnter('/img/MemoryDrive.png', 'Memory')} onMouseLeave={handleMouseLeave}> 
                         <Col><h6 style={{color: 'black', textShadow: '0 0 3px black'}}>Memory Drives (up to 6)</h6></Col>
                         <Button variant="dark" onClick={() => setShowMemory(true)} >
                             Configure
@@ -414,12 +458,13 @@ function ConfigurePage(){
             </div>
             </Container>
             </Row>
-            {/* cart items section */}
+            {/* cart items button */}
             <Container>
             <div>
             <Row>
             <Col className="addButton"><Button variant="primary" onClick={handleAddToCart}>Add item(s) to cart</Button>
             </Col>
+            {/* Total Price Display */}
             <Col className="priceCalc">
             <h5 style={{paddingTop: '10px', color: 'white', textShadow: '0 0 3px black'}}>Total Price: ${totalPrice.toFixed(2)}</h5>
             </Col>
@@ -618,14 +663,15 @@ function ConfigurePage(){
                     ))}
                 </Modal.Body>
             </Modal>
-        {/* Total price */}
-        <Container>
-        <Row className="justify-content-center">
-            <Col md={12} className="text-center">
-                <h4>Part information goes here</h4>
-            </Col>
-        </Row>
-    </Container>
+        {/* Part info */}
+            <Container>
+                <Row className="justify-content-center">
+                    <Col md={12} className="text-center" style={{paddingTop: '10px', color: 'white', textShadow: '0 0 3px black'}}>
+                        <h4>{currentPartInfo.title}</h4>
+                        <p>{currentPartInfo.description}</p>
+                    </Col>
+                </Row>
+            </Container>
         </Container>
         
     );
