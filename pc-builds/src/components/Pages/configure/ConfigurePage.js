@@ -2,7 +2,7 @@ import { React, useState, useEffect } from 'react';
 
 import { Container, Button, Modal, Row, Col, Card } from "react-bootstrap";
 import '../../../App.css';
-//import { SearchField } from '@aws-amplify/ui-react';
+import { SearchField } from '@aws-amplify/ui-react';
 import { ScrollView } from '@aws-amplify/ui-react';
 
 import { useCart } from '../../../components/Pages/cartItems/CartContext.js';
@@ -19,7 +19,9 @@ function ConfigurePage(){
 
     const [products, setProducts] = useState([]);
     // const [productData, setProductData] = useState({partType:"", name:"", price:""});
-    
+
+
+    //const variables for showing product parts and selected parts
     const [showGPU, setShowGPU] = useState(false);
     const [selectedGPUs, setSelectedGPUs] = useState([]);
 
@@ -85,6 +87,7 @@ function ConfigurePage(){
         setTotalPrice(prev => prev - selectedMemory.reduce((acc, curr) => acc + parseFloat(curr.price), 0));
     };
     
+    //cart item linking
     const { addToCart } = useCart();
     const navigate = useNavigate();
 
@@ -103,35 +106,12 @@ function ConfigurePage(){
         alert('Added to cart!'); // Simple feedback
     };
 
-
+    //total price var
     const [totalPrice, setTotalPrice] = useState(0);
 
     const client = generateClient();
 
-    // // Filter GPU products only
-    // const gpuProducts = products.filter(product => product.partType === 'GPU');
-
-    // // Filter RAM products only
-    // const ramProducts = products.filter(product => product.partType === 'RAM');
-
-    // // Filter Case products only
-    // const caseProducts = products.filter(product => product.partType === 'Case');
-
-    // // Filter PSU products only
-    // const psuProducts = products.filter(product => product.partType === 'PSU');
-
-    // // Filter CPU products only
-    // const cpuProducts = products.filter(product => product.partType === 'CPU');
-
-    // // Filter Motherboard products only
-    // const moboProducts = products.filter(product => product.partType === 'Motherboard');
-
-    // // Filter Cooling products only
-    // const coolingProducts = products.filter(product => product.partType === 'Cooling');
-
-    // // Filter Memory Drive products only
-    // const memoryProducts = products.filter(product => product.partType === 'Memory');
-
+    //handles the addition of products by user and sets constraints
     const handleAddGPU = (product) => {
         if (!selectedGPUs.find(gpu => gpu.id === product.id) && selectedGPUs.length < 2) {
             setSelectedGPUs(prev => [...prev, product]);
@@ -197,15 +177,97 @@ function ConfigurePage(){
         setCurrentImage('/img/PCSilh-removebg-preview.png'); // Set back to default or another appropriate image when not hovering
     };
     
+    //SEARCH FIELD STUFF
+    // State for search terms
+    const [searchTermGPU, setSearchTermGPU] = useState('');
+    const [searchTermRAM, setSearchTermRAM] = useState('');
+    const [searchTermCase, setSearchTermCase] = useState('');
+    const [searchTermPSU, setSearchTermPSU] = useState('');
+    const [searchTermCPU, setSearchTermCPU] = useState('');
+    const [searchTermMOBO, setSearchTermMOBO] = useState('');
+    const [searchTermCooling, setSearchTermCooling] = useState('');
+    const [searchTermMemory, setSearchTermMemory] = useState('');
+
+    // State for filtered products
+    const [filteredGPUs, setFilteredGPUs] = useState([]);
+    const [filteredRAMs, setFilteredRAMs] = useState([]);
+    const [filteredCases, setFilteredCases] = useState([]);
+    const [filteredPSUs, setFilteredPSUs] = useState([]);
+    const [filteredCPUs, setFilteredCPUs] = useState([]);
+    const [filteredMOBOs, setFilteredMOBOs] = useState([]);
+    const [filteredCooling, setFilteredCooling] = useState([]);
+    const [filteredMemory, setFilteredMemory] = useState([]);
+
+        
+
+    // Handlers for search input changes
+    const handleSearchChangeGPU = (event) => {
+        const searchTerm = event.target.value.toLowerCase();
+        setSearchTermGPU(searchTerm);
+        setFilteredGPUs(products.filter(product => product.partType === 'GPU' && product.name.toLowerCase().includes(searchTerm)));
+    };
+
+    const handleSearchChangeRAM = (event) => {
+        const searchTerm = event.target.value.toLowerCase();
+        setSearchTermRAM(searchTerm);
+        setFilteredRAMs(products.filter(product => product.partType === 'RAM' && product.name.toLowerCase().includes(searchTerm)));
+    };
+
+    const handleSearchChangeCase = (event) => {
+        const searchTerm = event.target.value.toLowerCase();
+        setSearchTermCase(searchTerm);
+        setFilteredCases(products.filter(product => product.partType === 'Case' && product.name.toLowerCase().includes(searchTerm)));
+    };
+
+    const handleSearchChangePSU = (event) => {
+        const searchTerm = event.target.value.toLowerCase();
+        setSearchTermPSU(searchTerm);
+        setFilteredPSUs(products.filter(product => product.partType === 'PSU' && product.name.toLowerCase().includes(searchTerm)));
+    };
+
+    const handleSearchChangeCPU = (event) => {
+        const searchTerm = event.target.value.toLowerCase();
+        setSearchTermCPU(searchTerm);
+        setFilteredCPUs(products.filter(product => product.partType === 'CPU' && product.name.toLowerCase().includes(searchTerm)));
+    };
+
+    const handleSearchChangeMOBO = (event) => {
+        const searchTerm = event.target.value.toLowerCase();
+        setSearchTermMOBO(searchTerm);
+        setFilteredMOBOs(products.filter(product => product.partType === 'Motherboard' && product.name.toLowerCase().includes(searchTerm)));
+    };
+
+    const handleSearchChangeCooling = (event) => {
+        const searchTerm = event.target.value.toLowerCase();
+        setSearchTermCooling(searchTerm);
+        setFilteredCooling(products.filter(product => product.partType === 'Cooling' && product.name.toLowerCase().includes(searchTerm)));
+    };
     
+    const handleSearchChangeMemory = (event) => {
+        const newSearchTerm = event.target.value.toLowerCase();
+        setSearchTermMemory(newSearchTerm);
+        setFilteredMemory(products.filter(product => product.partType === 'Memory' && product.name.toLowerCase().includes(newSearchTerm)
+        ));
+    };
     
+
     useEffect(() => {
         const fetchProducts = async () => {
             try {
                 const productData = await client.graphql({
                     query: listProducts
                 });
-                setProducts(productData.data.listProducts.items);
+                const items = productData.data.listProducts.items;
+                setProducts(items);
+                setFilteredGPUs(items.filter(product => product.partType === 'GPU'));
+                setFilteredRAMs(items.filter(product => product.partType === 'RAM'));
+                setFilteredCases(items.filter(product => product.partType === 'Case'));
+                setFilteredPSUs(items.filter(product => product.partType === 'PSU'));
+                setFilteredCPUs(items.filter(product => product.partType === 'CPU'));
+                setFilteredMOBOs(items.filter(product => product.partType === 'Motherboard'));
+                setFilteredCooling(items.filter(product => product.partType === 'Cooling'));
+                setFilteredMemory(items.filter(product => product.partType === 'Memory'));
+
             } catch (err) {
                 console.log('error fetching products', err);
             }
@@ -370,7 +432,13 @@ function ConfigurePage(){
                         <Modal.Title>Available GPUs</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        {products.filter(product => product.partType === 'GPU').map(product => (
+                        <SearchField
+                            placeholder="Search GPUs..."
+                            onChange={handleSearchChangeGPU}
+                            value={searchTermGPU}
+                            clearButtonLabel="Clear search"
+                        />
+                        {filteredGPUs.map(product => (
                             <Card key={product.id} style={{ margin: '10px' }}>
                                 <Card.Img variant="top" src={product.productPicturePath} />
                                 <Card.Body>
@@ -384,130 +452,172 @@ function ConfigurePage(){
                 </Modal>
             {/* RAM Modal */}
             <Modal show={showRAM} onHide={() => setShowRAM(false)} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
-                    <Modal.Header closeButton>
-                        <Modal.Title>Available RAM</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        {products.filter(product => product.partType === 'RAM').map(product => (
-                            <Card key={product.id} style={{ margin: '10px' }}>
-                                <Card.Img variant="top" src={product.productPicturePath} />
-                                <Card.Body>
-                                    <Card.Title>{product.name}</Card.Title>
-                                    <Card.Text>Price: ${product.price}</Card.Text>
-                                    <Button variant="primary" onClick={() => handleAddRAM(product)}>Add to Build</Button>
-                                </Card.Body>
-                            </Card>
-                        ))}
-                    </Modal.Body>
-                </Modal>
+                <Modal.Header closeButton>
+                    <Modal.Title>Available RAM</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <SearchField
+                        placeholder="Search RAM..."
+                        onChange={handleSearchChangeRAM}
+                        value={searchTermRAM}
+                        clearButtonLabel="Clear search"
+                    />
+                    {filteredRAMs.map(product => (
+                        <Card key={product.id} style={{ margin: '10px' }}>
+                            <Card.Img variant="top" src={product.productPicturePath} />
+                            <Card.Body>
+                                <Card.Title>{product.name}</Card.Title>
+                                <Card.Text>Price: ${product.price}</Card.Text>
+                                <Button variant="primary" onClick={() => handleAddRAM(product)}>Add to Build</Button>
+                            </Card.Body>
+                        </Card>
+                    ))}
+                </Modal.Body>
+            </Modal>
             {/* Case Modal */}
             <Modal show={showCase} onHide={() => setShowCase(false)} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
-                    <Modal.Header closeButton>
-                        <Modal.Title>Available Cases</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        {products.filter(product => product.partType === 'Case').map(product => (
-                            <Card key={product.id} style={{ margin: '10px' }}>
-                                <Card.Img variant="top" src={product.productPicturePath} />
-                                <Card.Body>
-                                    <Card.Title>{product.name}</Card.Title>
-                                    <Card.Text>Price: ${product.price}</Card.Text>
-                                    <Button variant="primary" onClick={() => handleAddCase(product)}>Add to Build</Button>
-                                </Card.Body>
-                            </Card>
-                        ))}
-                    </Modal.Body>
-                </Modal>
+                <Modal.Header closeButton>
+                    <Modal.Title>Available Cases</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <SearchField
+                        placeholder="Search Cases..."
+                        onChange={handleSearchChangeCase}
+                        value={searchTermCase}
+                        clearButtonLabel="Clear search"
+                    />
+                    {filteredCases.map(product => (
+                        <Card key={product.id} style={{ margin: '10px' }}>
+                            <Card.Img variant="top" src={product.productPicturePath} />
+                            <Card.Body>
+                                <Card.Title>{product.name}</Card.Title>
+                                <Card.Text>Price: ${product.price}</Card.Text>
+                                <Button variant="primary" onClick={() => handleAddCase(product)}>Add to Build</Button>
+                            </Card.Body>
+                        </Card>
+                    ))}
+                </Modal.Body>
+            </Modal>
             {/* PSU Modal */}
             <Modal show={showPSU} onHide={() => setShowPSU(false)} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
-            <Modal.Header closeButton>
-                <Modal.Title>Available PSUs</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                {products.filter(product => product.partType === 'PSU').map(product => (
-                    <Card key={product.id} style={{ margin: '10px' }}>
-                        <Card.Img variant="top" src={product.productPicturePath} />
-                        <Card.Body>
-                            <Card.Title>{product.name}</Card.Title>
-                            <Card.Text>Price: ${product.price}</Card.Text>
-                            <Button variant="primary" onClick={() => handleAddPSU(product)}>Add to Build</Button>
-                        </Card.Body>
-                    </Card>
-                ))}
-            </Modal.Body>
+                <Modal.Header closeButton>
+                    <Modal.Title>Available PSUs</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <SearchField
+                        placeholder="Search PSUs..."
+                        onChange={handleSearchChangePSU}
+                        value={searchTermPSU}
+                        clearButtonLabel="Clear search"
+                    />
+                    {filteredPSUs.map(product => (
+                        <Card key={product.id} style={{ margin: '10px' }}>
+                            <Card.Img variant="top" src={product.productPicturePath} />
+                            <Card.Body>
+                                <Card.Title>{product.name}</Card.Title>
+                                <Card.Text>Price: ${product.price}</Card.Text>
+                                <Button variant="primary" onClick={() => handleAddPSU(product)}>Add to Build</Button>
+                            </Card.Body>
+                        </Card>
+                    ))}
+                </Modal.Body>
             </Modal>
             {/* CPU Modal */}
             <Modal show={showCPU} onHide={() => setShowCPU(false)} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
-            <Modal.Header closeButton>
-                <Modal.Title>Available CPUs</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                {products.filter(product => product.partType === 'CPU').map(product => (
-                    <Card key={product.id} style={{ margin: '10px' }}>
-                        <Card.Img variant="top" src={product.productPicturePath} />
-                        <Card.Body>
-                            <Card.Title>{product.name}</Card.Title>
-                            <Card.Text>Price: ${product.price}</Card.Text>
-                            <Button variant="primary" onClick={() => handleAddCPU(product)}>Add to Build</Button>
-                        </Card.Body>
-                    </Card>
-                ))}
-            </Modal.Body>
+                <Modal.Header closeButton>
+                    <Modal.Title>Available CPUs</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <SearchField
+                        placeholder="Search CPUs..."
+                        onChange={handleSearchChangeCPU}
+                        value={searchTermCPU}
+                        clearButtonLabel="Clear search"
+                    />
+                    {filteredCPUs.map(product => (
+                        <Card key={product.id} style={{ margin: '10px' }}>
+                            <Card.Img variant="top" src={product.productPicturePath} />
+                            <Card.Body>
+                                <Card.Title>{product.name}</Card.Title>
+                                <Card.Text>Price: ${product.price}</Card.Text>
+                                <Button variant="primary" onClick={() => handleAddCPU(product)}>Add to Build</Button>
+                            </Card.Body>
+                        </Card>
+                    ))}
+                </Modal.Body>
             </Modal>
-            {/* Motherboard Modal */}
+            {/* MotherBoard Modal */}
             <Modal show={showMOBO} onHide={() => setShowMOBO(false)} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
-            <Modal.Header closeButton>
-                <Modal.Title>Available Motherboards</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                {products.filter(product => product.partType === 'Motherboard').map(product => (
-                    <Card key={product.id} style={{ margin: '10px' }}>
-                        <Card.Img variant="top" src={product.productPicturePath} />
-                        <Card.Body>
-                            <Card.Title>{product.name}</Card.Title>
-                            <Card.Text>Price: ${product.price}</Card.Text>
-                            <Button variant="primary" onClick={() => handleAddMOBO(product)}>Add to Build</Button>
-                        </Card.Body>
-                    </Card>
-                ))}
-            </Modal.Body>
-        </Modal>
+                <Modal.Header closeButton>
+                    <Modal.Title>Available Motherboards</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <SearchField
+                        placeholder="Search Motherboards..."
+                        onChange={handleSearchChangeMOBO}
+                        value={searchTermMOBO}
+                        clearButtonLabel="Clear search"
+                    />
+                    {filteredMOBOs.map(product => (
+                        <Card key={product.id} style={{ margin: '10px' }}>
+                            <Card.Img variant="top" src={product.productPicturePath} />
+                            <Card.Body>
+                                <Card.Title>{product.name}</Card.Title>
+                                <Card.Text>Price: ${product.price}</Card.Text>
+                                <Button variant="primary" onClick={() => handleAddMOBO(product)}>Add to Build</Button>
+                            </Card.Body>
+                        </Card>
+                    ))}
+                </Modal.Body>
+            </Modal>
             {/* Cooling Modal */}
             <Modal show={showCooling} onHide={() => setShowCooling(false)} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
-            <Modal.Header closeButton>
-                <Modal.Title>Available Cooling Systems</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                {products.filter(product => product.partType === 'Cooling').map(product => (
-                    <Card key={product.id} style={{ margin: '10px' }}>
-                        <Card.Img variant="top" src={product.productPicturePath} />
-                        <Card.Body>
-                            <Card.Title>{product.name}</Card.Title>
-                            <Card.Text>Price: ${product.price}</Card.Text>
-                            <Button variant="primary" onClick={() => handleAddCooling(product)}>Add to Build</Button>
-                        </Card.Body>
-                    </Card>
-                ))}
-            </Modal.Body>
+                <Modal.Header closeButton>
+                    <Modal.Title>Available Cooling Systems</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <SearchField
+                        placeholder="Search Cooling Systems..."
+                        onChange={handleSearchChangeCooling}
+                        value={searchTermCooling}
+                        clearButtonLabel="Clear search"
+                    />
+                    {filteredCooling.map(product => (
+                        <Card key={product.id} style={{ margin: '10px' }}>
+                            <Card.Img variant="top" src={product.productPicturePath} />
+                            <Card.Body>
+                                <Card.Title>{product.name}</Card.Title>
+                                <Card.Text>Price: ${product.price}</Card.Text>
+                                <Button variant="primary" onClick={() => handleAddCooling(product)}>Add to Build</Button>
+                            </Card.Body>
+                        </Card>
+                    ))}
+                </Modal.Body>
             </Modal>
             {/* Memory Drives Modal */}
             <Modal show={showMemory} onHide={() => setShowMemory(false)} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
-            <Modal.Header closeButton>
-                <Modal.Title>Available Memory Drives</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                {products.filter(product => product.partType === 'Memory').map(product => (
-                    <Card key={product.id} style={{ margin: '10px' }}>
-                        <Card.Img variant="top" src={product.productPicturePath} />
-                        <Card.Body>
-                            <Card.Title>{product.name}</Card.Title>
-                            <Card.Text>Price: ${product.price}</Card.Text>
-                            <Button variant="primary" onClick={() => handleAddMemory(product)}>Add to Build</Button>
-                        </Card.Body>
-                    </Card>
-                ))}
-            </Modal.Body>
-        </Modal>
+                <Modal.Header closeButton>
+                    <Modal.Title>Available Memory Drives</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <SearchField
+                        placeholder="Search Memory Drives..."
+                        onChange={handleSearchChangeMemory}
+                        value={searchTermMemory}
+                        clearButtonLabel="Clear search"
+                    />
+                    {filteredMemory.map(product => (
+                        <Card key={product.id} style={{ margin: '10px' }}>
+                            <Card.Img variant="top" src={product.productPicturePath} />
+                            <Card.Body>
+                                <Card.Title>{product.name}</Card.Title>
+                                <Card.Text>Price: ${product.price}</Card.Text>
+                                <Button variant="primary" onClick={() => handleAddMemory(product)}>Add to Build</Button>
+                            </Card.Body>
+                        </Card>
+                    ))}
+                </Modal.Body>
+            </Modal>
         {/* Total price */}
         <Container>
         <Row className="justify-content-center">
