@@ -158,7 +158,7 @@ function ForumsPage(){
             
         
         <Col className="forumsArea">
-        <ScrollView marginLeft="5%" height="550px" width="90%"> 
+        <ScrollView marginLeft="5%" height="100vh" width="90%"> 
             {forums.map((forum, index) => (
                 
                     <Col key={forum.id} className="px-2 my-2">

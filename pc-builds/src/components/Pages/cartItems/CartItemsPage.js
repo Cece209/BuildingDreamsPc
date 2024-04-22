@@ -1,11 +1,11 @@
 import { React, useState, useEffect } from 'react';
-import { Container, Button, Row, Col, Card, Form, Alert, Checkbox } from "react-bootstrap";
+import { Container, Button, Row, Col, Card, Form, Alert} from "react-bootstrap";
 import { useCart } from '../../../components/Pages/cartItems/CartContext.js';
 import { generateClient } from 'aws-amplify/api';
 import { listProducts } from '../../../graphql/queries';
 
 function CartItemsPage() {
-    const { cartItems, saveBuild, clearCart } = useCart();
+    const { cartItems, clearCart } = useCart();
 
     const [setProducts] = useState([]);
     const client = generateClient();
@@ -18,11 +18,7 @@ function CartItemsPage() {
         setTimeout(() => setShowAlert(false), 3000); // Alert disappears after 3 seconds
     };
 
-    const handleSaveBuild = () => {
-        saveBuild();
-        clearCart();  // Optionally clear the cart after saving
-        alert('Build saved!');
-    };
+
 
     // Calculate total price
     const totalPrice = cartItems.reduce((acc, item) => acc + parseFloat(item.price), 0);
@@ -41,7 +37,7 @@ function CartItemsPage() {
         };
 
         fetchProducts();
-    }, []);
+    }, [client]);
 
     return (
         <Container>
@@ -158,7 +154,7 @@ function CartItemsPage() {
                 <h4 style={{ color: 'white' }}>Total Price: ${totalPrice.toFixed(2)}</h4>
                 <Button variant="primary" onClick={handleCheckout}>Checkout</Button>
                 <br></br>
-                <Button onClick={handleSaveBuild}>Save Build</Button>
+                
                 
             </Form>
             <style>

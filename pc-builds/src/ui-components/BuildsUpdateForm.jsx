@@ -28,12 +28,14 @@ export default function BuildsUpdateForm(props) {
     name: "",
     date: "",
     itemsPurchased: "",
+    ownerID: "",
   };
   const [name, setName] = React.useState(initialValues.name);
   const [date, setDate] = React.useState(initialValues.date);
   const [itemsPurchased, setItemsPurchased] = React.useState(
     initialValues.itemsPurchased
   );
+  const [ownerID, setOwnerID] = React.useState(initialValues.ownerID);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     const cleanValues = buildsRecord
@@ -42,6 +44,7 @@ export default function BuildsUpdateForm(props) {
     setName(cleanValues.name);
     setDate(cleanValues.date);
     setItemsPurchased(cleanValues.itemsPurchased);
+    setOwnerID(cleanValues.ownerID);
     setErrors({});
   };
   const [buildsRecord, setBuildsRecord] = React.useState(buildsModelProp);
@@ -64,6 +67,7 @@ export default function BuildsUpdateForm(props) {
     name: [],
     date: [],
     itemsPurchased: [],
+    ownerID: [],
   };
   const runValidationTasks = async (
     fieldName,
@@ -94,6 +98,7 @@ export default function BuildsUpdateForm(props) {
           name: name ?? null,
           date: date ?? null,
           itemsPurchased: itemsPurchased ?? null,
+          ownerID: ownerID ?? null,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -157,6 +162,7 @@ export default function BuildsUpdateForm(props) {
               name: value,
               date,
               itemsPurchased,
+              ownerID,
             };
             const result = onChange(modelFields);
             value = result?.name ?? value;
@@ -183,6 +189,7 @@ export default function BuildsUpdateForm(props) {
               name,
               date: value,
               itemsPurchased,
+              ownerID,
             };
             const result = onChange(modelFields);
             value = result?.date ?? value;
@@ -209,6 +216,7 @@ export default function BuildsUpdateForm(props) {
               name,
               date,
               itemsPurchased: value,
+              ownerID,
             };
             const result = onChange(modelFields);
             value = result?.itemsPurchased ?? value;
@@ -222,6 +230,33 @@ export default function BuildsUpdateForm(props) {
         errorMessage={errors.itemsPurchased?.errorMessage}
         hasError={errors.itemsPurchased?.hasError}
         {...getOverrideProps(overrides, "itemsPurchased")}
+      ></TextField>
+      <TextField
+        label="Owner id"
+        isRequired={false}
+        isReadOnly={false}
+        value={ownerID}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              name,
+              date,
+              itemsPurchased,
+              ownerID: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.ownerID ?? value;
+          }
+          if (errors.ownerID?.hasError) {
+            runValidationTasks("ownerID", value);
+          }
+          setOwnerID(value);
+        }}
+        onBlur={() => runValidationTasks("ownerID", ownerID)}
+        errorMessage={errors.ownerID?.errorMessage}
+        hasError={errors.ownerID?.hasError}
+        {...getOverrideProps(overrides, "ownerID")}
       ></TextField>
       <Flex
         justifyContent="space-between"

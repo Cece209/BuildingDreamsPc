@@ -8,6 +8,7 @@ export const getBuilds = /* GraphQL */ `
       name
       date
       itemsPurchased
+      ownerID
       createdAt
       updatedAt
       __typename
@@ -26,6 +27,7 @@ export const listBuilds = /* GraphQL */ `
         name
         date
         itemsPurchased
+        ownerID
         createdAt
         updatedAt
         __typename

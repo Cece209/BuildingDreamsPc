@@ -4,46 +4,56 @@ import { generateClient } from 'aws-amplify/api';
 import { listBuilds, getProduct } from '../../../graphql/queries';
 import { deleteBuilds } from '../../../graphql/mutations';
 
+import { getCurrentUser } from 'aws-amplify/auth';
+
 function SavedBuildsPage(){
+    
     const [builds, setBuilds] = useState([]);
-    const [showModal, setShowModal] = useState(false);
-    const [currentBuild, setCurrentBuild] = useState(null);
+    const [selectedBuild, setSelectedBuild] = useState(null);
     const [productDetails, setProductDetails] = useState([]);
+    const [showDetailsModal, setShowDetailsModal] = useState(false);
 
     const client = generateClient();
 
     useEffect(() => {
         const fetchBuilds = async () => {
             try {
-                const { data } = await client.graphql({ query: listBuilds });
+                const user = await getCurrentUser();
+                const userId = user.username; // Or user.attributes.sub for the Cognito user pool sub ID
+
+                const { data } = await client.graphql({ 
+                    query: listBuilds,
+                    variables: { filter: { ownerID: { eq: userId } } } // Assuming you have an ownerID in your schema
+                });
                 setBuilds(data.listBuilds.items);
             } catch (error) {
                 console.error('Error fetching builds:', error);
             }
         };
-    
+
         fetchBuilds();
     }, [client]);
 
     useEffect(() => {
-        const fetchProductDetails = async (productIds) => {
-            try {
-                const details = await Promise.all(productIds.map(id =>
-                    client.graphql({
-                        query: getProduct,
-                        variables: { id }
-                    })
-                ));
-                setProductDetails(details.map(detail => detail.data.getProduct));
-            } catch (error) {
-                console.error('Error fetching product details:', error);
-            }
-        };
-
-        if (currentBuild) {
-            fetchProductDetails(currentBuild.itemsPurchased.split(','));
+        if (selectedBuild) {
+            const productIds = selectedBuild.itemsPurchased.split(',');
+            fetchProductDetails(productIds);
         }
-    }, [currentBuild, client]);
+    }, [selectedBuild, client]);
+
+    const fetchProductDetails = async (productIds) => {
+        try {
+            const details = await Promise.all(productIds.map(id =>
+                client.graphql({
+                    query: getProduct,
+                    variables: { id }
+                })
+            ));
+            setProductDetails(details.map(detail => detail.data.getProduct));
+        } catch (error) {
+            console.error('Error fetching product details:', error);
+        }
+    };
 
     const handleDeleteBuild = async (buildId) => {
         if (!window.confirm("Are you sure you want to delete this build?")) return;
@@ -53,42 +63,39 @@ function SavedBuildsPage(){
                 query: deleteBuilds,
                 variables: { input: { id: buildId } }
             });
-            console.log('Build deleted:', data.deleteBuilds);
-            alert('Build deleted successfully!');
-            // Refresh the list of builds or filter out the deleted build from state
             setBuilds(builds.filter(build => build.id !== buildId));
+            alert('Build deleted successfully!');
         } catch (error) {
             console.error('Error deleting build:', error);
             alert('Failed to delete build.');
         }
     };
+
+    const handleShowDetails = (build) => {
+        setSelectedBuild(build);
+        setShowDetailsModal(true);
+    };
+
+    const handleCloseModal = () => {
+        setShowDetailsModal(false);
+        setSelectedBuild(null);
+    };
+
+    const renderProductCards = (products) => {
+        return products.map(product => (
+            <Card key={product.id} className="mb-2">
+                <Card.Img variant="top" src={product.productPicturePath} />
+                <Card.Body>
+                    <Card.Title>{product.name}</Card.Title>
+                    <Card.Text>Price: ${product.price.toFixed(2)}</Card.Text>
+                </Card.Body>
+            </Card>
+        ));
+    };
     
 
-    function BuildDetailsModal({ show, onHide, build }) {
-        return (
-            <Modal show={show} onHide={onHide} size="lg">
-                <Modal.Header closeButton>
-                    <Modal.Title>{build.name} Details</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <Container>
-                        {productDetails.map(product => (
-                            <Card key={product.id} style={{ margin: '10px' }}>
-                                <Card.Img variant="top" src={product.productPicturePath} />
-                                <Card.Body>
-                                    <Card.Title>{product.name}</Card.Title>
-                                    <Card.Text>Price: ${product.price}</Card.Text>
-                                    <Card.Text>{product.Description}</Card.Text>
-                                </Card.Body>
-                            </Card>
-                        ))}
-                    </Container>
-                </Modal.Body>
-            </Modal>
-        );
-    }
 
-    return(
+    return (
         <Container>
             <Row className="px-4 my-5">
                 <Col><h1 style={{ color: 'white', textShadow: '0 0 3px black' }}>Saved Builds</h1></Col>
@@ -98,29 +105,33 @@ function SavedBuildsPage(){
                     <ListGroup.Item key={build.id}>
                         <h5>{build.name}</h5>
                         <p>Date: {new Date(build.date).toLocaleDateString()}</p>
-                        <Button variant="primary" onClick={() => {
-                            setCurrentBuild(build);
-                            setShowModal(true);
-                        }}>View Details</Button>
+                        <Button variant="primary" onClick={() => handleShowDetails(build)}>View Details</Button>
                         <Button variant="danger" onClick={() => handleDeleteBuild(build.id)}>Delete Build</Button>
                     </ListGroup.Item>
                 ))}
             </ListGroup>
-            {currentBuild && (
-                <BuildDetailsModal
-                    show={showModal}
-                    onHide={() => setShowModal(false)}
-                    build={currentBuild}
-                />
+            {showDetailsModal && selectedBuild && (
+                <Modal show={showDetailsModal} onHide={handleCloseModal} size="lg">
+                    <Modal.Header closeButton>
+                        <Modal.Title>{selectedBuild.name} Details</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <div className="d-flex flex-wrap">
+                            {renderProductCards(productDetails)}
+                        </div>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={handleCloseModal}>Close</Button>
+                    </Modal.Footer>
+                </Modal>
             )}
-            <style jsx>{`
+             <style jsx>{`
                 body {
                     background-color: #333333;
                     min-height: 100vh;
                 }
             `}</style>
         </Container>
-        
     );
 }
 

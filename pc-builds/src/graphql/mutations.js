@@ -11,6 +11,7 @@ export const createBuilds = /* GraphQL */ `
       name
       date
       itemsPurchased
+      ownerID
       createdAt
       updatedAt
       __typename
@@ -27,6 +28,7 @@ export const updateBuilds = /* GraphQL */ `
       name
       date
       itemsPurchased
+      ownerID
       createdAt
       updatedAt
       __typename
@@ -43,6 +45,7 @@ export const deleteBuilds = /* GraphQL */ `
       name
       date
       itemsPurchased
+      ownerID
       createdAt
       updatedAt
       __typename

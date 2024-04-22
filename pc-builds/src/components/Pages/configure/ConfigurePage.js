@@ -12,6 +12,9 @@ import { generateClient } from 'aws-amplify/api';
 import { listProducts } from '../../../graphql/queries';
 import { createBuilds } from '../../../graphql/mutations';
 
+import { getCurrentUser } from 'aws-amplify/auth';
+
+
 
 function ConfigurePage(){
 
@@ -150,7 +153,7 @@ function ConfigurePage(){
     };
     
     const handleAddMOBO = (product) => {
-        if (!selectedMOBOs.find(mobo => mobo.id === product.id) && selectedMOBOs.length < 2) {
+        if (!selectedMOBOs.find(mobo => mobo.id === product.id) && selectedMOBOs.length < 1) {
             setSelectedMOBOs(prev => [...prev, product]);
             setTotalPrice(prev => prev + parseFloat(product.price));
         }
@@ -303,18 +306,22 @@ function ConfigurePage(){
 
     
     const handleSaveBuild = async () => {
-        const selectedProductIds = [selectedGPUs, selectedRAMs, selectedCases, selectedPSUs, selectedCPUs, selectedMOBOs, selectedCooling, selectedMemory]
-            .flat()  // Flatten the array of arrays into a single array
-            .map(product => product.id)  // Extract just the IDs
-            .join(',');  // Join them into a single string separated by commas
-    
-        const buildDetails = {
-            name: buildName,
-            date: new Date().toISOString(),
-            itemsPurchased: selectedProductIds
-        };
-    
         try {
+            const user = await getCurrentUser();  // Get the current authenticated user
+            const userId = user.username;  // Or use `user.attributes.sub` for the unique user ID
+    
+            const selectedProductIds = [selectedGPUs, selectedRAMs, selectedCases, selectedPSUs, selectedCPUs, selectedMOBOs, selectedCooling, selectedMemory]
+                .flat()
+                .map(product => product.id)
+                .join(',');
+    
+            const buildDetails = {
+                name: buildName,
+                date: new Date().toISOString(),
+                itemsPurchased: selectedProductIds,
+                ownerID: userId  // Save the owner ID with the build
+            };
+    
             const { data } = await client.graphql({
                 query: createBuilds,
                 variables: { input: buildDetails }
@@ -322,10 +329,11 @@ function ConfigurePage(){
             console.log('Saved Build:', data.createBuilds);
             alert('Build saved successfully!');
         } catch (error) {
-            console.error('Error saving build:', error);
-            alert('Failed to save build.');
+            console.error('Error fetching user data or saving build:', error);
+            alert('Failed to fetch user data or save build.');
         }
     };
+    
     
     
    

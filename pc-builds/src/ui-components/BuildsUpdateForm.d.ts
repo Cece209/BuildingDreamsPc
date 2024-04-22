@@ -25,11 +25,13 @@ export declare type BuildsUpdateFormInputValues = {
     name?: string;
     date?: string;
     itemsPurchased?: string;
+    ownerID?: string;
 };
 export declare type BuildsUpdateFormValidationValues = {
     name?: ValidationFunction<string>;
     date?: ValidationFunction<string>;
     itemsPurchased?: ValidationFunction<string>;
+    ownerID?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type BuildsUpdateFormOverridesProps = {
@@ -37,6 +39,7 @@ export declare type BuildsUpdateFormOverridesProps = {
     name?: PrimitiveOverrideProps<TextFieldProps>;
     date?: PrimitiveOverrideProps<TextFieldProps>;
     itemsPurchased?: PrimitiveOverrideProps<TextFieldProps>;
+    ownerID?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
 export declare type BuildsUpdateFormProps = React.PropsWithChildren<{
     overrides?: BuildsUpdateFormOverridesProps | undefined | null;
