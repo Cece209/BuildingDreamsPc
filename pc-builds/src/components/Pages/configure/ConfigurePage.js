@@ -303,42 +303,30 @@ function ConfigurePage(){
 
     
     const handleSaveBuild = async () => {
-        // Assuming that selectedProducts are stored in state arrays like selectedGPUs, selectedRAMs, etc.
-        const allSelectedProducts = [
-            ...selectedGPUs,
-            ...selectedRAMs,
-            ...selectedCases,
-            ...selectedPSUs,
-            ...selectedCPUs,
-            ...selectedMOBOs,
-            ...selectedCooling,
-            ...selectedMemory
-        ];
-    
-        // Create a simple list of product names for itemsPurchased or adjust based on needs
-        const itemsPurchased = allSelectedProducts.map(prod => `${prod.name} (${prod.partType})`).join(', ');
+        const selectedProductIds = [selectedGPUs, selectedRAMs, selectedCases, selectedPSUs, selectedCPUs, selectedMOBOs, selectedCooling, selectedMemory]
+            .flat()  // Flatten the array of arrays into a single array
+            .map(product => product.id)  // Extract just the IDs
+            .join(',');  // Join them into a single string separated by commas
     
         const buildDetails = {
-            input: {
-                name: buildName,
-                date: new Date().toISOString(),
-                itemsPurchased // This is a simplification. Adjust according to actual requirements
-            }
+            name: buildName,
+            date: new Date().toISOString(),
+            itemsPurchased: selectedProductIds
         };
     
         try {
             const { data } = await client.graphql({
                 query: createBuilds,
-                variables: buildDetails
+                variables: { input: buildDetails }
             });
             console.log('Saved Build:', data.createBuilds);
             alert('Build saved successfully!');
-            // Additional cleanup or state updates after saving
         } catch (error) {
             console.error('Error saving build:', error);
             alert('Failed to save build.');
         }
     };
+    
     
    
     
