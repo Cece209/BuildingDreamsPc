@@ -145,7 +145,7 @@ function AboutPage() {
             <div style={{ paddingLeft: '20px' }}>
                 <h2 style={{ color: 'white', textShadow: '0 0 3px black' }}>Saugat Ghimire</h2>
                 <p style={{ color: 'white', textShadow: '0 0 3px black'}}>
-                    ~ Developer/Tester
+                    ~ Developer/Tester/Backend
                 </p>
             </div>
         </div>
