@@ -70,7 +70,7 @@ function AboutPage() {
                         </p>
                     </Col>
                     <Col xs={12} md={6} className="text-center" style={{ position: 'relative' }}>
-                        <img src="/img/About.png" alt="About" style={{ maxWidth: '100%', boxShadow: '0 0 20px orange' }} />
+                        <img src="/img/About4.png" alt="About" style={{ maxWidth: '100%', boxShadow: '0 0 20px orange' }} />
                     </Col>
 
                     <Col xs={12} md={6}>
@@ -101,14 +101,14 @@ function AboutPage() {
                     <div style={{ paddingLeft: '20px' }}>
                      <h2 style={{ color: 'white', textShadow: '0 0 3px black' }}>Carltiana Staidum</h2>
                      <p style={{ color: 'white', textShadow: '0 0 3px black'}}>
-                      ~ Designer/Developer/Frontend
+                      ~ Designer/Developer/Frontend/Data Manager
                     </p>
                 </div>
              </div>
          </Col>
          <Col xs={12} md={12} className="text-left" style={{ position: 'relative', paddingTop: '30px' }}>
           <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-            <img src="/img/About.png" alt="About" style={{ width: '320px', height: '300px', borderRadius: '50%', boxShadow: '0 0 20px orange' }} />
+            <img src="/img/L.png" alt="About" style={{ width: '320px', height: '300px', borderRadius: '50%', boxShadow: '0 0 20px orange' }} />
             <div style={{ paddingLeft: '20px' }}>
                 <h2 style={{ color: 'white', textShadow: '0 0 3px black' }}>Layton Lofton</h2>
                 <p style={{ color: 'white', textShadow: '0 0 3px black'}}>
@@ -130,18 +130,18 @@ function AboutPage() {
     </Col>
     <Col xs={12} md={12} className="text-left" style={{ position: 'relative', paddingTop: '30px' }}>
         <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-            <img src="/img/About.png"alt="About" style={{ width: '320px', height: '300px', borderRadius: '50%', boxShadow: '0 0 20px orange' }} />
+            <img src="/img/Paul.png"alt="About" style={{ width: '320px', height: '300px', borderRadius: '50%', boxShadow: '0 0 20px orange' }} />
             <div style={{ paddingLeft: '20px' }}>
                 <h2 style={{ color: 'white', textShadow: '0 0 3px black' }}>Paul Yeon</h2>
                 <p style={{ color: 'white', textShadow: '0 0 3px black'}}>
-                    ~ Data Manager 
+                    ~ Tester  
                 </p>
             </div>
         </div>
     </Col>
     <Col xs={12} md={12} className="text-left" style={{ position: 'relative', paddingTop: '30px' }}>
         <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-            <img src="/img/About.png"alt="About" style={{ width: '320px', height: '300px', borderRadius: '50%', boxShadow: '0 0 20px orange' }} />
+            <img src="/img/S.png"alt="About" style={{ width: '320px', height: '300px', borderRadius: '50%', boxShadow: '0 0 20px orange' }} />
             <div style={{ paddingLeft: '20px' }}>
                 <h2 style={{ color: 'white', textShadow: '0 0 3px black' }}>Saugat Ghimire</h2>
                 <p style={{ color: 'white', textShadow: '0 0 3px black'}}>

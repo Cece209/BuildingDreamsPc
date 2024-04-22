@@ -75,12 +75,21 @@ function HomePage() {
                                     <Button variant="primary" href="/feedback">Feedback</Button>
                                 </div>
                             </Container>
-                        </Carousel.Item>
-                    </Carousel>
-                </Row>
-                    </div>
-                </Container>
+                            </Carousel.Item>
+                            <Carousel.Item>
+                                <Container className="d-flex justify-content-center align-items-center" style={{ height: "300px" }}>
+                                    <div>
+                                        <h3>Shared Builds</h3>
+                                        <p>Share your builds!</p>
+                                        <Button variant="primary" href="/new">Shared</Button>
+                                    </div>
+                                </Container>
+                            </Carousel.Item>
+                        </Carousel>
+                    </Row>
+                </div>
             </Container>
+        </Container>
     );
 }
 
