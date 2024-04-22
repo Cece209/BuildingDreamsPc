@@ -26,4 +26,6 @@ export { default as MessagesUpdateForm } from "./MessagesUpdateForm";
 export { default as Phnumbercirclefivefill } from "./Phnumbercirclefivefill";
 export { default as Phnumbercirclefourfill } from "./Phnumbercirclefourfill";
 export { default as Phnumbercircleonefill } from "./Phnumbercircleonefill";
+export { default as ProductCreateForm } from "./ProductCreateForm";
+export { default as ProductUpdateForm } from "./ProductUpdateForm";
 export { default as studioTheme } from "./studioTheme";

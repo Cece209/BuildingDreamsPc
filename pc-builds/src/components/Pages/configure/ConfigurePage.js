@@ -1,6 +1,6 @@
 import { React, useState, useEffect } from 'react';
 
-import { Container, Button, Modal, Row, Col, Card } from "react-bootstrap";
+import { Container, Button, Modal, Row, Col, Card, Form } from "react-bootstrap";
 import '../../../App.css';
 import { SearchField } from '@aws-amplify/ui-react';
 import { ScrollView } from '@aws-amplify/ui-react';
@@ -10,6 +10,8 @@ import { useNavigate } from 'react-router-dom';
 
 import { generateClient } from 'aws-amplify/api';
 import { listProducts } from '../../../graphql/queries';
+import { createBuilds } from '../../../graphql/mutations';
+
 
 function ConfigurePage(){
 
@@ -293,6 +295,66 @@ function ConfigurePage(){
     
     const [currentPartInfo, setCurrentPartInfo] = useState({ title: "", description: "" });
   
+    //Handling saved builds
+
+    const [buildName, setBuildName] = useState('');
+    const [showSaveModal, setShowSaveModal] = useState(false);
+
+
+    
+    const handleSaveBuild = async () => {
+        // Assuming that selectedProducts are stored in state arrays like selectedGPUs, selectedRAMs, etc.
+        const allSelectedProducts = [
+            ...selectedGPUs,
+            ...selectedRAMs,
+            ...selectedCases,
+            ...selectedPSUs,
+            ...selectedCPUs,
+            ...selectedMOBOs,
+            ...selectedCooling,
+            ...selectedMemory
+        ];
+    
+        // Create a simple list of product names for itemsPurchased or adjust based on needs
+        const itemsPurchased = allSelectedProducts.map(prod => `${prod.name} (${prod.partType})`).join(', ');
+    
+        const buildDetails = {
+            input: {
+                name: buildName,
+                date: new Date().toISOString(),
+                itemsPurchased // This is a simplification. Adjust according to actual requirements
+            }
+        };
+    
+        try {
+            const { data } = await client.graphql({
+                query: createBuilds,
+                variables: buildDetails
+            });
+            console.log('Saved Build:', data.createBuilds);
+            alert('Build saved successfully!');
+            // Additional cleanup or state updates after saving
+        } catch (error) {
+            console.error('Error saving build:', error);
+            alert('Failed to save build.');
+        }
+    };
+    
+   
+    
+    const updateFilteredProducts = (items) => {
+        setProducts(items);
+        setFilteredGPUs(items.filter(product => product.partType === 'GPU'));
+        setFilteredRAMs(items.filter(product => product.partType === 'RAM'));
+        setFilteredCases(items.filter(product => product.partType === 'Case'));
+        setFilteredPSUs(items.filter(product => product.partType === 'PSU'));
+        setFilteredCPUs(items.filter(product => product.partType === 'CPU'));
+        setFilteredMOBOs(items.filter(product => product.partType === 'Motherboard'));
+        setFilteredCooling(items.filter(product => product.partType === 'Cooling'));
+        setFilteredMemory(items.filter(product => product.partType === 'Memory'));
+        // Add other product types if needed
+    };
+    
     
 
     useEffect(() => {
@@ -302,23 +364,28 @@ function ConfigurePage(){
                     query: listProducts
                 });
                 const items = productData.data.listProducts.items;
-                setProducts(items);
-                setFilteredGPUs(items.filter(product => product.partType === 'GPU'));
-                setFilteredRAMs(items.filter(product => product.partType === 'RAM'));
-                setFilteredCases(items.filter(product => product.partType === 'Case'));
-                setFilteredPSUs(items.filter(product => product.partType === 'PSU'));
-                setFilteredCPUs(items.filter(product => product.partType === 'CPU'));
-                setFilteredMOBOs(items.filter(product => product.partType === 'Motherboard'));
-                setFilteredCooling(items.filter(product => product.partType === 'Cooling'));
-                setFilteredMemory(items.filter(product => product.partType === 'Memory'));
-
+                updateFilteredProducts(items);
             } catch (err) {
-                console.log('error fetching products', err);
+                console.error('Error fetching products:', err);
             }
         };
-
+   
         fetchProducts();
     }, []);
+
+    const renderProductCards = (products) => {
+        return products.map(product => (
+            <Card key={product.id} className="mb-2">
+                <Card.Img variant="top" src={product.productPicturePath} />
+                <Card.Body>
+                    <Card.Title>{product.name}</Card.Title>
+                    <Card.Text>Price: ${product.price.toFixed(2)}</Card.Text>
+                </Card.Body>
+            </Card>
+        ));
+    };
+   
+
 
 
     return(
@@ -467,6 +534,10 @@ function ConfigurePage(){
             {/* Total Price Display */}
             <Col className="priceCalc">
             <h5 style={{paddingTop: '10px', color: 'white', textShadow: '0 0 3px black'}}>Total Price: ${totalPrice.toFixed(2)}</h5>
+            </Col>
+            <Col>
+            <Button variant="success" onClick={() => setShowSaveModal(true)}>Save Build</Button>
+
             </Col>
             </Row>
             </div>
@@ -663,6 +734,40 @@ function ConfigurePage(){
                     ))}
                 </Modal.Body>
             </Modal>
+            {/* Saving buils Modal */}
+            <Modal show={showSaveModal} onHide={() => setShowSaveModal(false)} size="lg">
+            <Modal.Header closeButton>
+                <Modal.Title>Save Your Build</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <Form>
+                    <Form.Group>
+                        <Form.Label>Build Name</Form.Label>
+                        <Form.Control
+                            type="text"
+                            placeholder="Enter build name"
+                            value={buildName}
+                            onChange={(e) => setBuildName(e.target.value)}
+                        />
+                    </Form.Group>
+                    <h5 className="mt-3">Selected Products:</h5>
+                    <div className="d-flex flex-wrap">
+                        {renderProductCards([...selectedGPUs, ...selectedRAMs, ...selectedCases, ...selectedPSUs, ...selectedCPUs, ...selectedMOBOs, ...selectedCooling, ...selectedMemory])}
+                    </div>
+                </Form>
+            </Modal.Body>
+            <Modal.Footer>
+                <Button variant="secondary" onClick={() => setShowSaveModal(false)}>
+                    Close
+                </Button>
+                <Button variant="primary" onClick={() => {
+                    handleSaveBuild();
+                    setShowSaveModal(false);
+                }}>
+                    Save Build
+                </Button>
+            </Modal.Footer>
+        </Modal>
         {/* Part info */}
             <Container>
                 <Row className="justify-content-center">

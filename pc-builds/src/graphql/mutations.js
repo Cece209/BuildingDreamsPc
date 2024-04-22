@@ -10,10 +10,7 @@ export const createBuilds = /* GraphQL */ `
       id
       name
       date
-      Products {
-        nextToken
-        __typename
-      }
+      itemsPurchased
       createdAt
       updatedAt
       __typename
@@ -29,10 +26,7 @@ export const updateBuilds = /* GraphQL */ `
       id
       name
       date
-      Products {
-        nextToken
-        __typename
-      }
+      itemsPurchased
       createdAt
       updatedAt
       __typename
@@ -48,10 +42,7 @@ export const deleteBuilds = /* GraphQL */ `
       id
       name
       date
-      Products {
-        nextToken
-        __typename
-      }
+      itemsPurchased
       createdAt
       updatedAt
       __typename
@@ -124,7 +115,6 @@ export const createProduct = /* GraphQL */ `
       price
       productPicturePath
       Description
-      buildsID
       createdAt
       updatedAt
       __typename
@@ -143,7 +133,6 @@ export const updateProduct = /* GraphQL */ `
       price
       productPicturePath
       Description
-      buildsID
       createdAt
       updatedAt
       __typename
@@ -162,7 +151,6 @@ export const deleteProduct = /* GraphQL */ `
       price
       productPicturePath
       Description
-      buildsID
       createdAt
       updatedAt
       __typename

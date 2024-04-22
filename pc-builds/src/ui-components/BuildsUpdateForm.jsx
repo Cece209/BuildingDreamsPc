@@ -27,9 +27,13 @@ export default function BuildsUpdateForm(props) {
   const initialValues = {
     name: "",
     date: "",
+    itemsPurchased: "",
   };
   const [name, setName] = React.useState(initialValues.name);
   const [date, setDate] = React.useState(initialValues.date);
+  const [itemsPurchased, setItemsPurchased] = React.useState(
+    initialValues.itemsPurchased
+  );
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     const cleanValues = buildsRecord
@@ -37,6 +41,7 @@ export default function BuildsUpdateForm(props) {
       : initialValues;
     setName(cleanValues.name);
     setDate(cleanValues.date);
+    setItemsPurchased(cleanValues.itemsPurchased);
     setErrors({});
   };
   const [buildsRecord, setBuildsRecord] = React.useState(buildsModelProp);
@@ -58,6 +63,7 @@ export default function BuildsUpdateForm(props) {
   const validations = {
     name: [],
     date: [],
+    itemsPurchased: [],
   };
   const runValidationTasks = async (
     fieldName,
@@ -87,6 +93,7 @@ export default function BuildsUpdateForm(props) {
         let modelFields = {
           name: name ?? null,
           date: date ?? null,
+          itemsPurchased: itemsPurchased ?? null,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -149,6 +156,7 @@ export default function BuildsUpdateForm(props) {
             const modelFields = {
               name: value,
               date,
+              itemsPurchased,
             };
             const result = onChange(modelFields);
             value = result?.name ?? value;
@@ -174,6 +182,7 @@ export default function BuildsUpdateForm(props) {
             const modelFields = {
               name,
               date: value,
+              itemsPurchased,
             };
             const result = onChange(modelFields);
             value = result?.date ?? value;
@@ -187,6 +196,32 @@ export default function BuildsUpdateForm(props) {
         errorMessage={errors.date?.errorMessage}
         hasError={errors.date?.hasError}
         {...getOverrideProps(overrides, "date")}
+      ></TextField>
+      <TextField
+        label="Items purchased"
+        isRequired={false}
+        isReadOnly={false}
+        value={itemsPurchased}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              name,
+              date,
+              itemsPurchased: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.itemsPurchased ?? value;
+          }
+          if (errors.itemsPurchased?.hasError) {
+            runValidationTasks("itemsPurchased", value);
+          }
+          setItemsPurchased(value);
+        }}
+        onBlur={() => runValidationTasks("itemsPurchased", itemsPurchased)}
+        errorMessage={errors.itemsPurchased?.errorMessage}
+        hasError={errors.itemsPurchased?.hasError}
+        {...getOverrideProps(overrides, "itemsPurchased")}
       ></TextField>
       <Flex
         justifyContent="space-between"

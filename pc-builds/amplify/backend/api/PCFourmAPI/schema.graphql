@@ -2,7 +2,7 @@ type Builds @model @auth(rules: [{allow: public}]) {
   id: ID!
   name: String
   date: String
-  Products: [Product] @hasMany(indexName: "byBuilds", fields: ["id"])
+  itemsPurchased: String
 }
 
 type Messages @model @auth(rules: [{allow: public}]) {
@@ -21,7 +21,6 @@ type Product @model @auth(rules: [{allow: public}]) {
   price: Float!
   productPicturePath: AWSURL
   Description: String
-  buildsID: ID! @index(name: "byBuilds")
 }
 
 type Forum @model @auth(rules: [{allow: public}]) {

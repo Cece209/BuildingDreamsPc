@@ -7,10 +7,7 @@ export const getBuilds = /* GraphQL */ `
       id
       name
       date
-      Products {
-        nextToken
-        __typename
-      }
+      itemsPurchased
       createdAt
       updatedAt
       __typename
@@ -28,6 +25,7 @@ export const listBuilds = /* GraphQL */ `
         id
         name
         date
+        itemsPurchased
         createdAt
         updatedAt
         __typename
@@ -84,7 +82,6 @@ export const getProduct = /* GraphQL */ `
       price
       productPicturePath
       Description
-      buildsID
       createdAt
       updatedAt
       __typename
@@ -105,39 +102,6 @@ export const listProducts = /* GraphQL */ `
         price
         productPicturePath
         Description
-        buildsID
-        createdAt
-        updatedAt
-        __typename
-      }
-      nextToken
-      __typename
-    }
-  }
-`;
-export const productsByBuildsID = /* GraphQL */ `
-  query ProductsByBuildsID(
-    $buildsID: ID!
-    $sortDirection: ModelSortDirection
-    $filter: ModelProductFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    productsByBuildsID(
-      buildsID: $buildsID
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        partType
-        name
-        price
-        productPicturePath
-        Description
-        buildsID
         createdAt
         updatedAt
         __typename
