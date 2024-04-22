@@ -6,6 +6,8 @@
 
 export { default as Bimicfill } from "./Bimicfill";
 export { default as Bithreedotsvertical } from "./Bithreedotsvertical";
+export { default as BuildsCreateForm } from "./BuildsCreateForm";
+export { default as BuildsUpdateForm } from "./BuildsUpdateForm";
 export { default as Bxbell } from "./Bxbell";
 export { default as Bxsearch } from "./Bxsearch";
 export { default as Charmtickdouble } from "./Charmtickdouble";

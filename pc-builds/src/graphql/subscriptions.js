@@ -1,6 +1,45 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const onCreateBuilds = /* GraphQL */ `
+  subscription OnCreateBuilds($filter: ModelSubscriptionBuildsFilterInput) {
+    onCreateBuilds(filter: $filter) {
+      id
+      name
+      date
+      itemsPurchased
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const onUpdateBuilds = /* GraphQL */ `
+  subscription OnUpdateBuilds($filter: ModelSubscriptionBuildsFilterInput) {
+    onUpdateBuilds(filter: $filter) {
+      id
+      name
+      date
+      itemsPurchased
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const onDeleteBuilds = /* GraphQL */ `
+  subscription OnDeleteBuilds($filter: ModelSubscriptionBuildsFilterInput) {
+    onDeleteBuilds(filter: $filter) {
+      id
+      name
+      date
+      itemsPurchased
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
 export const onCreateMessages = /* GraphQL */ `
   subscription OnCreateMessages($filter: ModelSubscriptionMessagesFilterInput) {
     onCreateMessages(filter: $filter) {

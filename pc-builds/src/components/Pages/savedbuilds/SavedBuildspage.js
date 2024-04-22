@@ -1,13 +1,34 @@
-import React from 'react';
+import { React, useState, useEffect } from 'react';
 import { Container } from "react-bootstrap";
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
-import { useCart } from '../../../components/Pages/cartItems/CartContext.js';
+import { generateClient } from 'aws-amplify/api';
+import { listBuilds } from '../../../graphql/queries';
+//import { useCart } from '../../../components/Pages/cartItems/CartContext.js';
 
 function SavedBuildsPage(){
 
-    const { savedBuilds } = useCart();
+    //const { savedBuilds } = useCart();
+
+    const [builds, setBuilds] = useState([]);
+
+    const client = generateClient();
+
+    useEffect(() => {
+        const fetchBuilds = async () => {
+            try {
+                const { data } = await client.graphql({
+                    query: listBuilds
+                });
+                setBuilds(data.listBuilds.items);
+            } catch (error) {
+                console.error('Error fetching builds:', error);
+            }
+        };
+    
+        fetchBuilds();
+    }, [client]);
 
     return(
         <Container>
@@ -23,16 +44,19 @@ function SavedBuildsPage(){
                 `}
             </style>
             <Container>
-            <h1 style={{ color: 'white', textShadow: '0 0 3px black' }}>My Saved Builds</h1>
-            {savedBuilds.map(build => (
-                <div key={build.id}>
-                    <h2>Build {build.id}</h2>
-                    {build.items.map(item => (
-                        <div key={item.id}>{item.name} - ${item.price}</div>
+        <h1>Saved Builds</h1>
+        {builds.map((build) => (
+            <div key={build.id}>
+                <h2>{build.name}</h2>
+                <p>Date: {build.date}</p>
+                <ul>
+                    {build.Products.items.map((product) => (
+                        <li key={product.id}>{product.name} - ${product.price}</li>
                     ))}
-                </div>
-            ))}
-        </Container>
+                </ul>
+            </div>
+        ))}
+    </Container>
         </Container>
     )
 }

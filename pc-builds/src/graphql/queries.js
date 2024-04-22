@@ -1,6 +1,40 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const getBuilds = /* GraphQL */ `
+  query GetBuilds($id: ID!) {
+    getBuilds(id: $id) {
+      id
+      name
+      date
+      itemsPurchased
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const listBuilds = /* GraphQL */ `
+  query ListBuilds(
+    $filter: ModelBuildsFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listBuilds(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        name
+        date
+        itemsPurchased
+        createdAt
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
 export const getMessages = /* GraphQL */ `
   query GetMessages($id: ID!) {
     getMessages(id: $id) {

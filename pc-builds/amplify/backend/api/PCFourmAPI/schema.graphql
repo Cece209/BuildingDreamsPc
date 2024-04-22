@@ -1,3 +1,10 @@
+type Builds @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String
+  date: String
+  itemsPurchased: String
+}
+
 type Messages @model @auth(rules: [{allow: public}]) {
   id: ID!
   messageID: String
