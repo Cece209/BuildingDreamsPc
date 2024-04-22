@@ -1,6 +1,54 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const onCreateBuilds = /* GraphQL */ `
+  subscription OnCreateBuilds($filter: ModelSubscriptionBuildsFilterInput) {
+    onCreateBuilds(filter: $filter) {
+      id
+      name
+      date
+      Products {
+        nextToken
+        __typename
+      }
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const onUpdateBuilds = /* GraphQL */ `
+  subscription OnUpdateBuilds($filter: ModelSubscriptionBuildsFilterInput) {
+    onUpdateBuilds(filter: $filter) {
+      id
+      name
+      date
+      Products {
+        nextToken
+        __typename
+      }
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const onDeleteBuilds = /* GraphQL */ `
+  subscription OnDeleteBuilds($filter: ModelSubscriptionBuildsFilterInput) {
+    onDeleteBuilds(filter: $filter) {
+      id
+      name
+      date
+      Products {
+        nextToken
+        __typename
+      }
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
 export const onCreateMessages = /* GraphQL */ `
   subscription OnCreateMessages($filter: ModelSubscriptionMessagesFilterInput) {
     onCreateMessages(filter: $filter) {
@@ -55,6 +103,7 @@ export const onCreateProduct = /* GraphQL */ `
       price
       productPicturePath
       Description
+      buildsID
       createdAt
       updatedAt
       __typename
@@ -70,6 +119,7 @@ export const onUpdateProduct = /* GraphQL */ `
       price
       productPicturePath
       Description
+      buildsID
       createdAt
       updatedAt
       __typename
@@ -85,6 +135,7 @@ export const onDeleteProduct = /* GraphQL */ `
       price
       productPicturePath
       Description
+      buildsID
       createdAt
       updatedAt
       __typename

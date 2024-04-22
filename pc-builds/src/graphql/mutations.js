@@ -1,6 +1,63 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const createBuilds = /* GraphQL */ `
+  mutation CreateBuilds(
+    $input: CreateBuildsInput!
+    $condition: ModelBuildsConditionInput
+  ) {
+    createBuilds(input: $input, condition: $condition) {
+      id
+      name
+      date
+      Products {
+        nextToken
+        __typename
+      }
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const updateBuilds = /* GraphQL */ `
+  mutation UpdateBuilds(
+    $input: UpdateBuildsInput!
+    $condition: ModelBuildsConditionInput
+  ) {
+    updateBuilds(input: $input, condition: $condition) {
+      id
+      name
+      date
+      Products {
+        nextToken
+        __typename
+      }
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const deleteBuilds = /* GraphQL */ `
+  mutation DeleteBuilds(
+    $input: DeleteBuildsInput!
+    $condition: ModelBuildsConditionInput
+  ) {
+    deleteBuilds(input: $input, condition: $condition) {
+      id
+      name
+      date
+      Products {
+        nextToken
+        __typename
+      }
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
 export const createMessages = /* GraphQL */ `
   mutation CreateMessages(
     $input: CreateMessagesInput!
@@ -67,6 +124,7 @@ export const createProduct = /* GraphQL */ `
       price
       productPicturePath
       Description
+      buildsID
       createdAt
       updatedAt
       __typename
@@ -85,6 +143,7 @@ export const updateProduct = /* GraphQL */ `
       price
       productPicturePath
       Description
+      buildsID
       createdAt
       updatedAt
       __typename
@@ -103,6 +162,7 @@ export const deleteProduct = /* GraphQL */ `
       price
       productPicturePath
       Description
+      buildsID
       createdAt
       updatedAt
       __typename

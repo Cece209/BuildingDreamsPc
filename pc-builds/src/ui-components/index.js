@@ -6,6 +6,8 @@
 
 export { default as Bimicfill } from "./Bimicfill";
 export { default as Bithreedotsvertical } from "./Bithreedotsvertical";
+export { default as BuildsCreateForm } from "./BuildsCreateForm";
+export { default as BuildsUpdateForm } from "./BuildsUpdateForm";
 export { default as Bxbell } from "./Bxbell";
 export { default as Bxsearch } from "./Bxsearch";
 export { default as Charmtickdouble } from "./Charmtickdouble";
@@ -24,6 +26,4 @@ export { default as MessagesUpdateForm } from "./MessagesUpdateForm";
 export { default as Phnumbercirclefivefill } from "./Phnumbercirclefivefill";
 export { default as Phnumbercirclefourfill } from "./Phnumbercirclefourfill";
 export { default as Phnumbercircleonefill } from "./Phnumbercircleonefill";
-export { default as ProductCreateForm } from "./ProductCreateForm";
-export { default as ProductUpdateForm } from "./ProductUpdateForm";
 export { default as studioTheme } from "./studioTheme";
