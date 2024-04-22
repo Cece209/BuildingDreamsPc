@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Form, Button, ListGroup } from "react-bootstrap";
+import { Container, Form, Button, ListGroup } from 'react-bootstrap';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { generateClient } from 'aws-amplify/api';
 import { createMessages } from '../../../graphql/mutations';
 import { listMessages } from '../../../graphql/queries';
 import { v4 as uuid } from 'uuid';
-import { Auth } from 'aws-amplify';
 
 function MessagesPage() {
-    const [messageData, setMessageData] = useState({ recipientID: "", content: "" });
+    const [messageData, setMessageData] = useState({ recipientID: '', content: '' });
     const [messages, setMessages] = useState([]);
     const client = generateClient();
 
@@ -26,34 +25,44 @@ function MessagesPage() {
         }
     };
 
-    
-
     const addNewMessage = async () => {
         const { recipientID, content } = messageData;
-
+    
+        if (!content.trim()) {
+            console.error('Message content cannot be empty');
+            return;
+        }
+    
         try {
             // Replace this section with your logic to get the sender ID
-            const senderID = "Replace with sender ID logic";
-
+            const senderID = 'Replace with sender ID logic';
+    
             const newMessage = {
                 id: uuid(),
+                messageID: uuid(), // Assuming messageID is similar to ID
                 senderID,
                 recipientID,
-                content
+                content: content.trim(),
+                timestamp: new Date().toISOString() // Assuming timestamp is required
             };
-
-            await client.mutate({ mutation: createMessages, variables: { input: newMessage } });
-
-            // Clear the form fields after adding the message
-            setMessageData({ recipientID: "", content: "" });
-
-            // Refetch messages to update the UI
+    
+            console.log('New Message:', newMessage);
+    
+            // Set the message data before making the GraphQL mutation call
+            setMessageData({ recipientID: '', content: '' });
+    
+            const mutationVariables = { input: newMessage };
+            console.log("Mutation Variables:", mutationVariables); // Log the mutation variables
+    
+            await client.graphql({ mutation: createMessages, variables: mutationVariables });
+    
             fetchMessages();
-
+    
         } catch (error) {
             console.error('Error creating message:', error);
         }
     };
+    
 
     return (
         <Container>
@@ -66,16 +75,23 @@ function MessagesPage() {
                     <Form>
                         <Form.Group className="mb-3" controlId="formGroupRecipientID">
                             <Form.Label style={{ color: 'white', textShadow: '0 0 3px black' }}>To</Form.Label>
-                            <Form.Control type="text" placeholder="Type User Account"
+                            <Form.Control
+                                type="text"
+                                placeholder="Type User Account"
+                                name="recipientID"
                                 value={messageData.recipientID}
-                                onChange={e => setMessageData({ ...messageData, recipientID: e.target.value })}
+                                onChange={(e) => setMessageData({ ...messageData, recipientID: e.target.value })}
                             />
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="formGroupContent">
                             <Form.Label style={{ color: 'white', textShadow: '0 0 3px black' }}>Message Content</Form.Label>
-                            <Form.Control as="textarea" rows={3} placeholder="Type here"
+                            <Form.Control
+                                as="textarea"
+                                rows={3}
+                                placeholder="Type here"
+                                name="content"
                                 value={messageData.content}
-                                onChange={e => setMessageData({ ...messageData, content: e.target.value })}
+                                onChange={(e) => setMessageData({ ...messageData, content: e.target.value })}
                             />
                         </Form.Group>
                         <Button variant="primary" type="button" onClick={addNewMessage}>Send Message &gt;&gt;</Button>
@@ -94,7 +110,7 @@ function MessagesPage() {
                 </Col>
             </Row>
 
-            <style>  
+            <style>
                 {`
                     body {
                         background-color: #333333;
@@ -103,6 +119,7 @@ function MessagesPage() {
                 `}
             </style>
         </Container>
-    )
+    );
 }
+
 export default MessagesPage;
