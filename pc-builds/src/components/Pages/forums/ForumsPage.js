@@ -2,9 +2,12 @@
 import { useState, useEffect } from 'react';
 import { Container } from "react-bootstrap";
 
+import '../../../App.css';
+
 import { getUrl, uploadData } from 'aws-amplify/storage';
 import { remove } from 'aws-amplify/storage';
 import { generateClient } from 'aws-amplify/api';
+import { ScrollView } from '@aws-amplify/ui-react';
 
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -109,29 +112,11 @@ function ForumsPage(){
     
 
     return (
-        <Container>
+        <Container className="forumContainer">
+        <Row>
+        <Col className="addForumArea">
             <Row className="px-4 my-5">
-                <Col><h1 style={{ color: 'white', textShadow: '0 0 3px black' }}>Forums</h1></Col>
-            </Row>
-            {forums.map((forum, index) => (
-                <Row key={forum.id} className="px-2 my-2">
-                    <Col>
-                        <Card className="text-center">
-                            <Card.Header as="h5">{forum.name}</Card.Header>
-                            <Card.Body>
-                                <Card.Img src={forumImagePaths[index]?.url} variant="top" />
-                                <Card.Title>{forum.title}</Card.Title>
-                                <Card.Text>{forum.description}</Card.Text>
-                                <Button variant="danger" onClick={() => deleteForum(forum.id, forum.forumPicturePath)}>Delete</Button>
-                            </Card.Body>
-                            <Card.Footer className="text-muted">Posted on: {new Date(forum.createdAt).toLocaleString()}</Card.Footer>
-                        </Card>
-                    </Col>
-                </Row>
-            ))}
-            <Row className="px-4 my-5">
-                <Col sm={3}>
-                    <h2 style={{ color: 'white', textShadow: '0 0 3px black' }}>Add New Forum</h2>
+                    <h2 style={{ color: 'white', textShadow: '0 0 3px black' }}>Forums</h2>
                     <Form>
                         <Form.Group className="mb-3" controlId="formGroupName">
                             <Form.Label style={{ color: 'white', textShadow: '0 0 3px black' }}>Name</Form.Label>
@@ -160,9 +145,8 @@ function ForumsPage(){
                                 onChange={e => setForumImage(e.target.files[0])}
                             />
                         </Form.Group>
-                        <Button variant="primary" type="button" onClick={addNewForum}>Create Forum &gt;&gt;</Button>
+                        <Button variant="primary" type="button" onClick={addNewForum}>Create Post &gt;&gt;</Button>
                     </Form>
-                </Col>
             </Row>
             <style jsx>{`
                 body {
@@ -170,6 +154,36 @@ function ForumsPage(){
                     min-height: 100vh;
                 }
             `}</style>
+            </Col>
+            
+        
+        <Col className="forumsArea">
+        <ScrollView marginLeft="5%" height="550px" width="90%"> 
+            {forums.map((forum, index) => (
+                
+                    <Col key={forum.id} className="px-2 my-2">
+                        <Card className="text-center">
+                            <Card.Header as="h5">{forum.name}</Card.Header>
+                            <Card.Body>
+                                <Card.Img src={forumImagePaths[index]?.url} variant="top" />
+                                <Card.Title>{forum.title}</Card.Title>
+                                <Card.Text>{forum.description}</Card.Text>
+                                <Button variant="danger" onClick={() => deleteForum(forum.id, forum.forumPicturePath)}>Delete</Button>
+                            </Card.Body>
+                            <Card.Footer className="text-muted">Posted on: {new Date(forum.createdAt).toLocaleString()}</Card.Footer>
+                        </Card>
+                    </Col>
+                
+            ))}
+            </ScrollView>
+            <style jsx>{`
+                body {
+                    background-color: #333333;
+                    min-height: 100vh;
+                }
+            `}</style>
+            </Col>
+            </Row>
         </Container>
     );
 }
