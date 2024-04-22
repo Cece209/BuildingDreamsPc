@@ -70,7 +70,7 @@ function AboutPage() {
                         </p>
                     </Col>
                     <Col xs={12} md={6} className="text-center" style={{ position: 'relative' }}>
-                    <img src="/img/About.png" alt="About" style={{ maxWidth: '100%', boxShadow: '0 0 20px orange' }} />
+                        <img src="/img/About.png" alt="About" style={{ maxWidth: '100%', boxShadow: '0 0 20px orange' }} />
                     </Col>
 
                     <Col xs={12} md={6}>
@@ -80,19 +80,79 @@ function AboutPage() {
                         </p>
                     </Col>
                     <Col xs={12} md={6} style={{ paddingTop: '40px' }}>
-                    <h1 style={{ color: 'white', textShadow: '0 0 3px black'}}>Web Developers</h1>
-                    <p style={{ color: 'white', textShadow: '0 0 3px black' }}>
-                    The ultimate goal is to provide high-quality web development services tailored to our clients' needs.
-        </p>
+                        <h1 style={{ color: 'white', textShadow: '0 0 3px black'}}>Developers</h1>
+                        <p style={{ color: 'white', textShadow: '0 0 3px black' }}>
+                        </p>
+                    </Col>
+                    <Col xs={12} md={12} className="text-left" style={{ position: 'relative', paddingTop: '10px' }}>
+                        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                            <img src="/img/Etahn1.png" alt="About" style={{ maxWidth: '35%', boxShadow: '0 0 20px orange' }} />
+                            <div style={{ paddingLeft: '20px' }}>
+                                <h2 style={{ color: 'white', textShadow: '0 0 3px black' }}>Ethan Palomino</h2>
+                                <p style={{ color: 'white', textShadow: '0 0 3px black'}}>
+                                    ~ Head Developer
+                                </p>
+                             </div>
+                        </div>
+                    </Col>
+                    <Col xs={12} md={12} className="text-left" style={{ position: 'relative', paddingTop: '30px' }}>
+                    <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                    <img src="/img/Cece1.png" alt="About" style={{ maxWidth: '35%', boxShadow: '0 0 20px orange' }} />
+                    <div style={{ paddingLeft: '20px' }}>
+                     <h2 style={{ color: 'white', textShadow: '0 0 3px black' }}>Carltiana Staidum</h2>
+                     <p style={{ color: 'white', textShadow: '0 0 3px black'}}>
+                      ~ Designer/Developer/Frontend
+                    </p>
+                </div>
+             </div>
+         </Col>
+         <Col xs={12} md={12} className="text-left" style={{ position: 'relative', paddingTop: '30px' }}>
+          <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+            <img src="/img/About.png" alt="About" style={{ maxWidth: '35%', boxShadow: '0 0 20px orange' }} />
+            <div style={{ paddingLeft: '20px' }}>
+                <h2 style={{ color: 'white', textShadow: '0 0 3px black' }}>Layton Lofton</h2>
+                <p style={{ color: 'white', textShadow: '0 0 3px black'}}>
+                    ~Developer/Backend/Frontend
+                </p>
+            </div>
+        </div>
     </Col>
-    </Row>
-            </Container>
+    <Col xs={12} md={12} className="text-left" style={{ position: 'relative', paddingTop: '30px' }}>
+        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+            <img src="/img/sunella.png" alt="About" style={{ maxWidth: '35%', boxShadow: '0 0 20px orange' }} />
+            <div style={{ paddingLeft: '20px' }}>
+                <h2 style={{ color: 'white', textShadow: '0 0 3px black' }}>Sunella Ramnath</h2>
+                <p style={{ color: 'white', textShadow: '0 0 3px black'}}>
+                    ~ Data Manager/Tester
+                </p>
+            </div>
+        </div>
+    </Col>
+    <Col xs={12} md={12} className="text-left" style={{ position: 'relative', paddingTop: '30px' }}>
+        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+            <img src="/img/About.png"alt="About" style={{ maxWidth: '35%', boxShadow: '0 0 20px orange' }} />
+            <div style={{ paddingLeft: '20px' }}>
+                <h2 style={{ color: 'white', textShadow: '0 0 3px black' }}>Paul Yeon</h2>
+                <p style={{ color: 'white', textShadow: '0 0 3px black'}}>
+                    ~ Data Manager 
+                </p>
+            </div>
+        </div>
+    </Col>
+    <Col xs={12} md={12} className="text-left" style={{ position: 'relative', paddingTop: '30px' }}>
+        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+            <img src="/img/About.png"alt="About" style={{ maxWidth: '35%', boxShadow: '0 0 20px orange' }} />
+            <div style={{ paddingLeft: '20px' }}>
+                <h2 style={{ color: 'white', textShadow: '0 0 3px black' }}>Saugat Ghimire</h2>
+                <p style={{ color: 'white', textShadow: '0 0 3px black'}}>
+                    ~ Developer/Tester
+                </p>
+            </div>
+        </div>
+    </Col>
+</Row>
+ </Container>
         </div>
     );
 }
-
 export default AboutPage;
-
-
-
-
