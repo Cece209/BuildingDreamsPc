@@ -30,7 +30,8 @@ function SiteNav(props) {
                                 <Nav.Link href="/forums">Forums</Nav.Link> 
                                 <Nav.Link href="/configure">Configure</Nav.Link> 
                                 <Nav.Link href="/messages">Messages</Nav.Link> 
-                                <Nav.Link href="/cartitems">Cart Items</Nav.Link> 
+                                <Nav.Link href="/cartitems">Cart Items</Nav.Link>
+                                <Nav.Link href="/savedbuilds">Saved Builds</Nav.Link>
                                 <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
                             </Nav>
                         </Navbar.Collapse>
