@@ -173,12 +173,12 @@ function ConfigurePage(){
     //handle mouse hover
     const handleMouseEnter = (imageUrl, partType) => {
         setCurrentImage(imageUrl);
-        setCurrentPartInfo(partInfo[partType] || { title: "", description: "No information available" });
+        setCurrentPartInfo(partInfo[partType] || { title: "", description: "Hover over a part to learn more about it" });
     };
     
     const handleMouseLeave = () => {
         setCurrentImage('/img/PCSilh-removebg-preview.png');
-        setCurrentPartInfo({ title: "", description: "No information available" });
+        setCurrentPartInfo({ title: "", description: "Hover over a part to learn more about it" });
         
     };
     
@@ -524,11 +524,10 @@ function ConfigurePage(){
             </Col>
             {/* Total Price Display */}
             <Col className="priceCalc">
-            <h5 style={{paddingTop: '10px', color: 'white', textShadow: '0 0 3px black'}}>Total Price: ${totalPrice.toFixed(2)}</h5>
+            <h5 style={{paddingTop: '10px', color: 'white', textShadow: '0 0 3px black'}}>Total Price: <br></br> ${totalPrice.toFixed(2)}</h5>
             </Col>
-            <Col>
+            <Col className="saveButton">
             <Button variant="success" onClick={() => setShowSaveModal(true)}>Save Build</Button>
-
             </Col>
             </Row>
             </div>

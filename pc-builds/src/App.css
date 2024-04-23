@@ -56,11 +56,17 @@ input[type=radio]{
 
 .addButton{
   padding-top: 10px;
-  max-width: 185px;
+  max-width: 17%;
 }
 .priceCalc{
-  max-width: 160px;
+  max-width: 53%;
 }
+
+.saveButton{
+  padding-top:10px;
+  max-width: 30%;
+}
+
 .ConfRight-column {
   flex: 0 0 30%; /* This ensures the right column takes up 30% of the container */
   background-color: #d2d2d2;
