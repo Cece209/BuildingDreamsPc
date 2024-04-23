@@ -55,6 +55,11 @@ function MessagesPage() {
             console.error('Message content cannot be empty');
             return;
         }
+
+        if (!senderName.trim()) {
+            console.error('Please type a name for message');
+            return;
+        }
     
         try {
             const newMessage = {

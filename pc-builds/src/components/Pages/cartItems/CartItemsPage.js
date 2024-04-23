@@ -11,23 +11,32 @@ function CartItemsPage() {
     
     const [setProducts] = useState([]);
     const client = generateClient();
-
+    const [showClearAlert, setShowClearAlert] = useState(false);
     const [showAlert, setShowAlert] = useState(false);
 
     const handleCheckout = (event) => {
+        event.preventDefault(); // Prevent the form from submitting by default
         const form = event.currentTarget;
+        
         if (form.checkValidity() === false) {
-            event.preventDefault();
             event.stopPropagation();
+            
         } else {
             clearCart();
             setShowAlert(true);
             setTimeout(() => setShowAlert(false), 3000); // Alert disappears after 3 seconds
         }
-        setValidated(true);
+        
+        setValidated(true); // This will trigger Bootstrap's validation feedback
+
     };
-
-
+    
+    const handleClearCart = () => {
+        clearCart();
+        setShowClearAlert(true);
+        setTimeout(() => setShowClearAlert(false), 3000); // Alert disappears after 3 seconds
+    };
+    
 
     // Calculate total price
     const totalPrice = cartItems.reduce((acc, item) => acc + parseFloat(item.price), 0);
@@ -55,6 +64,11 @@ function CartItemsPage() {
                     Purchase was successful! Thank you for your order.
                 </Alert>
             )}
+            {showClearAlert && 
+            <Alert variant="warning">
+                Cleared items out of cart.
+                </Alert>
+                }
             <Row className="px-4 my-5">
                 <Col><h1 style={{ color: 'white', textShadow: '0 0 3px black' }}>Shopping Cart</h1></Col>
             </Row>
@@ -91,9 +105,28 @@ function CartItemsPage() {
         <p style={{ color: 'white' }}>No items in the cart.</p>
       )}
     </div>
-            <Form noValidate validated={validated} onSubmit={handleCheckout}>
-                <h4 className="my-3" style={{ color: 'white' }}>Your Information</h4>
+    <Form noValidate validated={validated} onSubmit={handleCheckout}>
+    
+             {/* Credit Card Information */}
+             <h4 className="my-3" style={{ color: 'white' }}>Payment Information</h4>
+                <Form.Group className="mb-3" controlId="formGridCardNumber">
+                    <Form.Label style={{ color: 'white' }}>Card Number</Form.Label>
+                    <Form.Control type="text" placeholder="Card Number" required />
+                </Form.Group>
+
                 <Row className="mb-3">
+                    <Form.Group as={Col} controlId="formGridExpiry">
+                        <Form.Label style={{ color: 'white' }}>Expiration Date</Form.Label>
+                        <Form.Control type="text" placeholder="MM/YY" required />
+                    </Form.Group>
+
+                    <Form.Group as={Col} controlId="formGridCVV">
+                        <Form.Label style={{ color: 'white' }}>CVV</Form.Label>
+                        <Form.Control type="text" placeholder="CVV" required />
+                    </Form.Group>
+
+                    <h4 className="my-3" style={{ color: 'white' }}>Your Information</h4>
+            
                     <Form.Group as={Col} controlId="formGridEmail">
                         <Form.Label style={{ color: 'white' }}>Email</Form.Label>
                         <Form.Control type="email" placeholder="Enter email" />
@@ -101,13 +134,13 @@ function CartItemsPage() {
 
                     <Form.Group as={Col} controlId="formGridPassword">
                         <Form.Label style={{ color: 'white' }}>Name</Form.Label>
-                        <Form.Control type="text" placeholder="Full Name" />
+                        <Form.Control type="text" placeholder="Full Name" required />
                     </Form.Group>
                 </Row>
 
                 <Form.Group className="mb-3" controlId="formGridAddress1">
                     <Form.Label style={{ color: 'white' }}>Address</Form.Label>
-                    <Form.Control placeholder="1234 Main St" />
+                    <Form.Control placeholder="1234 Main St" required />
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="formGridAddress2">
@@ -118,12 +151,12 @@ function CartItemsPage() {
                 <Row className="mb-3">
                     <Form.Group as={Col} controlId="formGridCity">
                         <Form.Label style={{ color: 'white' }}>City</Form.Label>
-                        <Form.Control />
+                        <Form.Control required />
                     </Form.Group>
 
                     <Form.Group as={Col} controlId="formGridState">
                         <Form.Label style={{ color: 'white' }}>State</Form.Label>
-                        <Form.Control as="select" defaultValue="Choose...">
+                        <Form.Control as="select" defaultValue="Choose..." required>
                         <option>Choose...</option>
                             <option value="AL">Alabama</option>
                             <option value="AK">Alaska</option>
@@ -180,12 +213,13 @@ function CartItemsPage() {
 
                     <Form.Group as={Col} controlId="formGridZip">
                         <Form.Label style={{ color: 'white' }}>Zip</Form.Label>
-                        <Form.Control />
+                        <Form.Control required />
                     </Form.Group>
                 </Row>
 
                 <h4 style={{ color: 'white' }}>Total Price: ${totalPrice.toFixed(2)}</h4>
                 <Button variant="primary" onClick={handleCheckout}>Checkout</Button>
+                <Button variant="danger" onClick={handleClearCart}>Clear Cart</Button>
                 <br></br>
                 
                 

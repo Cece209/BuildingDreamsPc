@@ -1,10 +1,28 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
-    const [cartItems, setCartItems] = useState([]);
-    const [savedBuilds, setSavedBuilds] = useState([]);
+    // Initialize state from localStorage if available
+    const [cartItems, setCartItems] = useState(() => {
+        const localData = localStorage.getItem('cartItems');
+        return localData ? JSON.parse(localData) : [];
+    });
+
+    const [savedBuilds, setSavedBuilds] = useState(() => {
+        const localData = localStorage.getItem('savedBuilds');
+        return localData ? JSON.parse(localData) : [];
+    });
+
+    // Update localStorage when cartItems changes
+    useEffect(() => {
+        localStorage.setItem('cartItems', JSON.stringify(cartItems));
+    }, [cartItems]);
+
+    // Update localStorage when savedBuilds changes
+    useEffect(() => {
+        localStorage.setItem('savedBuilds', JSON.stringify(savedBuilds));
+    }, [savedBuilds]);
 
     const addToCart = (item) => {
         setCartItems(prevItems => [...prevItems, item]);
@@ -16,6 +34,7 @@ export const CartProvider = ({ children }) => {
 
     const clearCart = () => {
         setCartItems([]);
+        localStorage.removeItem('cartItems'); // Optionally clear from localStorage
     };
 
     return (
