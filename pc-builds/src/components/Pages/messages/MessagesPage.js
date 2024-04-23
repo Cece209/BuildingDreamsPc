@@ -18,10 +18,31 @@ function MessagesPage() {
         fetchMessages();
     }, []);
 
+    const fetchUserInfo = async (userId) => {
+        const response = await fetch(`https://your-api-gateway-url/users/${userId}`, {
+            method: 'GET',
+            headers: {
+                // Authorization header if needed
+            }
+        });
+    
+        if (!response.ok) {
+            throw new Error('Failed to fetch user details');
+        }
+    
+        const data = await response.json();
+        return data;
+    };
+
     const fetchMessages = async () => {
         try {
             const response = await client.graphql({ query: listMessages });
-            setMessages(response.data.listMessages.items);
+            const fetchedMessages = await Promise.all(response.data.listMessages.items.map(async (message) => {
+                // Example of fetching the username for each message
+                const userInfo = await fetchUserInfo(message.senderID); // Implement this function based on your auth system
+                return { ...message, senderUsername: userInfo.username };
+            }));
+            setMessages(fetchedMessages);
         } catch (error) {
             console.error('Error fetching messages:', error);
         }
@@ -29,37 +50,32 @@ function MessagesPage() {
 
     const addNewMessage = async () => {
         const { recipientID, content } = messageData;
-    
+
         if (!content.trim()) {
             console.error('Message content cannot be empty');
             return;
         }
-    
+
         try {
-            const user = await getCurrentUser(); // Get the current authenticated user
-            const senderID = user.username; // Or use `user.attributes.sub` for the unique user ID
-    
+            const user = await getCurrentUser();
+            const senderID = user.username;  // Assuming the username is what you want to show
+
             const newMessage = {
                 id: uuid(),
-                messageID: uuid(), // Assuming messageID is similar to ID
+                messageID: uuid(),
                 senderID,
                 recipientID,
                 content: content.trim(),
-                timestamp: new Date().toISOString() // Assuming timestamp is required
+                timestamp: new Date().toISOString()
             };
-    
-            console.log('New Message:', newMessage);
-    
-            const mutationVariables = { input: newMessage };
-            console.log("Mutation Variables:", mutationVariables); // Log the mutation variables
-    
+
             await client.graphql({
                 query: createMessages,
-                variables: mutationVariables
+                variables: { input: newMessage }
             });
-    
-            fetchMessages(); // Refresh the list of messages
-            setMessageData({ recipientID: '', content: '' }); // Reset message input form
+
+            fetchMessages();
+            setMessageData({ recipientID: '', content: '' });
         } catch (error) {
             console.error('Error creating message:', error);
             alert('Failed to send message.');
