@@ -20,6 +20,7 @@ import ConfigurePage from './components/Pages/configure/ConfigurePage';
 import MessagesPage from './components/Pages/messages/MessagesPage';
 import CartItemsPage from './components/Pages/cartItems/CartItemsPage';
 import SavedBuildsPage from './components/Pages/savedbuilds/SavedBuildspage';
+import SharedBuildsPage from './components/Pages/sharedbuilds/SharedBuildsPage.js';
 import FeedbackPage from './components/Pages/feedback/FeedbackPage';
 import { CartProvider } from './components/Pages/cartItems/CartContext.js';
 
@@ -70,6 +71,7 @@ function App() {
         <Route path='/cartitems' element={<CartItemsPage /> } />
         <Route path='/about' element={<AboutPage /> } />
         <Route path='/savedbuilds' element={<SavedBuildsPage /> } />
+        <Route path='/sharedbuilds' element={<SharedBuildsPage />} />
         <Route path='/feedback' element={<FeedbackPage /> } />
 
       </Routes>

@@ -81,7 +81,7 @@ function HomePage() {
                                     <div>
                                         <h3>Shared Builds</h3>
                                         <p>Share your builds!</p>
-                                        <Button variant="primary" href="/new">Share</Button>
+                                        <Button variant="primary" href="/sharedbuilds">Share</Button>
                                     </div>
                                 </Container>
                             </Carousel.Item>

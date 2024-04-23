@@ -7,15 +7,24 @@ import { listProducts } from '../../../graphql/queries';
 function CartItemsPage() {
     const { cartItems, clearCart } = useCart();
 
+    const [validated, setValidated] = useState(false);
+    
     const [setProducts] = useState([]);
     const client = generateClient();
 
     const [showAlert, setShowAlert] = useState(false);
 
-    const handleCheckout = () => {
-        clearCart();
-        setShowAlert(true);
-        setTimeout(() => setShowAlert(false), 3000); // Alert disappears after 3 seconds
+    const handleCheckout = (event) => {
+        const form = event.currentTarget;
+        if (form.checkValidity() === false) {
+            event.preventDefault();
+            event.stopPropagation();
+        } else {
+            clearCart();
+            setShowAlert(true);
+            setTimeout(() => setShowAlert(false), 3000); // Alert disappears after 3 seconds
+        }
+        setValidated(true);
     };
 
 
@@ -50,15 +59,15 @@ function CartItemsPage() {
                 <Col><h1 style={{ color: 'white', textShadow: '0 0 3px black' }}>Shopping Cart</h1></Col>
             </Row>
             {cartItems.length > 0 ? cartItems.map(item => (
-             <Card className="mb-4" key={item.id} style={{ width: '18rem' }}> 
-             <Card.Body>
-                 <Card.Img variant="top" src={item.productPicturePath} style={{ width: '100%', height: 'auto' }} />
-                 <Card.Title>{item.name}</Card.Title>
-                 <Card.Text>Price: ${item.price}</Card.Text>
-             </Card.Body>
-         </Card>
+                <Card className="mb-4" key={item.id} style={{ width: '18rem' }}> 
+                    <Card.Body>
+                        <Card.Img variant="top" src={item.productPicturePath} style={{ width: '100%', height: 'auto' }} />
+                        <Card.Title>{item.name}</Card.Title>
+                        <Card.Text>Price: ${item.price}</Card.Text>
+                    </Card.Body>
+                </Card>
             )) : <p style={{ color: 'white' }}>No items in the cart.</p>}
-            <Form>
+            <Form noValidate validated={validated} onSubmit={handleCheckout}>
                 <h4 className="my-3" style={{ color: 'white' }}>Your Information</h4>
                 <Row className="mb-3">
                     <Form.Group as={Col} controlId="formGridEmail">
