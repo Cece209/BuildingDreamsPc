@@ -31,7 +31,7 @@ function SiteNav(props) {
                                 <Nav.Link href="/configure">Configure</Nav.Link> 
                                 <Nav.Link href="/messages">Messages</Nav.Link> 
                                 <Nav.Link href="/cartitems">Cart Items</Nav.Link>
-                                <Nav.Link href="/savedbuilds">Your Builds</Nav.Link>
+                                <Nav.Link href="/savedbuilds">Saved Builds</Nav.Link>
                                 <Nav.Link href="/sharedbuilds">Browse Builds</Nav.Link>
                                 <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
                             </Nav>

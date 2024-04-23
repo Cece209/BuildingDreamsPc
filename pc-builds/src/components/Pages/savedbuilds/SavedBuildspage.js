@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Container, ListGroup, Button, Modal, Card, Row, Col } from "react-bootstrap";
 import { generateClient } from 'aws-amplify/api';
 import { listBuilds, getProduct } from '../../../graphql/queries';
@@ -13,9 +13,10 @@ function SavedBuildsPage(){
     const { addToCart } = useCart();
     const navigate = useNavigate();
     const [builds, setBuilds] = useState([]);
-    const [selectedBuild, setSelectedBuild] = useState(null);
-    const [productDetails, setProductDetails] = useState([]);
+    const [productsDetails, setProductsDetails] = useState({});
     const [showDetailsModal, setShowDetailsModal] = useState(false);
+    const [selectedBuild, setSelectedBuild] = useState(null);
+    const productsFetched = useRef(false); // This ref will track if product details have been fetched
 
     const client = generateClient();
 
@@ -23,40 +24,39 @@ function SavedBuildsPage(){
         const fetchBuilds = async () => {
             try {
                 const user = await getCurrentUser();
-                const userId = user.username; // Or user.attributes.sub for the Cognito user pool sub ID
-
-                const { data } = await client.graphql({ 
+                const userId = user.username; 
+                const { data } = await client.graphql({
                     query: listBuilds,
-                    variables: { filter: { ownerID: { eq: userId } } } // Assuming you have an ownerID in your schema
+                    variables: { filter: { ownerID: { eq: userId } } }
                 });
                 setBuilds(data.listBuilds.items);
             } catch (error) {
                 console.error('Error fetching builds:', error);
             }
         };
-
         fetchBuilds();
     }, [client]);
 
     useEffect(() => {
-        if (selectedBuild) {
-            const productIds = selectedBuild.itemsPurchased.split(',');
-            fetchProductDetails(productIds);
+        if (builds.length > 0 && !productsFetched.current) {
+            fetchAllProductDetails(builds);
+            productsFetched.current = true; // Mark as fetched
         }
-    }, [selectedBuild, client]);
+    }, [builds]); // Only re-run this effect if 'builds' changes
 
-    const fetchProductDetails = async (productIds) => {
-        try {
+    const fetchAllProductDetails = async (builds) => {
+        const detailsMap = {};
+        for (let build of builds) {
+            const productIds = build.itemsPurchased.split(',');
             const details = await Promise.all(productIds.map(id =>
                 client.graphql({
                     query: getProduct,
                     variables: { id }
                 })
             ));
-            setProductDetails(details.map(detail => detail.data.getProduct));
-        } catch (error) {
-            console.error('Error fetching product details:', error);
+            detailsMap[build.id] = details.map(detail => detail.data.getProduct);
         }
+        setProductsDetails(detailsMap);
     };
 
     const handleDeleteBuild = async (buildId) => {
@@ -75,6 +75,18 @@ function SavedBuildsPage(){
         }
     };
 
+    const handleAddToCart = (buildId) => {
+        if (productsDetails[buildId]) {
+            productsDetails[buildId].forEach(product => {
+                addToCart(product);
+            });
+            alert('Items added to cart!');
+            navigate('/cartitems');
+        } else {
+            alert('No products details available.');
+        }
+    };
+
     const handleShowDetails = (build) => {
         setSelectedBuild(build);
         setShowDetailsModal(true);
@@ -85,13 +97,6 @@ function SavedBuildsPage(){
         setSelectedBuild(null);
     };
 
-    const handleAddToCart = (products) => {
-        products.forEach(product => {
-            addToCart(product);
-        });
-        alert('Items added to cart!');
-        navigate('/cartitems'); // Navigate to the cart page
-    };
 
     const renderProductCards = (products) => {
         return products.map(product => (
@@ -106,7 +111,6 @@ function SavedBuildsPage(){
     };
     
 
-
     return (
         <Container>
             <Row className="px-4 my-5">
@@ -119,7 +123,7 @@ function SavedBuildsPage(){
                         <p>Date: {new Date(build.date).toLocaleDateString()}</p>
                         <Button variant="primary" onClick={() => handleShowDetails(build)}>View Details</Button>
                         <Button variant="danger" onClick={() => handleDeleteBuild(build.id)}>Delete Build</Button>
-                        <Button variant="success" onClick={() => handleAddToCart(productDetails)}>Add All to Cart</Button>
+                        <Button variant="success" onClick={() => handleAddToCart(build.id)}>Add Build to Cart</Button>
                     </ListGroup.Item>
                 ))}
             </ListGroup>
@@ -130,7 +134,7 @@ function SavedBuildsPage(){
                     </Modal.Header>
                     <Modal.Body>
                         <div className="d-flex flex-wrap">
-                            {renderProductCards(productDetails)}
+                        {renderProductCards(productsDetails[selectedBuild.id] || [])}
                         </div>
                     </Modal.Body>
                     <Modal.Footer>
