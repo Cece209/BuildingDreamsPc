@@ -58,15 +58,39 @@ function CartItemsPage() {
             <Row className="px-4 my-5">
                 <Col><h1 style={{ color: 'white', textShadow: '0 0 3px black' }}>Shopping Cart</h1></Col>
             </Row>
-            {cartItems.length > 0 ? cartItems.map(item => (
-                <Card className="mb-4" key={item.id} style={{ width: '18rem' }}> 
-                    <Card.Body>
-                        <Card.Img variant="top" src={item.productPicturePath} style={{ width: '100%', height: 'auto' }} />
-                        <Card.Title>{item.name}</Card.Title>
-                        <Card.Text>Price: ${item.price}</Card.Text>
-                    </Card.Body>
+            <div>
+      {cartItems.length > 0 ? (
+        // Chunk the cartItems into groups of three for each row
+        cartItems.reduce((acc, curr, idx) => {
+          const index = Math.floor(idx / 3); // Determine which row the current item should go into
+          if (!acc[index]) {
+            acc[index] = []; // Initialize a new row if not yet created
+          }
+          acc[index].push(curr); // Add the current item to the appropriate row
+          return acc;
+        }, []).map((row, rowIndex) => (
+          <Row key={rowIndex} className="mb-4">
+            {row.map((item) => (
+              <Col key={item.id} sm={4}>
+                <Card>
+                  <Card.Body>
+                    <Card.Img
+                      variant="top"
+                      src={item.productPicturePath}
+                      style={{ width: '60%', height: 'auto' }}
+                    />
+                    <Card.Title>{item.name}</Card.Title>
+                    <Card.Text>Price: ${item.price}</Card.Text>
+                  </Card.Body>
                 </Card>
-            )) : <p style={{ color: 'white' }}>No items in the cart.</p>}
+              </Col>
+            ))}
+          </Row>
+        ))
+      ) : (
+        <p style={{ color: 'white' }}>No items in the cart.</p>
+      )}
+    </div>
             <Form noValidate validated={validated} onSubmit={handleCheckout}>
                 <h4 className="my-3" style={{ color: 'white' }}>Your Information</h4>
                 <Row className="mb-3">
