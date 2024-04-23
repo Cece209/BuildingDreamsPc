@@ -63,6 +63,15 @@ function ForumsPage(){
         const { name, title, description } = forumData;
         const filename = `${uuid()}.png`;
 
+        if (!title.trim()) {
+            console.error('Message content cannot be empty');
+            return;
+        }
+        if (!name.trim()) {
+            console.error('Message content cannot be empty');
+            return;
+        }
+
         try {
             await uploadData({
                 key: filename,
@@ -119,14 +128,14 @@ function ForumsPage(){
                     <h2 style={{ color: 'white', textShadow: '0 0 3px black' }}>Forums</h2>
                     <Form>
                         <Form.Group className="mb-3" controlId="formGroupName">
-                            <Form.Label style={{ color: 'white', textShadow: '0 0 3px black' }}>Name</Form.Label>
+                            <Form.Label style={{ color: 'white', textShadow: '0 0 3px black' }}>Name*</Form.Label>
                             <Form.Control type="text" placeholder="Type here" 
                                 value={forumData.name} 
                                 onChange={e => setForumData({ ...forumData, name: e.target.value })}
                             />
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="formGroupTitle">
-                            <Form.Label style={{ color: 'white', textShadow: '0 0 3px black' }}>Title</Form.Label>
+                            <Form.Label style={{ color: 'white', textShadow: '0 0 3px black' }}>Title*</Form.Label>
                             <Form.Control type="text" placeholder="Type here" 
                                 value={forumData.title}  
                                 onChange={e => setForumData({ ...forumData, title: e.target.value })}

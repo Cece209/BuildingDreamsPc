@@ -110,18 +110,18 @@ function CartItemsPage() {
              {/* Credit Card Information */}
              <h4 className="my-3" style={{ color: 'white' }}>Payment Information</h4>
                 <Form.Group className="mb-3" controlId="formGridCardNumber">
-                    <Form.Label style={{ color: 'white' }}>Card Number</Form.Label>
+                    <Form.Label style={{ color: 'white' }}>Card Number*</Form.Label>
                     <Form.Control type="text" placeholder="Card Number" required />
                 </Form.Group>
 
                 <Row className="mb-3">
                     <Form.Group as={Col} controlId="formGridExpiry">
-                        <Form.Label style={{ color: 'white' }}>Expiration Date</Form.Label>
+                        <Form.Label style={{ color: 'white' }}>Expiration Date*</Form.Label>
                         <Form.Control type="text" placeholder="MM/YY" required />
                     </Form.Group>
 
                     <Form.Group as={Col} controlId="formGridCVV">
-                        <Form.Label style={{ color: 'white' }}>CVV</Form.Label>
+                        <Form.Label style={{ color: 'white' }}>CVV*</Form.Label>
                         <Form.Control type="text" placeholder="CVV" required />
                     </Form.Group>
 
@@ -133,13 +133,13 @@ function CartItemsPage() {
                     </Form.Group>
 
                     <Form.Group as={Col} controlId="formGridPassword">
-                        <Form.Label style={{ color: 'white' }}>Name</Form.Label>
+                        <Form.Label style={{ color: 'white' }}>Name*</Form.Label>
                         <Form.Control type="text" placeholder="Full Name" required />
                     </Form.Group>
                 </Row>
 
                 <Form.Group className="mb-3" controlId="formGridAddress1">
-                    <Form.Label style={{ color: 'white' }}>Address</Form.Label>
+                    <Form.Label style={{ color: 'white' }}>Address*</Form.Label>
                     <Form.Control placeholder="1234 Main St" required />
                 </Form.Group>
 
@@ -150,12 +150,12 @@ function CartItemsPage() {
 
                 <Row className="mb-3">
                     <Form.Group as={Col} controlId="formGridCity">
-                        <Form.Label style={{ color: 'white' }}>City</Form.Label>
+                        <Form.Label style={{ color: 'white' }}>City*</Form.Label>
                         <Form.Control required />
                     </Form.Group>
 
                     <Form.Group as={Col} controlId="formGridState">
-                        <Form.Label style={{ color: 'white' }}>State</Form.Label>
+                        <Form.Label style={{ color: 'white' }}>State*</Form.Label>
                         <Form.Control as="select" defaultValue="Choose..." required>
                         <option>Choose...</option>
                             <option value="AL">Alabama</option>
@@ -212,7 +212,7 @@ function CartItemsPage() {
                     </Form.Group>
 
                     <Form.Group as={Col} controlId="formGridZip">
-                        <Form.Label style={{ color: 'white' }}>Zip</Form.Label>
+                        <Form.Label style={{ color: 'white' }}>Zip*</Form.Label>
                         <Form.Control required />
                     </Form.Group>
                 </Row>

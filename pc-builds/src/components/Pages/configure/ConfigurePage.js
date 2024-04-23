@@ -529,6 +529,9 @@ function ConfigurePage(){
             <Col className="saveButton">
             <Button variant="success" onClick={() => setShowSaveModal(true)}>Save Build</Button>
             </Col>
+            <Col className="infoCol">
+            <p className="shareInfo">Builds are automatically shared when they are saved. Check out Browse Builds to see other builds!</p>
+            </Col>
             </Row>
             </div>
             </Container>
