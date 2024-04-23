@@ -6,6 +6,7 @@ import { generateClient } from 'aws-amplify/api';
 import { createMessages } from '../../../graphql/mutations';
 import { listMessages } from '../../../graphql/queries';
 import { getCurrentUser } from 'aws-amplify/auth';
+import { fetchAuthSession } from 'aws-amplify/auth';
 import { v4 as uuid } from 'uuid';
 
 function MessagesPage() {
@@ -18,64 +19,56 @@ function MessagesPage() {
         fetchMessages();
     }, []);
 
-    const fetchUserInfo = async (userId) => {
-        const response = await fetch(`https://your-api-gateway-url/users/${userId}`, {
-            method: 'GET',
-            headers: {
-                // Authorization header if needed
-            }
-        });
-    
-        if (!response.ok) {
-            throw new Error('Failed to fetch user details');
-        }
-    
-        const data = await response.json();
-        return data;
-    };
-
     const fetchMessages = async () => {
         try {
-            const response = await client.graphql({ query: listMessages });
-            const fetchedMessages = await Promise.all(response.data.listMessages.items.map(async (message) => {
-                // Example of fetching the username for each message
-                const userInfo = await fetchUserInfo(message.senderID); // Implement this function based on your auth system
-                return { ...message, senderUsername: userInfo.username };
-            }));
-            setMessages(fetchedMessages);
+            const session = await fetchAuthSession();
+            const { accessToken } = session.tokens; // Assuming tokens are available
+            
+            const response = await client.graphql({
+                query: listMessages,
+                authToken: accessToken.jwtToken // Use the JWT token for authentication
+            });
+            setMessages(response.data.listMessages.items);
         } catch (error) {
             console.error('Error fetching messages:', error);
         }
     };
 
+
     const addNewMessage = async () => {
         const { recipientID, content } = messageData;
-
+    
         if (!content.trim()) {
             console.error('Message content cannot be empty');
             return;
         }
-
+    
         try {
+            // Fetch user session and details
+            const session = await fetchAuthSession();
             const user = await getCurrentUser();
-            const senderID = user.username;  // Assuming the username is what you want to show
-
+    
+            // If necessary, use user attributes for something specific
+            // e.g., getting a custom attribute or email for display
+            const senderID = session.tokens.idToken.payload.sub;  // Unique user ID from token
+            const senderEmail = user.attributes.email;  // User email from Cognito user pool
+    
             const newMessage = {
                 id: uuid(),
                 messageID: uuid(),
-                senderID,
+                senderID,  // Or senderEmail if you want to display the email
                 recipientID,
                 content: content.trim(),
                 timestamp: new Date().toISOString()
             };
-
+    
             await client.graphql({
                 query: createMessages,
                 variables: { input: newMessage }
             });
-
-            fetchMessages();
-            setMessageData({ recipientID: '', content: '' });
+    
+            fetchMessages();  // Refresh the list of messages
+            setMessageData({ recipientID: '', content: '' });  // Reset message input form
         } catch (error) {
             console.error('Error creating message:', error);
             alert('Failed to send message.');
@@ -84,49 +77,47 @@ function MessagesPage() {
     
 
     return (
-        <Container>
-            <Row className="px-4 my-5">
-                <Col><h1 style={{ color: 'white', textShadow: '0 0 3px black' }}>Messages</h1></Col>
-            </Row>
-            <Row className="px-4 my-5">
-                <Col sm={6}>
+        <Container fluid="md">
+            <Row className="my-4 justify-content-center">
+                <Col xs={12} md={8}>
+                    <h1 className="text-center" style={{ color: 'white', textShadow: '0 0 3px black' }}>Messages</h1>
                     <Form>
-                        <Form.Group className="mb-3" controlId="formGroupRecipientID">
-                            <Form.Label style={{ color: 'white', textShadow: '0 0 3px black' }}>To</Form.Label>
+                        <Form.Group className="mb-3">
+                            <Form.Label>To</Form.Label>
                             <Form.Control
                                 type="text"
                                 placeholder="Type User Account"
-                                name="recipientID"
                                 value={messageData.recipientID}
                                 onChange={(e) => setMessageData({ ...messageData, recipientID: e.target.value })}
                             />
                         </Form.Group>
-                        <Form.Group className="mb-3" controlId="formGroupContent">
-                            <Form.Label style={{ color: 'white', textShadow: '0 0 3px black' }}>Message Content</Form.Label>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Message Content</Form.Label>
                             <Form.Control
                                 as="textarea"
                                 rows={3}
                                 placeholder="Type here"
-                                name="content"
                                 value={messageData.content}
                                 onChange={(e) => setMessageData({ ...messageData, content: e.target.value })}
                             />
                         </Form.Group>
-                        <Button variant="primary" onClick={addNewMessage}>Send Message &gt;&gt;</Button>
+                        <Button variant="primary" onClick={addNewMessage}>Send Message</Button>
                     </Form>
                 </Col>
-                <Col sm={6}>
+            </Row>
+            <Row className="my-4 justify-content-center">
+                <Col xs={12} md={8}>
                     <ListGroup>
                         {messages.map(message => (
                             <ListGroup.Item key={message.id}>
-                                <b>From: {message.senderID}</b><br />
-                                {message.content}
+                                <strong>From:</strong> {message.senderID}<br />
+                                <p>{message.content}</p>
                             </ListGroup.Item>
                         ))}
                     </ListGroup>
                 </Col>
             </Row>
-            <style>{`
+            <style jsx>{`
                 body {
                     background-color: #333333;
                     min-height: 100vh;
