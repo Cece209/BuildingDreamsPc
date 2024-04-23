@@ -18,13 +18,10 @@ import { getCurrentUser } from 'aws-amplify/auth';
 
 function ConfigurePage(){
 
-
     const [currentImage, setCurrentImage] = useState('/img/PCSilh-removebg-preview.png'); // Default image path
-
 
     const [products, setProducts] = useState([]);
     // const [productData, setProductData] = useState({partType:"", name:"", price:""});
-
 
     //const variables for showing product parts and selected parts
     const [showGPU, setShowGPU] = useState(false);

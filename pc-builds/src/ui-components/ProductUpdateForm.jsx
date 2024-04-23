@@ -30,6 +30,7 @@ export default function ProductUpdateForm(props) {
     price: "",
     productPicturePath: "",
     Description: "",
+    Description2: "",
   };
   const [partType, setPartType] = React.useState(initialValues.partType);
   const [name, setName] = React.useState(initialValues.name);
@@ -39,6 +40,9 @@ export default function ProductUpdateForm(props) {
   );
   const [Description, setDescription] = React.useState(
     initialValues.Description
+  );
+  const [Description2, setDescription2] = React.useState(
+    initialValues.Description2
   );
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
@@ -50,6 +54,7 @@ export default function ProductUpdateForm(props) {
     setPrice(cleanValues.price);
     setProductPicturePath(cleanValues.productPicturePath);
     setDescription(cleanValues.Description);
+    setDescription2(cleanValues.Description2);
     setErrors({});
   };
   const [productRecord, setProductRecord] = React.useState(productModelProp);
@@ -74,6 +79,7 @@ export default function ProductUpdateForm(props) {
     price: [{ type: "Required" }],
     productPicturePath: [{ type: "URL" }],
     Description: [],
+    Description2: [],
   };
   const runValidationTasks = async (
     fieldName,
@@ -106,6 +112,7 @@ export default function ProductUpdateForm(props) {
           price,
           productPicturePath: productPicturePath ?? null,
           Description: Description ?? null,
+          Description2: Description2 ?? null,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -171,6 +178,7 @@ export default function ProductUpdateForm(props) {
               price,
               productPicturePath,
               Description,
+              Description2,
             };
             const result = onChange(modelFields);
             value = result?.partType ?? value;
@@ -199,6 +207,7 @@ export default function ProductUpdateForm(props) {
               price,
               productPicturePath,
               Description,
+              Description2,
             };
             const result = onChange(modelFields);
             value = result?.name ?? value;
@@ -231,6 +240,7 @@ export default function ProductUpdateForm(props) {
               price: value,
               productPicturePath,
               Description,
+              Description2,
             };
             const result = onChange(modelFields);
             value = result?.price ?? value;
@@ -259,6 +269,7 @@ export default function ProductUpdateForm(props) {
               price,
               productPicturePath: value,
               Description,
+              Description2,
             };
             const result = onChange(modelFields);
             value = result?.productPicturePath ?? value;
@@ -289,6 +300,7 @@ export default function ProductUpdateForm(props) {
               price,
               productPicturePath,
               Description: value,
+              Description2,
             };
             const result = onChange(modelFields);
             value = result?.Description ?? value;
@@ -302,6 +314,35 @@ export default function ProductUpdateForm(props) {
         errorMessage={errors.Description?.errorMessage}
         hasError={errors.Description?.hasError}
         {...getOverrideProps(overrides, "Description")}
+      ></TextField>
+      <TextField
+        label="Description2"
+        isRequired={false}
+        isReadOnly={false}
+        value={Description2}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              partType,
+              name,
+              price,
+              productPicturePath,
+              Description,
+              Description2: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.Description2 ?? value;
+          }
+          if (errors.Description2?.hasError) {
+            runValidationTasks("Description2", value);
+          }
+          setDescription2(value);
+        }}
+        onBlur={() => runValidationTasks("Description2", Description2)}
+        errorMessage={errors.Description2?.errorMessage}
+        hasError={errors.Description2?.hasError}
+        {...getOverrideProps(overrides, "Description2")}
       ></TextField>
       <Flex
         justifyContent="space-between"

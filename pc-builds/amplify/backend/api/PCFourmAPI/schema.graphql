@@ -22,6 +22,7 @@ type Product @model @auth(rules: [{allow: public}]) {
   price: Float!
   productPicturePath: AWSURL
   Description: String
+  Description2: String
 }
 
 type Forum @model @auth(rules: [{allow: public}]) {

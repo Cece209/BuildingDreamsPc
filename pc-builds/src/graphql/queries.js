@@ -84,6 +84,7 @@ export const getProduct = /* GraphQL */ `
       price
       productPicturePath
       Description
+      Description2
       createdAt
       updatedAt
       __typename
@@ -104,6 +105,7 @@ export const listProducts = /* GraphQL */ `
         price
         productPicturePath
         Description
+        Description2
         createdAt
         updatedAt
         __typename

@@ -5,9 +5,13 @@ import { listBuilds, getProduct } from '../../../graphql/queries';
 import { deleteBuilds } from '../../../graphql/mutations';
 
 import { getCurrentUser } from 'aws-amplify/auth';
+import { useCart } from '../../../components/Pages/cartItems/CartContext.js';
+import { useNavigate } from 'react-router-dom';
 
 function SavedBuildsPage(){
-    
+
+    const { addToCart } = useCart();
+    const navigate = useNavigate();
     const [builds, setBuilds] = useState([]);
     const [selectedBuild, setSelectedBuild] = useState(null);
     const [productDetails, setProductDetails] = useState([]);
@@ -81,6 +85,14 @@ function SavedBuildsPage(){
         setSelectedBuild(null);
     };
 
+    const handleAddToCart = (products) => {
+        products.forEach(product => {
+            addToCart(product);
+        });
+        alert('Items added to cart!');
+        navigate('/cartitems'); // Navigate to the cart page
+    };
+
     const renderProductCards = (products) => {
         return products.map(product => (
             <Card key={product.id} className="mb-2">
@@ -107,6 +119,7 @@ function SavedBuildsPage(){
                         <p>Date: {new Date(build.date).toLocaleDateString()}</p>
                         <Button variant="primary" onClick={() => handleShowDetails(build)}>View Details</Button>
                         <Button variant="danger" onClick={() => handleDeleteBuild(build.id)}>Delete Build</Button>
+                        <Button variant="success" onClick={() => handleAddToCart(productDetails)}>Add All to Cart</Button>
                     </ListGroup.Item>
                 ))}
             </ListGroup>

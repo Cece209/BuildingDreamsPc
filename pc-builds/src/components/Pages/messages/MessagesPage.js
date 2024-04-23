@@ -5,11 +5,13 @@ import Col from 'react-bootstrap/Col';
 import { generateClient } from 'aws-amplify/api';
 import { createMessages } from '../../../graphql/mutations';
 import { listMessages } from '../../../graphql/queries';
+import { getCurrentUser } from 'aws-amplify/auth';
 import { v4 as uuid } from 'uuid';
 
 function MessagesPage() {
-    const [messageData, setMessageData] = useState({ recipientID: '', content: '' });
+    
     const [messages, setMessages] = useState([]);
+    const [messageData, setMessageData] = useState({ recipientID: '', content: '' }); // Defines the messageData state
     const client = generateClient();
 
     useEffect(() => {
@@ -34,8 +36,8 @@ function MessagesPage() {
         }
     
         try {
-            // Replace this section with your logic to get the sender ID
-            const senderID = 'Replace with sender ID logic';
+            const user = await getCurrentUser(); // Get the current authenticated user
+            const senderID = user.username; // Or use `user.attributes.sub` for the unique user ID
     
             const newMessage = {
                 id: uuid(),
@@ -48,18 +50,19 @@ function MessagesPage() {
     
             console.log('New Message:', newMessage);
     
-            // Set the message data before making the GraphQL mutation call
-            setMessageData({ recipientID: '', content: '' });
-    
             const mutationVariables = { input: newMessage };
             console.log("Mutation Variables:", mutationVariables); // Log the mutation variables
     
-            await client.graphql({ mutation: createMessages, variables: mutationVariables });
+            await client.graphql({
+                query: createMessages,
+                variables: mutationVariables
+            });
     
-            fetchMessages();
-    
+            fetchMessages(); // Refresh the list of messages
+            setMessageData({ recipientID: '', content: '' }); // Reset message input form
         } catch (error) {
             console.error('Error creating message:', error);
+            alert('Failed to send message.');
         }
     };
     
@@ -71,7 +74,6 @@ function MessagesPage() {
             </Row>
             <Row className="px-4 my-5">
                 <Col sm={6}>
-                    <h2 style={{ color: 'white', textShadow: '0 0 3px black' }}>Add New Message</h2>
                     <Form>
                         <Form.Group className="mb-3" controlId="formGroupRecipientID">
                             <Form.Label style={{ color: 'white', textShadow: '0 0 3px black' }}>To</Form.Label>
@@ -94,11 +96,10 @@ function MessagesPage() {
                                 onChange={(e) => setMessageData({ ...messageData, content: e.target.value })}
                             />
                         </Form.Group>
-                        <Button variant="primary" type="button" onClick={addNewMessage}>Send Message &gt;&gt;</Button>
+                        <Button variant="primary" onClick={addNewMessage}>Send Message &gt;&gt;</Button>
                     </Form>
                 </Col>
                 <Col sm={6}>
-                    <h2 style={{ color: 'white', textShadow: '0 0 3px black' }}>Received Messages</h2>
                     <ListGroup>
                         {messages.map(message => (
                             <ListGroup.Item key={message.id}>
@@ -109,15 +110,12 @@ function MessagesPage() {
                     </ListGroup>
                 </Col>
             </Row>
-
-            <style>
-                {`
-                    body {
-                        background-color: #333333;
-                        min-height: 100vh;
-                    }
-                `}
-            </style>
+            <style>{`
+                body {
+                    background-color: #333333;
+                    min-height: 100vh;
+                }
+            `}</style>
         </Container>
     );
 }
