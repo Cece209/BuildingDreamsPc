@@ -6,49 +6,38 @@ import { SearchField } from '@aws-amplify/ui-react';
 import { useCart } from '../../../components/Pages/cartItems/CartContext.js';
 import { useNavigate } from 'react-router-dom';
 
-
-function SharedBuildsPage(){
-
+function SharedBuildsPage() {
     const [sharedBuilds, setSharedBuilds] = useState([]);
-
     const { addToCart } = useCart();
-    const [builds, setBuilds] = useState([]);
+    const navigate = useNavigate();
     const [searchTerm, setSearchTerm] = useState('');
     const [filteredBuilds, setFilteredBuilds] = useState([]);
     const [selectedBuild, setSelectedBuild] = useState(null);
     const [productDetails, setProductDetails] = useState({});
     const [showDetailsModal, setShowDetailsModal] = useState(false);
 
-    const navigate = useNavigate();
-   
-
     const client = generateClient();
-    
+
     useEffect(() => {
         const fetchBuilds = async () => {
             try {
-                // Fetch all builds from the database
                 const { data } = await client.graphql({
-                    query: listBuilds,  // Use listBuilds query that fetches all builds
+                    query: listBuilds,
                 });
-                setSharedBuilds(data.listBuilds.items);  // Assuming the query name and response structure
+                setSharedBuilds(data.listBuilds.items);
+                data.listBuilds.items.forEach(build => {
+                    if (build.itemsPurchased) {
+                        fetchProductDetails(build.itemsPurchased.split(','), build.id);
+                    }
+                });
             } catch (error) {
                 console.error('Error fetching builds:', error);
             }
         };
-    
         fetchBuilds();
     }, []);
 
-    useEffect(() => {
-        if (selectedBuild && !productDetails[selectedBuild.id]) {
-            fetchProductDetails(selectedBuild.itemsPurchased.split(','));
-        }
-    }, [selectedBuild, client]);
-
-    const fetchProductDetails = async (productIds) => {
-        if (!productIds) return; // Prevent fetching if there are no product IDs
-    
+    const fetchProductDetails = async (productIds, buildId) => {
         try {
             const details = await Promise.all(productIds.map(id =>
                 client.graphql({
@@ -56,30 +45,19 @@ function SharedBuildsPage(){
                     variables: { id }
                 })
             ));
-            // Only set product details if selectedBuild is still valid
-            if (selectedBuild) {
-                setProductDetails(prevDetails => ({
-                    ...prevDetails,
-                    [selectedBuild.id]: details.map(detail => detail.data.getProduct)
-                }));
-            }
+            const products = details.map(detail => detail.data.getProduct);
+            const totalCost = products.reduce((acc, product) => acc + parseFloat(product.price), 0);
+            setProductDetails(prevDetails => ({
+                ...prevDetails,
+                [buildId]: { products, totalCost }
+            }));
         } catch (error) {
-            console.error('Error fetching product details:', error);
-            // Handle the error case by setting an empty array for this build ID
-            if (selectedBuild) {
-                setProductDetails(prevDetails => ({
-                    ...prevDetails,
-                    [selectedBuild.id]: []
-                }));
-            }
+            console.error('Error fetching product details for build ID:', buildId, error);
         }
     };
-    
-    
 
     const renderProductCards = (products) => {
-        // Check if products is an array before trying to map over it
-        return Array.isArray(products) ? products.map(product => (
+        return products.map(product => (
             <Card key={product.id} className="mb-2">
                 <Card.Img variant="top" src={product.productPicturePath} />
                 <Card.Body>
@@ -87,17 +65,13 @@ function SharedBuildsPage(){
                     <Card.Text>Price: ${product.price.toFixed(2)}</Card.Text>
                 </Card.Body>
             </Card>
-        )) : <p>No products found.</p>;
+        ));
     };
-    
+
     const handleShowDetails = (build) => {
         setSelectedBuild(build);
-        if (build && !productDetails[build.id]) {
-            fetchProductDetails(build.itemsPurchased.split(','));
-        }
         setShowDetailsModal(true);
     };
-    
 
     const handleCloseModal = () => {
         setShowDetailsModal(false);
@@ -106,23 +80,16 @@ function SharedBuildsPage(){
 
     const handleAddToCart = (buildId) => {
         const details = productDetails[buildId];
-        if (details && details.length > 0) {
-            details.forEach(product => {
+        if (details && details.products.length > 0) {
+            details.products.forEach(product => {
                 addToCart(product);
             });
             alert('Items added to cart!');
-            navigate('/cartitems'); // Change this to the path of your cart page
+            navigate('/cartitems');
         } else {
             alert('Fetching product details, please try again in a moment.');
-            const build = sharedBuilds.find(b => b.id === buildId);
-            if (build) {
-                setSelectedBuild(build);
-                fetchProductDetails(build.itemsPurchased.split(','));
-            }
         }
     };
-    
-    
 
     useEffect(() => {
         const results = sharedBuilds.filter(build =>
@@ -145,8 +112,7 @@ function SharedBuildsPage(){
                 <Col><h1 style={{ color: 'white', textShadow: '0 0 3px black' }}>Browse Builds</h1></Col>
             </Row>
             <Row className="px-4 my-3">
-            <SearchField 
-                    style={{ color: 'white', textShadow: '0 0 3px black' }}
+                <SearchField 
                     label="Search builds"
                     placeholder="Type build name"
                     value={searchTerm}
@@ -161,6 +127,7 @@ function SharedBuildsPage(){
                             <Card.Body>
                                 <Card.Title>{build.name}</Card.Title>
                                 <Card.Text>Date: {new Date(build.date).toLocaleDateString()}</Card.Text>
+                                <Card.Text><b>Total Cost: ${productDetails[build.id]?.totalCost.toFixed(2)}</b></Card.Text>
                                 <Button variant="primary" onClick={() => handleShowDetails(build)}>View Details</Button>
                                 <Button variant="success" onClick={() => handleAddToCart(build.id)}>Add Build to Cart</Button>
                             </Card.Body>
@@ -177,7 +144,7 @@ function SharedBuildsPage(){
                     </Modal.Header>
                     <Modal.Body>
                         <div className="d-flex flex-wrap">
-                            {selectedBuild ? renderProductCards(productDetails[selectedBuild.id] || []) : <p>Loading...</p>}
+                            {selectedBuild ? renderProductCards(productDetails[selectedBuild.id]?.products || []) : <p>Loading...</p>}
                         </div>
                     </Modal.Body>
                     <Modal.Footer>
@@ -188,12 +155,11 @@ function SharedBuildsPage(){
             <style jsx>{`
                 body {
                     background-color: #333333;
-                    min-height: 100vh;
+                    min-height: 100vh.
                 }
             `}</style>
         </Container>
     );
 }
-
 
 export default SharedBuildsPage;

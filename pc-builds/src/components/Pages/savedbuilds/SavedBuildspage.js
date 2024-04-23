@@ -8,8 +8,7 @@ import { getCurrentUser } from 'aws-amplify/auth';
 import { useCart } from '../../../components/Pages/cartItems/CartContext.js';
 import { useNavigate } from 'react-router-dom';
 
-function SavedBuildsPage(){
-
+function SavedBuildsPage() {
     const { addToCart } = useCart();
     const navigate = useNavigate();
     const [builds, setBuilds] = useState([]);
@@ -24,7 +23,7 @@ function SavedBuildsPage(){
         const fetchBuilds = async () => {
             try {
                 const user = await getCurrentUser();
-                const userId = user.username; 
+                const userId = user.username;
                 const { data } = await client.graphql({
                     query: listBuilds,
                     variables: { filter: { ownerID: { eq: userId } } }
@@ -54,14 +53,16 @@ function SavedBuildsPage(){
                     variables: { id }
                 })
             ));
-            detailsMap[build.id] = details.map(detail => detail.data.getProduct);
+            const products = details.map(detail => detail.data.getProduct);
+            const totalCost = products.reduce((acc, product) => acc + parseFloat(product.price), 0);
+            detailsMap[build.id] = { products, totalCost };
         }
         setProductsDetails(detailsMap);
     };
 
     const handleDeleteBuild = async (buildId) => {
         if (!window.confirm("Are you sure you want to delete this build?")) return;
-    
+
         try {
             const { data } = await client.graphql({
                 query: deleteBuilds,
@@ -76,8 +77,9 @@ function SavedBuildsPage(){
     };
 
     const handleAddToCart = (buildId) => {
-        if (productsDetails[buildId]) {
-            productsDetails[buildId].forEach(product => {
+        const details = productsDetails[buildId];
+        if (details && details.products) {
+            details.products.forEach(product => {
                 addToCart(product);
             });
             alert('Items added to cart!');
@@ -97,7 +99,6 @@ function SavedBuildsPage(){
         setSelectedBuild(null);
     };
 
-
     const renderProductCards = (products) => {
         return products.map(product => (
             <Card key={product.id} className="mb-2">
@@ -109,7 +110,6 @@ function SavedBuildsPage(){
             </Card>
         ));
     };
-    
 
     return (
         <Container>
@@ -121,6 +121,7 @@ function SavedBuildsPage(){
                     <ListGroup.Item key={build.id}>
                         <h5>{build.name}</h5>
                         <p>Date: {new Date(build.date).toLocaleDateString()}</p>
+                        <p><b>Total Cost: ${productsDetails[build.id]?.totalCost.toFixed(2)}</b></p>
                         <Button variant="primary" onClick={() => handleShowDetails(build)}>View Details</Button>
                         <Button variant="danger" onClick={() => handleDeleteBuild(build.id)}>Delete Build</Button>
                         <Button variant="success" onClick={() => handleAddToCart(build.id)}>Add Build to Cart</Button>
@@ -134,7 +135,7 @@ function SavedBuildsPage(){
                     </Modal.Header>
                     <Modal.Body>
                         <div className="d-flex flex-wrap">
-                        {renderProductCards(productsDetails[selectedBuild.id] || [])}
+                            {renderProductCards(productsDetails[selectedBuild.id]?.products || [])}
                         </div>
                     </Modal.Body>
                     <Modal.Footer>
@@ -142,7 +143,7 @@ function SavedBuildsPage(){
                     </Modal.Footer>
                 </Modal>
             )}
-             <style jsx>{`
+            <style jsx>{`
                 body {
                     background-color: #333333;
                     min-height: 100vh;
