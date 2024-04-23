@@ -51,7 +51,7 @@ function MessagesPage() {
             // If necessary, use user attributes for something specific
             // e.g., getting a custom attribute or email for display
             const senderID = session.tokens.idToken.payload.sub;  // Unique user ID from token
-            const senderEmail = user.attributes.email;  // User email from Cognito user pool
+            //const senderEmail = user.attributes.email;  // User email from Cognito user pool
     
             const newMessage = {
                 id: uuid(),
