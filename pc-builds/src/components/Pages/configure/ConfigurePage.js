@@ -379,8 +379,6 @@ function ConfigurePage(){
     };
    
 
-
-
     return(
        
         <Container>
@@ -553,6 +551,8 @@ function ConfigurePage(){
                                 <Card.Body>
                                     <Card.Title>{product.name}</Card.Title>
                                     <Card.Text>Price: ${product.price}</Card.Text>
+                                    <Card.Text> {product.Description}</Card.Text>
+                                    <Card.Text> {product.Description2}</Card.Text>
                                     <Button variant="primary" onClick={() => handleAddGPU(product)}>Add to Build</Button>
                                 </Card.Body>
                             </Card>
@@ -577,6 +577,8 @@ function ConfigurePage(){
                             <Card.Body>
                                 <Card.Title>{product.name}</Card.Title>
                                 <Card.Text>Price: ${product.price}</Card.Text>
+                                <Card.Text> {product.Description}</Card.Text>
+                                <Card.Text> {product.Description2}</Card.Text>
                                 <Button variant="primary" onClick={() => handleAddRAM(product)}>Add to Build</Button>
                             </Card.Body>
                         </Card>
@@ -601,6 +603,8 @@ function ConfigurePage(){
                             <Card.Body>
                                 <Card.Title>{product.name}</Card.Title>
                                 <Card.Text>Price: ${product.price}</Card.Text>
+                                <Card.Text> {product.Description}</Card.Text>
+                                <Card.Text> {product.Description2}</Card.Text>
                                 <Button variant="primary" onClick={() => handleAddCase(product)}>Add to Build</Button>
                             </Card.Body>
                         </Card>
@@ -625,6 +629,8 @@ function ConfigurePage(){
                             <Card.Body>
                                 <Card.Title>{product.name}</Card.Title>
                                 <Card.Text>Price: ${product.price}</Card.Text>
+                                <Card.Text> {product.Description}</Card.Text>
+                                <Card.Text> {product.Description2}</Card.Text>
                                 <Button variant="primary" onClick={() => handleAddPSU(product)}>Add to Build</Button>
                             </Card.Body>
                         </Card>
@@ -649,6 +655,8 @@ function ConfigurePage(){
                             <Card.Body>
                                 <Card.Title>{product.name}</Card.Title>
                                 <Card.Text>Price: ${product.price}</Card.Text>
+                                <Card.Text> {product.Description}</Card.Text>
+                                <Card.Text> {product.Description2}</Card.Text>
                                 <Button variant="primary" onClick={() => handleAddCPU(product)}>Add to Build</Button>
                             </Card.Body>
                         </Card>
@@ -673,6 +681,8 @@ function ConfigurePage(){
                             <Card.Body>
                                 <Card.Title>{product.name}</Card.Title>
                                 <Card.Text>Price: ${product.price}</Card.Text>
+                                <Card.Text> {product.Description}</Card.Text>
+                                <Card.Text> {product.Description2}</Card.Text>
                                 <Button variant="primary" onClick={() => handleAddMOBO(product)}>Add to Build</Button>
                             </Card.Body>
                         </Card>
@@ -697,6 +707,8 @@ function ConfigurePage(){
                             <Card.Body>
                                 <Card.Title>{product.name}</Card.Title>
                                 <Card.Text>Price: ${product.price}</Card.Text>
+                                <Card.Text> {product.Description}</Card.Text>
+                                <Card.Text> {product.Description2}</Card.Text>
                                 <Button variant="primary" onClick={() => handleAddCooling(product)}>Add to Build</Button>
                             </Card.Body>
                         </Card>
@@ -721,6 +733,8 @@ function ConfigurePage(){
                             <Card.Body>
                                 <Card.Title>{product.name}</Card.Title>
                                 <Card.Text>Price: ${product.price}</Card.Text>
+                                <Card.Text> {product.Description}</Card.Text>
+                                <Card.Text> {product.Description2}</Card.Text>
                                 <Button variant="primary" onClick={() => handleAddMemory(product)}>Add to Build</Button>
                             </Card.Body>
                         </Card>
