@@ -4,6 +4,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { generateClient } from 'aws-amplify/api';
 import { createMessages } from '../../../graphql/mutations';
+import { deleteMessages } from '../../../graphql/mutations';
 import { listMessages } from '../../../graphql/queries';
 import { getCurrentUser } from 'aws-amplify/auth';
 import { fetchAuthSession } from 'aws-amplify/auth';
@@ -12,7 +13,8 @@ import { v4 as uuid } from 'uuid';
 function MessagesPage() {
     
     const [messages, setMessages] = useState([]);
-    const [messageData, setMessageData] = useState({ recipientID: '', content: '' }); // Defines the messageData state
+    const [messageData, setMessageData] = useState({ senderName: '', content: '' });
+
     const client = generateClient();
 
     useEffect(() => {
@@ -34,9 +36,20 @@ function MessagesPage() {
         }
     };
 
+    const fetchUserDetails = async () => {
+        try {
+            const session = await fetchAuthSession();
+            const user = await getCurrentUser();
+            const username = user.username;  // This assumes 'username' is the actual username attribute you want
+            return username;
+        } catch (error) {
+            console.error("Failed to fetch user details:", error);
+            return null;
+        }
+    };
 
     const addNewMessage = async () => {
-        const { recipientID, content } = messageData;
+        const { senderName, content } = messageData;
     
         if (!content.trim()) {
             console.error('Message content cannot be empty');
@@ -44,20 +57,10 @@ function MessagesPage() {
         }
     
         try {
-            // Fetch user session and details
-            const session = await fetchAuthSession();
-            const user = await getCurrentUser();
-    
-            // If necessary, use user attributes for something specific
-            // e.g., getting a custom attribute or email for display
-            const senderID = session.tokens.idToken.payload.sub;  // Unique user ID from token
-            //const senderEmail = user.attributes.email;  // User email from Cognito user pool
-    
             const newMessage = {
                 id: uuid(),
                 messageID: uuid(),
-                senderID,  // Or senderEmail if you want to display the email
-                recipientID,
+                senderID: senderName,  // Now using the sender's name directly
                 content: content.trim(),
                 timestamp: new Date().toISOString()
             };
@@ -68,10 +71,28 @@ function MessagesPage() {
             });
     
             fetchMessages();  // Refresh the list of messages
-            setMessageData({ recipientID: '', content: '' });  // Reset message input form
+            setMessageData({ senderName: '', content: '' });  // Reset message input form
         } catch (error) {
             console.error('Error creating message:', error);
             alert('Failed to send message.');
+        }
+    };
+    
+    
+    
+    const handleDeleteMessage = async (messageId) => {
+        if (!window.confirm("Are you sure you want to delete this message?")) return;
+    
+        try {
+            await client.graphql({
+                query: deleteMessages,
+                variables: { input: { id: messageId } }
+            });
+            setMessages(messages.filter(msg => msg.id !== messageId)); // Update state to remove the message
+            alert('Message deleted successfully!');
+        } catch (error) {
+            console.error('Error deleting message:', error);
+            alert('Failed to delete message.');
         }
     };
     
@@ -80,19 +101,20 @@ function MessagesPage() {
         <Container fluid="md">
             <Row className="my-4 justify-content-center">
                 <Col xs={12} md={8}>
-                    <h1 className="text-center" style={{ color: 'white', textShadow: '0 0 3px black' }}>Messages</h1>
+                    <h1 className="text-center" style={{ color: 'white', textShadow: '0 0 3px black' }}>GroupChat</h1>
                     <Form>
-                        <Form.Group className="mb-3">
-                            <Form.Label>To</Form.Label>
+                        <Form.Group className="mb-3" controlId="formGroupName">
+                            <Form.Label style={{ color: 'white', textShadow: '0 0 3px black' }}>Name</Form.Label>
                             <Form.Control
                                 type="text"
-                                placeholder="Type User Account"
-                                value={messageData.recipientID}
-                                onChange={(e) => setMessageData({ ...messageData, recipientID: e.target.value })}
+                                placeholder="Type your name"
+                                name="senderName"
+                                value={messageData.senderName}
+                                onChange={(e) => setMessageData({ ...messageData, senderName: e.target.value })}
                             />
                         </Form.Group>
                         <Form.Group className="mb-3">
-                            <Form.Label>Message Content</Form.Label>
+                            <Form.Label style={{ color: 'white', textShadow: '0 0 3px black' }}>Message Content</Form.Label>
                             <Form.Control
                                 as="textarea"
                                 rows={3}
@@ -107,14 +129,17 @@ function MessagesPage() {
             </Row>
             <Row className="my-4 justify-content-center">
                 <Col xs={12} md={8}>
-                    <ListGroup>
-                        {messages.map(message => (
-                            <ListGroup.Item key={message.id}>
-                                <strong>From:</strong> {message.senderID}<br />
-                                <p>{message.content}</p>
-                            </ListGroup.Item>
-                        ))}
-                    </ListGroup>
+                <ListGroup>
+                    {messages.map(message => (
+                        <ListGroup.Item key={message.id}>
+                            <b>From: {message.senderID}</b><br />  {/* This now displays the name directly */}
+                            {message.content}
+                            <Button variant="danger" size="sm" onClick={() => handleDeleteMessage(message.id)} style={{ float: 'right' }}>
+                                Delete
+                            </Button>
+                        </ListGroup.Item>
+                    ))}
+                </ListGroup>
                 </Col>
             </Row>
             <style jsx>{`
