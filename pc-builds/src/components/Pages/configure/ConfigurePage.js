@@ -303,6 +303,17 @@ function ConfigurePage(){
 
     
     const handleSaveBuild = async () => {
+        // Check if there are any products selected
+        const isAnyProductSelected = selectedGPUs.length > 0 || selectedRAMs.length > 0 ||
+            selectedCases.length > 0 || selectedPSUs.length > 0 ||
+            selectedCPUs.length > 0 || selectedMOBOs.length > 0 ||
+            selectedCooling.length > 0 || selectedMemory.length > 0;
+    
+        if (!isAnyProductSelected) {
+            alert('Please select at least one product before saving your build.');
+            return; // Exit the function if no products are selected
+        }
+    
         try {
             const user = await getCurrentUser();  // Get the current authenticated user
             const userId = user.username;  // Or use `user.attributes.sub` for the unique user ID
@@ -330,6 +341,7 @@ function ConfigurePage(){
             alert('Failed to fetch user data or save build.');
         }
     };
+    
     
     
     

@@ -12,24 +12,25 @@ function CartItemsPage() {
     const [setProducts] = useState([]);
     const client = generateClient();
     const [showClearAlert, setShowClearAlert] = useState(false);
-    const [showAlert, setShowAlert] = useState(false);
+    const [showFailureAlert, setShowFailureAlert] = useState(false);
+    const [showSuccessAlert, setShowSuccessAlert] = useState(false);
 
     const handleCheckout = (event) => {
-        event.preventDefault(); // Prevent the form from submitting by default
+        event.preventDefault(); // Prevent the form from submitting normally
         const form = event.currentTarget;
-        
-        if (form.checkValidity() === false) {
-            event.stopPropagation();
-            
-        } else {
-            clearCart();
-            setShowAlert(true);
-            setTimeout(() => setShowAlert(false), 3000); // Alert disappears after 3 seconds
-        }
-        
-        setValidated(true); // This will trigger Bootstrap's validation feedback
+        setValidated(true); // Trigger form validation feedback
 
+        if (form.checkValidity() === true) {
+            clearCart();
+            setShowSuccessAlert(true);
+            setTimeout(() => setShowSuccessAlert(false), 3000); // Hide success alert after 3 seconds
+        } else {
+            setShowFailureAlert(true);
+            setTimeout(() => setShowFailureAlert(false), 3000); // Hide failure alert after 3 seconds
+            event.stopPropagation(); // Prevent the form from proceeding with invalid data
+        }
     };
+    
     
     const handleClearCart = () => {
         clearCart();
@@ -59,9 +60,14 @@ function CartItemsPage() {
 
     return (
         <Container>
-            {showAlert && (
+            {showSuccessAlert && (
                 <Alert variant="success">
                     Purchase was successful! Thank you for your order.
+                </Alert>
+            )}
+            {showFailureAlert && (
+                <Alert variant="danger">
+                    Purchase failed, missing required fields.
                 </Alert>
             )}
             {showClearAlert && 
