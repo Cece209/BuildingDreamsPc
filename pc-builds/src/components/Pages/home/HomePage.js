@@ -79,9 +79,9 @@ function HomePage() {
                             <Carousel.Item>
                                 <Container className="d-flex justify-content-center align-items-center" style={{ height: "300px" }}>
                                     <div>
-                                        <h3>Shared Builds</h3>
-                                        <p>Share your builds!</p>
-                                        <Button variant="primary" href="/sharedbuilds">Share</Button>
+                                        <h3>Browse Builds</h3>
+                                        <p>Share your builds and look at other people builds!</p>
+                                        <Button variant="primary" href="/sharedbuilds">Browse</Button>
                                     </div>
                                 </Container>
                             </Carousel.Item>
