@@ -175,9 +175,9 @@ function ForumsPage(){
                             <Card.Header as="h5">{forum.name}</Card.Header>
                             <Card.Body>
                                 <Card.Img src={forumImagePaths[index]?.url} variant="top"/>
-                                <Card.Title>{forum.title}</Card.Title>
+                                <Card.Title className="forTitle">{forum.title}</Card.Title>
                                 <Card.Text>{forum.description}</Card.Text>
-                                <Button variant="danger" onClick={() => deleteForum(forum.id, forum.forumPicturePath)}>Delete</Button>
+                                {/* <Button variant="danger" onClick={() => deleteForum(forum.id, forum.forumPicturePath)}>Delete</Button> */}
                             </Card.Body>
                             <Card.Footer className="text-muted">Posted on: {new Date(forum.createdAt).toLocaleString()}</Card.Footer>
                         </Card>
