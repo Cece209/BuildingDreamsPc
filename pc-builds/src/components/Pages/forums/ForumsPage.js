@@ -64,11 +64,11 @@ function ForumsPage(){
         const filename = `${uuid()}.png`;
 
         if (!title.trim()) {
-            console.error('Message content cannot be empty');
+            console.error('Title content cannot be empty');
             return;
         }
         if (!name.trim()) {
-            console.error('Message content cannot be empty');
+            console.error('Name content cannot be empty');
             return;
         }
 
@@ -174,7 +174,7 @@ function ForumsPage(){
                         <Card className="text-center">
                             <Card.Header as="h5">{forum.name}</Card.Header>
                             <Card.Body>
-                                <Card.Img src={forumImagePaths[index]?.url} variant="top" />
+                                <Card.Img src={forumImagePaths[index]?.url} variant="top"/>
                                 <Card.Title>{forum.title}</Card.Title>
                                 <Card.Text>{forum.description}</Card.Text>
                                 <Button variant="danger" onClick={() => deleteForum(forum.id, forum.forumPicturePath)}>Delete</Button>

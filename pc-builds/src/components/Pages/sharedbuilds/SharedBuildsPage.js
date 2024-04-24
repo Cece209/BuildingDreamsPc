@@ -112,7 +112,7 @@ function SharedBuildsPage() {
                 <Col><h1 style={{ color: 'white', textShadow: '0 0 3px black' }}>Browse Builds</h1></Col>
             </Row>
             <Row className="px-4 my-3">
-                <SearchField 
+                <SearchField
                     label="Search builds"
                     placeholder="Type build name"
                     value={searchTerm}
